@@ -216,3 +216,40 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# Ninho & Mimo Trends - regras especificas do projeto
+# ---------------------------------------------------------------------------
+
+# Logs da aplicacao (mantemos o diretorio via logs/.gitkeep)
+logs/*
+!logs/.gitkeep
+
+# Exportacoes geradas em tempo de execucao
+data/exports/*
+!data/exports/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Arquivos temporarios
+*.tmp
+*.bak
+*~
+
+# VS Code (arquivos locais que nao devem ser compartilhados)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# macOS
+.DS_Store
+
+# Credenciais, certificados e chaves privadas
+*.pem
+*.key
+*.crt
+*.pfx
+credentials.json
+secrets.json

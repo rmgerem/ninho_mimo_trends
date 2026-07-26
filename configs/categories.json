@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "name": "Gestantes",
+      "slug": "gestantes",
+      "children": [
+        { "name": "Conforto", "slug": "gestantes-conforto" },
+        { "name": "Roupas", "slug": "gestantes-roupas" },
+        { "name": "Organizacao", "slug": "gestantes-organizacao" },
+        { "name": "Enxoval", "slug": "gestantes-enxoval" },
+        { "name": "Almofadas", "slug": "gestantes-almofadas" },
+        { "name": "Bolsas", "slug": "gestantes-bolsas" }
+      ]
+    },
+    {
+      "name": "Maes",
+      "slug": "maes",
+      "children": [
+        { "name": "Amamentacao", "slug": "maes-amamentacao" },
+        { "name": "Pos-parto", "slug": "maes-pos-parto" },
+        { "name": "Organizacao", "slug": "maes-organizacao" },
+        { "name": "Autocuidado", "slug": "maes-autocuidado" },
+        { "name": "Rotina", "slug": "maes-rotina" }
+      ]
+    },
+    {
+      "name": "Bebes",
+      "slug": "bebes",
+      "children": [
+        { "name": "Alimentacao", "slug": "bebes-alimentacao" },
+        { "name": "Higiene", "slug": "bebes-higiene" },
+        { "name": "Sono", "slug": "bebes-sono" },
+        { "name": "Passeio", "slug": "bebes-passeio" },
+        { "name": "Seguranca", "slug": "bebes-seguranca" },
+        { "name": "Roupas", "slug": "bebes-roupas" },
+        { "name": "Desenvolvimento", "slug": "bebes-desenvolvimento" }
+      ]
+    },
+    {
+      "name": "Criancas",
+      "slug": "criancas",
+      "children": [
+        { "name": "Brinquedos", "slug": "criancas-brinquedos" },
+        { "name": "Educacao", "slug": "criancas-educacao" },
+        { "name": "Escola", "slug": "criancas-escola" },
+        { "name": "Quarto", "slug": "criancas-quarto" },
+        { "name": "Roupas", "slug": "criancas-roupas" },
+        { "name": "Tecnologia", "slug": "criancas-tecnologia" },
+        { "name": "Atividades", "slug": "criancas-atividades" }
+      ]
+    }
+  ],
+  "age_ranges": [
+    { "code": "GESTANTE", "name": "Gestante", "minimum_age_months": null, "maximum_age_months": null, "is_pregnancy": true },
+    { "code": "0_A_6_MESES", "name": "0 a 6 meses", "minimum_age_months": 0, "maximum_age_months": 6, "is_pregnancy": false },
+    { "code": "6_A_12_MESES", "name": "6 a 12 meses", "minimum_age_months": 6, "maximum_age_months": 12, "is_pregnancy": false },
+    { "code": "1_A_2_ANOS", "name": "1 a 2 anos", "minimum_age_months": 12, "maximum_age_months": 24, "is_pregnancy": false },
+    { "code": "3_A_5_ANOS", "name": "3 a 5 anos", "minimum_age_months": 36, "maximum_age_months": 60, "is_pregnancy": false },
+    { "code": "6_A_8_ANOS", "name": "6 a 8 anos", "minimum_age_months": 72, "maximum_age_months": 96, "is_pregnancy": false },
+    { "code": "9_A_10_ANOS", "name": "9 a 10 anos", "minimum_age_months": 108, "maximum_age_months": 120, "is_pregnancy": false }
+  ]
+}

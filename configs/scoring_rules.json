@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "trend_score": {
+    "minimum_history_points": 3,
+    "weights": {
+      "sales_growth": 0.30,
+      "reviews_growth": 0.20,
+      "ranking_improvement": 0.20,
+      "trend_persistence": 0.15,
+      "source_diversity": 0.10,
+      "recency": 0.05
+    },
+    "small_sample_dampening": {
+      "enabled": true,
+      "minimum_absolute_increase": 5,
+      "description": "Crescimentos percentuais baseados em valores absolutos pequenos sao amortecidos para evitar pontuacoes artificialmente altas."
+    },
+    "status_thresholds": {
+      "crescimento_forte": 70,
+      "crescimento_moderado": 40,
+      "estavel_min": -15,
+      "estavel_max": 15,
+      "queda_moderada": -40,
+      "queda_forte": -70
+    }
+  },
+  "social_score": {
+    "weights": {
+      "visual_potential": 0.20,
+      "video_demo_ease": 0.20,
+      "explainable_utility": 0.15,
+      "before_after_potential": 0.15,
+      "educational_content_potential": 0.10,
+      "emotional_appeal": 0.10,
+      "benefit_clarity": 0.05,
+      "short_video_fit": 0.05
+    },
+    "category_bonus": {
+      "criancas-brinquedos": 15,
+      "criancas-educacao": 15,
+      "bebes-desenvolvimento": 12,
+      "gestantes-conforto": 8
+    },
+    "keyword_bonus": {
+      "montessori": 10,
+      "sensorial": 8,
+      "educativo": 8,
+      "organizador": 6,
+      "antes e depois": 10,
+      "portatil": 4
+    }
+  },
+  "risk_score": {
+    "keyword_risk": {
+      "medicamento": 90,
+      "suplemento": 70,
+      "vitamina": 55,
+      "mordedor": 45,
+      "peca pequena": 60,
+      "pecas pequenas": 60,
+      "berco": 55,
+      "cadeirinha": 60,
+      "bebe conforto": 60,
+      "mamadeira": 35,
+      "cosmetico": 45,
+      "cosmeticos": 45,
+      "sono": 50,
+      "recem-nascido": 55,
+      "eletrico": 40,
+      "eletronico": 30,
+      "ingerivel": 65
+    },
+    "category_risk": {
+      "bebes-sono": 55,
+      "bebes-seguranca": 50,
+      "bebes-alimentacao": 35,
+      "criancas-tecnologia": 30
+    },
+    "missing_age_range_penalty": 20,
+    "thresholds": {
+      "low": 30,
+      "medium": 55,
+      "high": 75
+    }
+  },
+  "opportunity_score": {
+    "weights": {
+      "trend_score": 0.35,
+      "social_score": 0.25,
+      "review_quality": 0.15,
+      "source_diversity": 0.10,
+      "availability": 0.05,
+      "price_range_fit": 0.10
+    },
+    "risk_penalty": {
+      "low": 0,
+      "medium": 10,
+      "high": 35,
+      "critical": 70
+    },
+    "price_range_fit": {
+      "ideal_minimum_brl": 25,
+      "ideal_maximum_brl": 250
+    }
+  }
+}

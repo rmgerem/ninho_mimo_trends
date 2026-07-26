@@ -1,0 +1,346 @@
+{
+  "products": [
+    {
+      "external_id": "mock-001",
+      "name": "Almofada de apoio para gestante em formato C",
+      "brand": "Ninho Conforto",
+      "description": "Almofada de apoio corporal para gestantes, alivia a pressao nas costas e quadris durante o sono.",
+      "category": "gestantes-conforto",
+      "age_range": "GESTANTE",
+      "original_url": "https://loja-exemplo.test/produtos/almofada-apoio-gestante",
+      "image_url": "https://loja-exemplo.test/img/almofada-gestante.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 189.90, "original_price": 219.90, "rating": 4.6, "review_count": 40, "sales_count": 35, "ranking_position": 48, "availability": "AVAILABLE" },
+        { "days_ago": 14, "current_price": 179.90, "original_price": 219.90, "rating": 4.7, "review_count": 62, "sales_count": 58, "ranking_position": 30, "availability": "AVAILABLE" },
+        { "days_ago": 7, "current_price": 179.90, "original_price": 219.90, "rating": 4.7, "review_count": 95, "sales_count": 95, "ranking_position": 15, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 169.90, "original_price": 219.90, "rating": 4.8, "review_count": 140, "sales_count": 150, "ranking_position": 6, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-002",
+      "name": "Mochila maternidade impermeavel com trocador",
+      "brand": "MamaBag",
+      "description": "Mochila maternidade espacosa, impermeavel, com trocador acoplado e compartimento termico.",
+      "category": "gestantes-bolsas",
+      "age_range": "GESTANTE",
+      "original_url": "https://loja-exemplo.test/produtos/mochila-maternidade",
+      "image_url": "https://loja-exemplo.test/img/mochila-maternidade.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 21, "current_price": 249.90, "original_price": 289.90, "rating": 4.5, "review_count": 20, "sales_count": 18, "ranking_position": 70, "availability": "AVAILABLE" },
+        { "days_ago": 14, "current_price": 249.90, "original_price": 289.90, "rating": 4.5, "review_count": 33, "sales_count": 27, "ranking_position": 60, "availability": "AVAILABLE" },
+        { "days_ago": 7, "current_price": 239.90, "original_price": 289.90, "rating": 4.6, "review_count": 41, "sales_count": 36, "ranking_position": 52, "availability": "AVAILABLE" },
+        { "days_ago": 2, "current_price": 239.90, "original_price": 289.90, "rating": 4.6, "review_count": 50, "sales_count": 44, "ranking_position": 45, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-003",
+      "name": "Organizador de carrinho de bebe multiuso",
+      "brand": "Bebe Organiza",
+      "description": "Organizador para carrinho de bebe com varios compartimentos e porta mamadeira termico.",
+      "category": "bebes-passeio",
+      "age_range": "0_A_6_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/organizador-carrinho",
+      "image_url": "https://loja-exemplo.test/img/organizador-carrinho.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 79.90, "original_price": 99.90, "rating": 4.4, "review_count": 55, "sales_count": 60, "ranking_position": 40, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 79.90, "original_price": 99.90, "rating": 4.4, "review_count": 58, "sales_count": 63, "ranking_position": 39, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 79.90, "original_price": 99.90, "rating": 4.4, "review_count": 60, "sales_count": 65, "ranking_position": 41, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 79.90, "original_price": 99.90, "rating": 4.5, "review_count": 61, "sales_count": 66, "ranking_position": 40, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-004",
+      "name": "Bolsa termica para mamadeira com alca",
+      "brand": "Bebe Organiza",
+      "description": "Bolsa termica portatil para transportar mamadeira na temperatura ideal durante passeios.",
+      "category": "bebes-alimentacao",
+      "age_range": "0_A_6_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/bolsa-termica-mamadeira",
+      "image_url": "https://loja-exemplo.test/img/bolsa-termica.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 59.90, "original_price": 79.90, "rating": 4.3, "review_count": 22, "sales_count": 20, "ranking_position": 85, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 59.90, "original_price": 79.90, "rating": 4.4, "review_count": 30, "sales_count": 29, "ranking_position": 70, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 54.90, "original_price": 79.90, "rating": 4.5, "review_count": 44, "sales_count": 45, "ranking_position": 55, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 54.90, "original_price": 79.90, "rating": 4.6, "review_count": 58, "sales_count": 61, "ranking_position": 42, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-005",
+      "name": "Babador de silicone ajustavel a prova de agua",
+      "brand": "Bebe Organiza",
+      "description": "Babador de silicone macio, ajustavel e facil de limpar, com bolso coletor.",
+      "category": "bebes-alimentacao",
+      "age_range": "6_A_12_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/babador-silicone",
+      "image_url": "https://loja-exemplo.test/img/babador-silicone.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 34.90, "original_price": 44.90, "rating": 4.5, "review_count": 80, "sales_count": 120, "ranking_position": 25, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 34.90, "original_price": 44.90, "rating": 4.5, "review_count": 85, "sales_count": 110, "ranking_position": 28, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 34.90, "original_price": 44.90, "rating": 4.4, "review_count": 88, "sales_count": 95, "ranking_position": 34, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 34.90, "original_price": 44.90, "rating": 4.4, "review_count": 90, "sales_count": 80, "ranking_position": 44, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-006",
+      "name": "Kit de alimentacao infantil com pratos e talheres de silicone",
+      "brand": "NutriBaby",
+      "description": "Kit de alimentacao infantil com prato compartimentado, talheres e copo de treinamento em silicone atoxico.",
+      "category": "bebes-alimentacao",
+      "age_range": "6_A_12_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/kit-alimentacao-infantil",
+      "image_url": "https://loja-exemplo.test/img/kit-alimentacao.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 18, "current_price": 89.90, "original_price": 109.90, "rating": 4.7, "review_count": 30, "sales_count": 25, "ranking_position": 60, "availability": "AVAILABLE" },
+        { "days_ago": 11, "current_price": 89.90, "original_price": 109.90, "rating": 4.7, "review_count": 48, "sales_count": 40, "ranking_position": 45, "availability": "AVAILABLE" },
+        { "days_ago": 4, "current_price": 84.90, "original_price": 109.90, "rating": 4.8, "review_count": 70, "sales_count": 66, "ranking_position": 28, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 84.90, "original_price": 109.90, "rating": 4.8, "review_count": 95, "sales_count": 98, "ranking_position": 14, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-007",
+      "name": "Tapete de atividades sensorial para bebes",
+      "brand": "Ninho Kids",
+      "description": "Tapete de atividades com arcos sensoriais e brinquedos removiveis para estimulacao do bebe.",
+      "category": "bebes-desenvolvimento",
+      "age_range": "0_A_6_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/tapete-atividades",
+      "image_url": "https://loja-exemplo.test/img/tapete-atividades.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 159.90, "original_price": 199.90, "rating": 4.6, "review_count": 18, "sales_count": 15, "ranking_position": 90, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 159.90, "original_price": 199.90, "rating": 4.7, "review_count": 35, "sales_count": 30, "ranking_position": 65, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 149.90, "original_price": 199.90, "rating": 4.8, "review_count": 62, "sales_count": 58, "ranking_position": 38, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 149.90, "original_price": 199.90, "rating": 4.9, "review_count": 100, "sales_count": 105, "ranking_position": 12, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-008",
+      "name": "Brinquedo Montessori de encaixe sensorial em madeira",
+      "brand": "Ninho Kids",
+      "description": "Brinquedo educativo montessori de encaixe, feito em madeira, estimula coordenacao motora e cores.",
+      "category": "criancas-brinquedos",
+      "age_range": "1_A_2_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe",
+      "image_url": "https://loja-exemplo.test/img/montessori-encaixe.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 21, "current_price": 99.90, "original_price": 129.90, "rating": 4.7, "review_count": 25, "sales_count": 22, "ranking_position": 75, "availability": "AVAILABLE" },
+        { "days_ago": 14, "current_price": 99.90, "original_price": 129.90, "rating": 4.8, "review_count": 50, "sales_count": 48, "ranking_position": 50, "availability": "AVAILABLE" },
+        { "days_ago": 7, "current_price": 94.90, "original_price": 129.90, "rating": 4.8, "review_count": 90, "sales_count": 95, "ranking_position": 20, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 94.90, "original_price": 129.90, "rating": 4.9, "review_count": 160, "sales_count": 180, "ranking_position": 4, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-009",
+      "name": "Torre de aprendizagem desmontavel estilo Montessori",
+      "brand": "Ninho Kids",
+      "description": "Torre de aprendizagem ajustavel que permite a crianca alcancar a bancada com seguranca.",
+      "category": "criancas-educacao",
+      "age_range": "1_A_2_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/torre-aprendizagem",
+      "image_url": "https://loja-exemplo.test/img/torre-aprendizagem.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 18, "current_price": 349.90, "original_price": 399.90, "rating": 4.6, "review_count": 12, "sales_count": 10, "ranking_position": 95, "availability": "AVAILABLE" },
+        { "days_ago": 11, "current_price": 349.90, "original_price": 399.90, "rating": 4.6, "review_count": 20, "sales_count": 16, "ranking_position": 80, "availability": "AVAILABLE" },
+        { "days_ago": 4, "current_price": 339.90, "original_price": 399.90, "rating": 4.7, "review_count": 27, "sales_count": 21, "ranking_position": 70, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 339.90, "original_price": 399.90, "rating": 4.7, "review_count": 30, "sales_count": 24, "ranking_position": 66, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-010",
+      "name": "Organizador de brinquedos com caixas removiveis",
+      "brand": "Bebe Organiza",
+      "description": "Organizador de brinquedos infantil com caixas coloridas removiveis, facil montagem.",
+      "category": "criancas-quarto",
+      "age_range": "3_A_5_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/organizador-brinquedos",
+      "image_url": "https://loja-exemplo.test/img/organizador-brinquedos.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 189.90, "original_price": 229.90, "rating": 4.5, "review_count": 33, "sales_count": 28, "ranking_position": 55, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 189.90, "original_price": 229.90, "rating": 4.5, "review_count": 35, "sales_count": 29, "ranking_position": 54, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 189.90, "original_price": 229.90, "rating": 4.5, "review_count": 36, "sales_count": 30, "ranking_position": 53, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 189.90, "original_price": 229.90, "rating": 4.6, "review_count": 38, "sales_count": 31, "ranking_position": 52, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-011",
+      "name": "Luz noturna infantil de silicone com sensor",
+      "brand": "Ninho Kids",
+      "description": "Luminaria noturna eletrica recarregavel com sensor de presenca, luz suave para o quarto infantil.",
+      "category": "criancas-quarto",
+      "age_range": "3_A_5_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/luz-noturna-infantil",
+      "image_url": "https://loja-exemplo.test/img/luz-noturna.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 69.90, "original_price": 89.90, "rating": 4.4, "review_count": 28, "sales_count": 24, "ranking_position": 68, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 69.90, "original_price": 89.90, "rating": 4.5, "review_count": 40, "sales_count": 35, "ranking_position": 58, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 64.90, "original_price": 89.90, "rating": 4.6, "review_count": 55, "sales_count": 50, "ranking_position": 47, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 64.90, "original_price": 89.90, "rating": 4.6, "review_count": 70, "sales_count": 68, "ranking_position": 36, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-012",
+      "name": "Trava de seguranca para armario e gaveta",
+      "brand": "Bebe Seguro",
+      "description": "Kit de travas de seguranca para armarios e gavetas, evita acidentes com criancas pequenas.",
+      "category": "bebes-seguranca",
+      "age_range": "6_A_12_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/trava-seguranca-armario",
+      "image_url": "https://loja-exemplo.test/img/trava-seguranca.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 29.90, "original_price": 39.90, "rating": 4.6, "review_count": 90, "sales_count": 140, "ranking_position": 20, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 29.90, "original_price": 39.90, "rating": 4.6, "review_count": 92, "sales_count": 138, "ranking_position": 21, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 29.90, "original_price": 39.90, "rating": 4.6, "review_count": 94, "sales_count": 135, "ranking_position": 22, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 29.90, "original_price": 39.90, "rating": 4.7, "review_count": 96, "sales_count": 133, "ranking_position": 23, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-013",
+      "name": "Protetor de quina de moveis transparente",
+      "brand": "Bebe Seguro",
+      "description": "Protetor de quinas e cantos de moveis, transparente e resistente a impacto, para seguranca infantil.",
+      "category": "bebes-seguranca",
+      "age_range": "6_A_12_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/protetor-quina",
+      "image_url": "https://loja-exemplo.test/img/protetor-quina.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 24.90, "original_price": 34.90, "rating": 4.3, "review_count": 60, "sales_count": 90, "ranking_position": 40, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 24.90, "original_price": 34.90, "rating": 4.3, "review_count": 58, "sales_count": 75, "ranking_position": 50, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 24.90, "original_price": 34.90, "rating": 4.2, "review_count": 55, "sales_count": 55, "ranking_position": 65, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 24.90, "original_price": 34.90, "rating": 4.1, "review_count": 52, "sales_count": 38, "ranking_position": 85, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-014",
+      "name": "Quadro de rotina infantil ilustrado",
+      "brand": "Ninho Kids",
+      "description": "Quadro de rotina infantil com icones ilustrados e pecas imantadas para organizar o dia a dia.",
+      "category": "criancas-quarto",
+      "age_range": "3_A_5_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/quadro-rotina-infantil",
+      "image_url": "https://loja-exemplo.test/img/quadro-rotina.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 18, "current_price": 79.90, "original_price": 99.90, "rating": 4.7, "review_count": 15, "sales_count": 12, "ranking_position": 88, "availability": "AVAILABLE" },
+        { "days_ago": 11, "current_price": 79.90, "original_price": 99.90, "rating": 4.8, "review_count": 28, "sales_count": 24, "ranking_position": 62, "availability": "AVAILABLE" },
+        { "days_ago": 4, "current_price": 74.90, "original_price": 99.90, "rating": 4.9, "review_count": 48, "sales_count": 45, "ranking_position": 33, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 74.90, "original_price": 99.90, "rating": 4.9, "review_count": 70, "sales_count": 72, "ranking_position": 17, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-015",
+      "name": "Estojo escolar organizador com varios compartimentos",
+      "brand": "Ninho Kids",
+      "description": "Estojo escolar organizador infantil, com multiplos compartimentos para lapis e canetinhas.",
+      "category": "criancas-escola",
+      "age_range": "6_A_8_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/estojo-escolar-organizador",
+      "image_url": "https://loja-exemplo.test/img/estojo-escolar.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 44.90, "original_price": 59.90, "rating": 4.5, "review_count": 20, "sales_count": 18, "ranking_position": 72, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 44.90, "original_price": 59.90, "rating": 4.5, "review_count": 21, "sales_count": 19, "ranking_position": 71, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 44.90, "original_price": 59.90, "rating": 4.5, "review_count": 22, "sales_count": 19, "ranking_position": 71, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 44.90, "original_price": 59.90, "rating": 4.5, "review_count": 22, "sales_count": 20, "ranking_position": 70, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-016",
+      "name": "Almofada posicionadora para sono do recem-nascido",
+      "brand": "SonoBaby",
+      "description": "Almofada posicionadora para sono de recem-nascidos, promete evitar que o bebe vire durante o sono.",
+      "category": "bebes-sono",
+      "age_range": "0_A_6_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/almofada-posicionadora-sono",
+      "image_url": "https://loja-exemplo.test/img/almofada-posicionadora.jpg",
+      "seller_name": "Loja Terceiros",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 89.90, "original_price": 109.90, "rating": 3.9, "review_count": 60, "sales_count": 100, "ranking_position": 30, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 89.90, "original_price": 109.90, "rating": 3.7, "review_count": 58, "sales_count": 70, "ranking_position": 55, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 89.90, "original_price": 109.90, "rating": 3.5, "review_count": 55, "sales_count": 40, "ranking_position": 90, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 89.90, "original_price": 109.90, "rating": 3.2, "review_count": 52, "sales_count": 18, "ranking_position": 140, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-017",
+      "name": "Mordedor de silicone para bebe em formato de fruta",
+      "brand": "NutriBaby",
+      "description": "Mordedor de silicone atoxico em formato de fruta, alivia o desconforto da erupcao dos dentes.",
+      "category": "bebes-desenvolvimento",
+      "age_range": "6_A_12_MESES",
+      "original_url": "https://loja-exemplo.test/produtos/mordedor-silicone-fruta",
+      "image_url": "https://loja-exemplo.test/img/mordedor-fruta.jpg",
+      "seller_name": "Loja Ninho",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 39.90, "original_price": 49.90, "rating": 4.6, "review_count": 45, "sales_count": 50, "ranking_position": 42, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 39.90, "original_price": 49.90, "rating": 4.6, "review_count": 60, "sales_count": 65, "ranking_position": 33, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 37.90, "original_price": 49.90, "rating": 4.7, "review_count": 78, "sales_count": 88, "ranking_position": 24, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 37.90, "original_price": 49.90, "rating": 4.7, "review_count": 95, "sales_count": 110, "ranking_position": 16, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-018",
+      "name": "Brinquedo de encaixe com pecas pequenas coloridas",
+      "brand": "ToyFun",
+      "description": "Brinquedo de encaixe com pecas pequenas coloridas para desenvolver a coordenacao motora fina.",
+      "category": "criancas-brinquedos",
+      "age_range": "3_A_5_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/brinquedo-pecas-pequenas",
+      "image_url": "https://loja-exemplo.test/img/brinquedo-pecas-pequenas.jpg",
+      "seller_name": "Loja Terceiros",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 20, "current_price": 54.90, "original_price": 69.90, "rating": 4.2, "review_count": 34, "sales_count": 48, "ranking_position": 46, "availability": "AVAILABLE" },
+        { "days_ago": 13, "current_price": 54.90, "original_price": 69.90, "rating": 4.1, "review_count": 33, "sales_count": 35, "ranking_position": 62, "availability": "AVAILABLE" },
+        { "days_ago": 6, "current_price": 54.90, "original_price": 69.90, "rating": 4.0, "review_count": 31, "sales_count": 22, "ranking_position": 95, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 54.90, "original_price": 69.90, "rating": 3.9, "review_count": 30, "sales_count": 14, "ranking_position": 130, "availability": "AVAILABLE" }
+      ]
+    },
+    {
+      "external_id": "mock-019",
+      "name": "Kit cosmetico infantil hidratante e shampoo",
+      "brand": "PeleFofa",
+      "description": "Kit cosmetico infantil com hidratante corporal e shampoo suave, sem lagrimas.",
+      "category": "bebes-higiene",
+      "age_range": "1_A_2_ANOS",
+      "original_url": "https://loja-exemplo.test/produtos/kit-cosmetico-infantil",
+      "image_url": "https://loja-exemplo.test/img/kit-cosmetico.jpg",
+      "seller_name": "Loja Terceiros",
+      "currency": "BRL",
+      "history": [
+        { "days_ago": 19, "current_price": 49.90, "original_price": 64.90, "rating": 4.4, "review_count": 26, "sales_count": 30, "ranking_position": 58, "availability": "AVAILABLE" },
+        { "days_ago": 12, "current_price": 49.90, "original_price": 64.90, "rating": 4.4, "review_count": 34, "sales_count": 38, "ranking_position": 50, "availability": "AVAILABLE" },
+        { "days_ago": 5, "current_price": 46.90, "original_price": 64.90, "rating": 4.5, "review_count": 42, "sales_count": 46, "ranking_position": 44, "availability": "AVAILABLE" },
+        { "days_ago": 1, "current_price": 46.90, "original_price": 64.90, "rating": 4.5, "review_count": 48, "sales_count": 52, "ranking_position": 38, "availability": "AVAILABLE" }
+      ]
+    }
+  ]
+}

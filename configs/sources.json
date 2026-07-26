@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "code": "mock",
+      "name": "Fonte Simulada (Mock)",
+      "base_url": "local://mock",
+      "country": "BR",
+      "source_type": "MOCK",
+      "is_active": true,
+      "requires_authentication": false,
+      "collection_interval_minutes": 60,
+      "terms_url": null
+    },
+    {
+      "code": "public_open_data",
+      "name": "Fonte Publica de Dados Abertos",
+      "base_url": "https://example-public-source.invalid",
+      "country": "BR",
+      "source_type": "PUBLIC_PAGE",
+      "is_active": false,
+      "requires_authentication": false,
+      "collection_interval_minutes": 180,
+      "terms_url": null
+    }
+  ]
+}

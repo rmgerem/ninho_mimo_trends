@@ -1,0 +1,31 @@
+{
+  "app_name": "Ninho & Mimo",
+  "slogan": "Carinho em cada fase.",
+  "default_country": "BR",
+  "default_currency": "BRL",
+  "default_timezone": "America/Sao_Paulo",
+  "directories": {
+    "data_dir": "data",
+    "raw_dir": "data/raw",
+    "processed_dir": "data/processed",
+    "exports_dir": "data/exports",
+    "fixtures_dir": "data/fixtures",
+    "logs_dir": "logs"
+  },
+  "collection": {
+    "default_limit": 50,
+    "max_limit": 500,
+    "request_interval_seconds": 2.0,
+    "minimum_history_points_for_trend": 3
+  },
+  "export": {
+    "formats": ["csv", "xlsx"],
+    "default_format": "xlsx",
+    "default_limit": 100,
+    "ranking_sheet_name": "Ranking"
+  },
+  "products": {
+    "default_list_limit": 20,
+    "default_order_by": "opportunity_score"
+  }
+}
