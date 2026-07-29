@@ -206,6 +206,14 @@ class ShopeeAffiliateCollector(BaseCollector):
             nodes = offer_data.get("nodes") or []
 
             for node in nodes:
+                sales = node.get("sales") or 0
+                if sales == 0:
+                    logger.debug(
+                        "Produto ignorado por 0 vendas: %s (itemId=%s)",
+                        node.get("productName"),
+                        node.get("itemId"),
+                    )
+                    continue
                 node["_category_slug"] = category
                 yield self.normalize_product(node)
                 collected_count += 1

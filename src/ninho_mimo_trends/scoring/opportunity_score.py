@@ -1,9 +1,9 @@
-"""Calculo do Opportunity Score e orquestracao geral do sistema de pontuacao.
+﻿"""Calculo do Opportunity Score e orquestracao geral do sistema de pontuacao.
 
 O Opportunity Score combina Trend Score, Social Score, qualidade das
 avaliacoes, diversidade de fontes, disponibilidade, faixa de preco e
 taxa de comissao (quando disponivel), penalizado pelo Risk Score. Todos
-os pesos vem de ``configs/scoring_rules.json`` (secao ``opportunity_score``).
+os pesos vem de `configs/scoring_rules.json` (secao `opportunity_score`).
 
 Formula (pesos configuraveis, soma dos pesos positivos = 1.0)::
 
@@ -28,10 +28,12 @@ from typing import Any
 
 from ninho_mimo_trends.enums.risk_level import RiskLevel
 
-# Quando ainda nao ha historico suficiente para calcular o Trend Score, um
-# valor neutro (nem baixo, nem alto) e usado para nao penalizar nem
-# beneficiar artificialmente produtos recem-descobertos.
-NEUTRAL_TREND_SCORE_WHEN_MISSING = Decimal("40.00")
+# Quando ainda nao ha historico suficiente para calcular o Trend Score,
+# um valor baixo e usado para nao beneficiar artificialmente produtos
+# sem historico real de vendas. Era 40.00 (neutro), reduzido para 10.00
+# porque o valor neutro permitia que produtos com 0 vendas pontuassem
+# alto o suficiente para aparecer no top do ranking.
+NEUTRAL_TREND_SCORE_WHEN_MISSING = Decimal("10.00")
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,8 +57,11 @@ def _clip(value: float, minimum: float = 0.0, maximum: float = 100.0) -> float:
 
 
 def _review_quality_score(average_rating: Decimal | None, review_count: int | None) -> float:
+    # Produto sem avaliacao alguma nao recebe pontos de qualidade.
+    # Era 50.0 (neutro), alterado para 0.0 pois o valor neutro premiava
+    # produtos sem nenhuma prova social tanto quanto produtos com boas notas.
     if average_rating is None:
-        return 50.0
+        return 0.0
     quality = (float(average_rating) / 5.0) * 100.0
     confidence = min((review_count or 0) / 50.0, 1.0)
     return quality * confidence + 50.0 * (1.0 - confidence)
@@ -93,8 +98,8 @@ def _price_range_fit_score(
 def _commission_score(average_commission: Decimal | None, config: dict[str, float]) -> float:
     """Converte taxa de comissao media em score 0-100.
 
-    Comissao nula retorna score neutro (50). Acima do ``high_threshold`` retorna
-    100; abaixo do ``low_threshold`` retorna 0. Entre os dois, interpolacao linear.
+    Comissao nula retorna score neutro (50). Acima do `high_threshold` retorna
+    100; abaixo do `low_threshold` retorna 0. Entre os dois, interpolacao linear.
     """
     if average_commission is None:
         return 50.0
