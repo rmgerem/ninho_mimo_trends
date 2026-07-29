@@ -275,7 +275,13 @@
             "matcher": { "id": "byName", "options": "Link Afiliado" },
             "properties": [
               { "id": "custom.cellOptions", "value": { "type": "auto" } },
-              { "id": "links", "value": [ { "title": "🔗 Copiar Link", "url": "${__value.text}", "targetBlank": true } ] }
+              { "id": "links", "value": [ { "title": "🔗 Copiar Link", "url": "http://localhost:8000/go?product_id=${__data.fields.ID}&user=${__user.login}", "targetBlank": true } ] }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "ID" },
+            "properties": [
+              { "id": "custom.hidden", "value": true }
             ]
           },
           {
@@ -297,7 +303,7 @@
           "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", ps.affiliate_url AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) AND c.name = ANY(ARRAY[$categoria]::varchar[]) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 100"
+          "rawSql": "SELECT p.id AS \"ID\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", '🔗 Clique Aqui' AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) AND c.name = ANY(ARRAY[$categoria]::varchar[]) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 100"
         }
       ]
     }
