@@ -99,11 +99,24 @@ Passo a passo:
    instalar o `pdc-agent` na sua máquina (binário para Windows disponível).
 3. Rode o `pdc-agent` localmente com o token gerado — ele mantém o túnel
    ativo (pode ser instalado como serviço do Windows para persistir).
-4. Em *Connections > Data sources > Add data source > PostgreSQL*,
-   preencha os mesmos dados da Opção A (host `localhost:5432`, banco
-   `ninho_mimo_trends`, usuário/senha do seu `.env`), mas selecione a
-   conexão PDC criada no passo 2 em vez de uma conexão direta.
-5. Importe o dashboard normalmente (mesmo passo 3 da Opção A).
+4. **Importante — não use `localhost`/`127.0.0.1` como host.** A
+   [documentação oficial de boas práticas do PDC](https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/data-source-best-practice/)
+   avisa: `localhost`/`127.0.0.1` resolve a partir da perspectiva do
+   agente de um jeito que não alcança o Postgres corretamente. Use o
+   **IP da rede local (LAN)** da máquina onde o PostgreSQL roda (ex.:
+   `192.168.1.233:5432` — descubra o seu com `Get-NetIPAddress` no
+   PowerShell). Isso exige dois ajustes no PostgreSQL, que já vêm
+   configurados neste projeto se você seguiu este guia:
+   - `postgresql.conf`: `listen_addresses = '*'` (já é o padrão da
+     instalação do PostgreSQL para Windows).
+   - `pg_hba.conf`: adicionar uma linha `host all all <SEU_IP_LAN>/32
+     scram-sha-256` (nunca use `trust` aqui) e reiniciar o serviço
+     (`Restart-Service postgresql-x64-16`, requer administrador).
+5. Em *Connections > Data sources > Add data source > PostgreSQL*,
+   preencha os mesmos dados da Opção A, mas com **host = seu IP da LAN**
+   (não `localhost`), e selecione a conexão PDC criada no passo 2 em vez
+   de uma conexão direta.
+6. Importe o dashboard normalmente (mesmo passo 3 da Opção A).
 
 Documentação oficial: [Private data source connect (PDC)](https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/).
 

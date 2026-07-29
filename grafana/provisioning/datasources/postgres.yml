@@ -1,20 +1,21 @@
 apiVersion: 1
 
-# Provisionamento automatico do data source PostgreSQL usado pelo dashboard
-# "Ninho & Mimo Trends — Indicacoes da Automacao". Copie este arquivo para o
-# diretorio de provisionamento do seu Grafana (ver docs/grafana.md) ou importe
-# o data source manualmente com os mesmos parametros pela UI.
+# Provisionamento automatico do data source PostgreSQL.
+# Este arquivo funciona tanto em modo local (localhost) quanto via Docker
+# (host = 'postgres', nome do servico no docker-compose.yml).
 #
-# IMPORTANTE: a senha abaixo usa uma variavel de ambiente do processo do
-# Grafana (GF_NMT_DB_PASSWORD) - nunca coloque a senha real neste arquivo.
+# A senha e lida da variavel de ambiente GF_NMT_DB_PASSWORD, que e
+# passada ao container Grafana pelo docker-compose.yml ou pelo sistema
+# operacional — nunca escreva a senha real neste arquivo.
 datasources:
   - name: PostgreSQL - ninho_mimo_trends
     type: postgres
     uid: ninho-mimo-trends-postgres
-    url: localhost:5432
+    # Em Docker: usa o nome do servico. Em local: troque por localhost.
+    url: ${GF_NMT_DB_HOST:-postgres}:5432
     database: ninho_mimo_trends
     user: postgres
-    isDefault: false
+    isDefault: true
     editable: true
     jsonData:
       sslmode: disable

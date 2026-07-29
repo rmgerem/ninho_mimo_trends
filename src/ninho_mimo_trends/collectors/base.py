@@ -43,6 +43,7 @@ class CollectedProduct:
     availability: Availability
     collected_at: datetime
     affiliate_url: str | None = None
+    commission_rate: Decimal | None = None
     raw_payload: dict[str, Any] = field(default_factory=dict)
 
 

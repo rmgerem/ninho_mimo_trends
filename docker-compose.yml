@@ -1,0 +1,140 @@
+# ============================================================
+# docker-compose.yml — Ninho & Mimo Trends (Producao)
+#
+# Sobe 3 servicos:
+#   postgres   — banco de dados
+#   scheduler  — coleta automatica em loop continuo
+#   grafana    — dashboard do cliente
+#
+# Uso:
+#   cp .env.docker .env.docker.local   # edite com suas credenciais reais
+#   docker compose --env-file .env.docker.local up -d
+#   docker compose logs -f scheduler   # acompanhe as coletas
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ----------------------------------------------------------
+  # PostgreSQL — banco de dados principal
+  # ----------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: nmt_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-ninho_mimo_trends}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-ninho_mimo_trends}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nmt_network
+
+  # ----------------------------------------------------------
+  # Migrations — aplica o schema antes do scheduler iniciar
+  # Roda uma vez e sai (restart: "no")
+  # ----------------------------------------------------------
+  migrations:
+    build: .
+    container_name: nmt_migrations
+    restart: "no"
+    command: ["database", "upgrade"]
+    env_file: .env.docker.local
+    environment:
+      DB_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nmt_network
+
+  # ----------------------------------------------------------
+  # Seed — popula categorias/fontes na primeira vez
+  # Roda uma vez e sai (restart: "no")
+  # ----------------------------------------------------------
+  seed:
+    build: .
+    container_name: nmt_seed
+    restart: "no"
+    command: ["seed"]
+    env_file: .env.docker.local
+    environment:
+      DB_HOST: postgres
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+    networks:
+      - nmt_network
+
+  # ----------------------------------------------------------
+  # Scheduler — coleta automatica em loop continuo
+  # Reinicia sempre que cair (ex.: erro de rede temporario)
+  # ----------------------------------------------------------
+  scheduler:
+    build: .
+    container_name: nmt_scheduler
+    restart: unless-stopped
+    command: ["scheduler", "start"]
+    env_file: .env.docker.local
+    environment:
+      DB_HOST: postgres
+      APP_ENV: PROD
+      LOG_LEVEL: INFO
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    networks:
+      - nmt_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ----------------------------------------------------------
+  # Grafana — dashboard do cliente
+  # ----------------------------------------------------------
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: nmt_grafana
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      # Credenciais do admin do Grafana (altere em producao!)
+      GF_SECURITY_ADMIN_USER: ${GF_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD}
+      # Senha do banco para o data source provisionado
+      GF_NMT_DB_PASSWORD: ${DB_PASSWORD}
+      # Desabilita registro anonimo (producao)
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      # Permite apenas login local (sem convites externos)
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - nmt_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+  grafana_data:
+
+networks:
+  nmt_network:
+    driver: bridge

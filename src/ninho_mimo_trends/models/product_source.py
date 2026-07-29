@@ -63,6 +63,11 @@ class ProductSource(TimestampMixin, Base):
     currency: Mapped[str] = mapped_column(String(3), nullable=False, default="BRL")
     current_price: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
     original_price: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
+    commission_rate: Mapped[Decimal | None] = mapped_column(
+        Numeric(5, 2),
+        nullable=True,
+        doc="Taxa de comissao da fonte (ex.: 10.50 = 10,5%). Disponivel apenas em fontes de afiliado.",
+    )
     rating: Mapped[Decimal | None] = mapped_column(Numeric(3, 2), nullable=True)
     review_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     sales_count: Mapped[int | None] = mapped_column(Integer, nullable=True)

@@ -102,7 +102,7 @@
         "label": "Categoria",
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_POSTGRESQL}"
+          "uid": "aftkqp1hx3x8ga"
         },
         "query": {
           "rawQuery": true,
@@ -144,7 +144,7 @@
       "description": "Total de eventos de indicação da automação no período/categorias selecionados.",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 5,
@@ -189,7 +189,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -204,7 +204,7 @@
       "description": "Quantidade de produtos distintos que receberam ao menos uma indicação no período.",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 5,
@@ -249,7 +249,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -264,7 +264,7 @@
       "description": "Média do opportunity_score entre as indicações do período (0–100).",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 5,
@@ -313,7 +313,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -328,7 +328,7 @@
       "description": "Indicações cujo risk_score é HIGH (≥55) ou CRITICAL (≥75) — merecem atenção redobrada na moderação manual.",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 5,
@@ -377,7 +377,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -392,7 +392,7 @@
       "description": "Quantidade de produtos indicados por dia, no período selecionado.",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 8,
@@ -434,7 +434,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "time_series",
           "rawQuery": true,
@@ -449,7 +449,7 @@
       "description": "Quantidade de indicações agrupadas por categoria de produto, no período selecionado.",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 8,
@@ -479,7 +479,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -494,7 +494,7 @@
       "description": "Classificação de risco (LOW/MEDIUM/HIGH/CRITICAL) das indicações, usando os mesmos limiares de configs/scoring_rules.json (risk_score.thresholds).",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "aftkqp1hx3x8ga"
       },
       "gridPos": {
         "h": 8,
@@ -591,7 +591,7 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "aftkqp1hx3x8ga"
           },
           "format": "table",
           "rawQuery": true,
@@ -602,14 +602,14 @@
     {
       "id": 9,
       "type": "table",
-      "title": "Produtos indicados (detalhe)",
-      "description": "Lista detalhada dos produtos indicados pela automação, mais recentes primeiro. Use para decidir o que priorizar na produção de conteúdo.",
+      "title": "🔥 Produtos indicados — copie o link e divulgue!",
+      "description": "Lista dos melhores produtos indicados pela automação. Clique no link de afiliado para copiar e divulgar. Ordenado por Oportunidade (maior = melhor).",
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_POSTGRESQL}"
+        "uid": "ninho-mimo-trends-postgres"
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 24
@@ -617,7 +617,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "auto",
+            "align": "left",
             "cellOptions": {
               "type": "auto"
             }
@@ -625,80 +625,110 @@
         },
         "overrides": [
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Oportunidade"
-            },
+            "matcher": { "id": "byName", "options": "Oportunidade" },
             "properties": [
               {
                 "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-background",
-                  "mode": "gradient"
-                }
+                "value": { "type": "color-background", "mode": "gradient" }
               },
               {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
                   "steps": [
-                    {
-                      "color": "red",
-                      "value": null
-                    },
-                    {
-                      "color": "orange",
-                      "value": 40
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 55
-                    },
-                    {
-                      "color": "green",
-                      "value": 70
-                    }
+                    { "color": "red", "value": null },
+                    { "color": "orange", "value": 40 },
+                    { "color": "yellow", "value": 55 },
+                    { "color": "green", "value": 70 }
                   ]
                 }
+              },
+              { "id": "unit", "value": "short" },
+              { "id": "decimals", "value": 1 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Risco" },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": { "type": "color-background", "mode": "gradient" }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": null },
+                    { "color": "yellow", "value": 30 },
+                    { "color": "orange", "value": 55 },
+                    { "color": "red", "value": 75 }
+                  ]
+                }
+              },
+              { "id": "decimals", "value": 1 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Comissão %" },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": { "type": "color-background", "mode": "gradient" }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "red", "value": null },
+                    { "color": "yellow", "value": 5 },
+                    { "color": "green", "value": 10 }
+                  ]
+                }
+              },
+              { "id": "unit", "value": "percent" },
+              { "id": "decimals", "value": 1 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Preço (R$)" },
+            "properties": [
+              { "id": "unit", "value": "currencyBRL" },
+              { "id": "decimals", "value": 2 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Link Afiliado" },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": { "type": "auto" }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Abrir produto na Shopee",
+                    "url": "${__value.text}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Risco"
-            },
+            "matcher": { "id": "byName", "options": "Imagem" },
             "properties": [
               {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-background",
-                  "mode": "gradient"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 30
-                    },
-                    {
-                      "color": "orange",
-                      "value": 55
-                    },
-                    {
-                      "color": "red",
-                      "value": 75
-                    }
-                  ]
-                }
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Ver imagem do produto",
+                    "url": "${__value.text}",
+                    "targetBlank": true
+                  }
+                ]
               }
             ]
           }
@@ -708,7 +738,7 @@
         "showHeader": true,
         "sortBy": [
           {
-            "displayName": "Data",
+            "displayName": "Oportunidade",
             "desc": true
           }
         ]
@@ -718,11 +748,11 @@
           "refId": "A",
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_POSTGRESQL}"
+            "uid": "ninho-mimo-trends-postgres"
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT pi.indicated_at AS \"Data\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.risk_score AS \"Risco\", pi.trend_status AS \"Tendência\", p.moderation_status AS \"Status\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) ORDER BY pi.indicated_at DESC LIMIT 200"
+          "rawSql": "SELECT pi.indicated_at AS \"Data\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.risk_score AS \"Risco\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço (R$)\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", ps.affiliate_url AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 200"
         }
       ]
     }

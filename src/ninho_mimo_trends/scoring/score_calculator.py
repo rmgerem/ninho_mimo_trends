@@ -52,6 +52,7 @@ def calculate_product_score(
     has_available_source: bool,
     min_price: Decimal | None,
     max_price: Decimal | None,
+    average_commission: Decimal | None,
     scoring_config: dict[str, Any],
 ) -> ProductScoringResult:
     """Calcula Trend/Social/Risk/Opportunity Score para um produto.
@@ -81,6 +82,7 @@ def calculate_product_score(
         has_available_source=has_available_source,
         min_price=min_price,
         max_price=max_price,
+        average_commission=average_commission,
     )
     opportunity_score, opportunity_details = calculate_opportunity_score(
         opportunity_inputs, config=scoring_config["opportunity_score"]

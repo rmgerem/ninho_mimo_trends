@@ -1,9 +1,9 @@
 """Calculo do Opportunity Score e orquestracao geral do sistema de pontuacao.
 
 O Opportunity Score combina Trend Score, Social Score, qualidade das
-avaliacoes, diversidade de fontes, disponibilidade e faixa de preco,
-penalizado pelo Risk Score. Todos os pesos vem de
-``configs/scoring_rules.json`` (secao ``opportunity_score``).
+avaliacoes, diversidade de fontes, disponibilidade, faixa de preco e
+taxa de comissao (quando disponivel), penalizado pelo Risk Score. Todos
+os pesos vem de ``configs/scoring_rules.json`` (secao ``opportunity_score``).
 
 Formula (pesos configuraveis, soma dos pesos positivos = 1.0)::
 
@@ -14,6 +14,7 @@ Formula (pesos configuraveis, soma dos pesos positivos = 1.0)::
         + w_source_diversity * source_diversity_score
         + w_availability * availability_score
         + w_price_range_fit * price_range_fit_score
+        + w_commission * commission_score
     ) - risk_penalty[risk_level]
 
     opportunity_score = clip(opportunity_score, 0, 100)
@@ -46,6 +47,7 @@ class OpportunityInputs:
     has_available_source: bool
     min_price: Decimal | None
     max_price: Decimal | None
+    average_commission: Decimal | None = None
 
 
 def _clip(value: float, minimum: float = 0.0, maximum: float = 100.0) -> float:
@@ -88,6 +90,24 @@ def _price_range_fit_score(
     return decay
 
 
+def _commission_score(average_commission: Decimal | None, config: dict[str, float]) -> float:
+    """Converte taxa de comissao media em score 0-100.
+
+    Comissao nula retorna score neutro (50). Acima do ``high_threshold`` retorna
+    100; abaixo do ``low_threshold`` retorna 0. Entre os dois, interpolacao linear.
+    """
+    if average_commission is None:
+        return 50.0
+    pct = float(average_commission)
+    low = config.get("low_threshold", 2.0)
+    high = config.get("high_threshold", 15.0)
+    if pct >= high:
+        return 100.0
+    if pct <= low:
+        return 0.0
+    return _clip((pct - low) / (high - low) * 100.0)
+
+
 def calculate_opportunity_score(
     inputs: OpportunityInputs, *, config: dict[str, Any]
 ) -> tuple[Decimal, dict[str, Any]]:
@@ -95,6 +115,7 @@ def calculate_opportunity_score(
     weights = config["weights"]
     risk_penalty_table = config["risk_penalty"]
     price_range_config = config["price_range_fit"]
+    commission_config = config.get("commission", {"low_threshold": 2.0, "high_threshold": 15.0})
 
     trend_component = (
         float(inputs.trend_score)
@@ -105,6 +126,7 @@ def calculate_opportunity_score(
     source_diversity_score = _source_diversity_score(inputs.sources_count)
     availability_score = _availability_score(inputs.has_available_source)
     price_fit_score = _price_range_fit_score(inputs.min_price, inputs.max_price, price_range_config)
+    commission_score = _commission_score(inputs.average_commission, commission_config)
 
     raw_score = (
         weights["trend_score"] * trend_component
@@ -113,6 +135,7 @@ def calculate_opportunity_score(
         + weights["source_diversity"] * source_diversity_score
         + weights["availability"] * availability_score
         + weights["price_range_fit"] * price_fit_score
+        + weights.get("commission", 0.0) * commission_score
     )
 
     risk_penalty = risk_penalty_table[inputs.risk_level.value.lower()]
@@ -125,6 +148,8 @@ def calculate_opportunity_score(
         "source_diversity_score": round(source_diversity_score, 2),
         "availability_score": round(availability_score, 2),
         "price_range_fit_score": round(price_fit_score, 2),
+        "commission_score": round(commission_score, 2),
+        "average_commission_pct": round(float(inputs.average_commission), 2) if inputs.average_commission else None,
         "risk_penalty": risk_penalty,
         "raw_score_before_penalty": round(raw_score, 2),
     }

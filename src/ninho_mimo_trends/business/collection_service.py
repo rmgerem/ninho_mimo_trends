@@ -224,6 +224,7 @@ class CollectionService:
             "currency": collected.currency,
             "current_price": collected.current_price,
             "original_price": collected.original_price,
+            "commission_rate": collected.commission_rate,
             "rating": collected.rating,
             "review_count": collected.review_count,
             "sales_count": collected.sales_count,

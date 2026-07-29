@@ -28,6 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_seed_parser(subparsers)
     _add_collect_parser(subparsers)
     _add_products_parser(subparsers)
+    _add_scheduler_parser(subparsers)
 
     return parser
 
@@ -124,6 +125,23 @@ def _add_common_filters(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--source", default=None, help="Filtra por codigo de fonte.")
     parser.add_argument("--min-opportunity", type=float, default=None, dest="min_opportunity")
     parser.add_argument("--max-risk", type=float, default=None, dest="max_risk")
+
+
+def _add_scheduler_parser(subparsers: argparse._SubParsersAction) -> None:
+    scheduler_parser = subparsers.add_parser(
+        "scheduler",
+        help="Agendador automatico de coletas (para producao/Docker).",
+    )
+    scheduler_subparsers = scheduler_parser.add_subparsers(dest="scheduler_command", required=True)
+
+    scheduler_subparsers.add_parser(
+        "start",
+        help="Inicia o scheduler em loop continuo. Bloqueia ate SIGTERM/SIGINT (ideal para Docker).",
+    )
+    scheduler_subparsers.add_parser(
+        "run-once",
+        help="Executa todas as fontes/categorias devidas uma unica vez e sai (ideal para cron do SO).",
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

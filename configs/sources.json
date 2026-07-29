@@ -9,7 +9,13 @@
       "is_active": true,
       "requires_authentication": false,
       "collection_interval_minutes": 60,
-      "terms_url": null
+      "terms_url": null,
+      "categories_to_collect": [
+        "criancas-brinquedos",
+        "bebes-desenvolvimento",
+        "gestantes-conforto",
+        "maes-amamentacao"
+      ]
     },
     {
       "code": "public_open_data",
@@ -20,7 +26,8 @@
       "is_active": false,
       "requires_authentication": false,
       "collection_interval_minutes": 180,
-      "terms_url": null
+      "terms_url": null,
+      "categories_to_collect": []
     },
     {
       "code": "shopee_affiliate",
@@ -31,7 +38,19 @@
       "is_active": true,
       "requires_authentication": true,
       "collection_interval_minutes": 180,
-      "terms_url": "https://affiliate.shopee.com.br/open_api"
+      "terms_url": "https://affiliate.shopee.com.br/open_api",
+      "categories_to_collect": [
+        "criancas-brinquedos",
+        "criancas-educacao",
+        "criancas-atividades",
+        "bebes-desenvolvimento",
+        "bebes-higiene",
+        "bebes-alimentacao",
+        "maes-amamentacao",
+        "maes-autocuidado",
+        "gestantes-conforto",
+        "gestantes-organizacao"
+      ]
     }
   ]
 }

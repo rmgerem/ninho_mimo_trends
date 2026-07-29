@@ -19,19 +19,21 @@ logger = logging.getLogger(__name__)
 
 def _aggregate_source_metrics(
     sources: list[ProductSource],
-) -> tuple[Decimal | None, int | None, bool, Decimal | None, Decimal | None]:
+) -> tuple[Decimal | None, int | None, bool, Decimal | None, Decimal | None, Decimal | None]:
     """Agrega metricas das varias ocorrencias de um produto em fontes distintas."""
     ratings = [s.rating for s in sources if s.rating is not None]
     review_counts = [s.review_count for s in sources if s.review_count is not None]
     prices = [s.current_price for s in sources if s.current_price is not None]
+    commissions = [s.commission_rate for s in sources if s.commission_rate is not None]
 
     average_rating = sum(ratings) / len(ratings) if ratings else None
     total_reviews = sum(review_counts) if review_counts else None
     has_available_source = any(s.availability.value == "AVAILABLE" for s in sources)
     min_price = min(prices) if prices else None
     max_price = max(prices) if prices else None
+    average_commission = sum(commissions) / len(commissions) if commissions else None
 
-    return average_rating, total_reviews, has_available_source, min_price, max_price
+    return average_rating, total_reviews, has_available_source, min_price, max_price, average_commission
 
 
 class ScoringService:
@@ -46,7 +48,7 @@ class ScoringService:
         history_points = self._trend_service.get_history_points(uow, product.id)
         sources_count = uow.products.count_sources_for_product(product.id)
 
-        average_rating, total_reviews, has_available_source, min_price, max_price = (
+        average_rating, total_reviews, has_available_source, min_price, max_price, average_commission = (
             _aggregate_source_metrics(product.sources)
         )
 
@@ -63,6 +65,7 @@ class ScoringService:
             has_available_source=has_available_source,
             min_price=min_price,
             max_price=max_price,
+            average_commission=average_commission,
             scoring_config=scoring_config,
         )
 

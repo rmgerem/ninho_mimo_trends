@@ -1,4 +1,10 @@
 # Byte-compiled / optimized / DLL files
+# ---- Docker / Deploy (credenciais reais — NUNCA comitar) ----
+.env
+.env.docker.local
+docker-compose.override.yml
+
+
 __pycache__/
 *.py[codz]
 *$py.class

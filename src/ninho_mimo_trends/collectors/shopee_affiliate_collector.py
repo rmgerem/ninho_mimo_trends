@@ -171,6 +171,7 @@ class ShopeeAffiliateCollector(BaseCollector):
             availability=Availability.AVAILABLE,
             collected_at=now_utc(),
             affiliate_url=raw_item.get("offerLink"),
+            commission_rate=to_decimal(raw_item.get("commissionRate")),
             raw_payload=raw_item,
         )
 

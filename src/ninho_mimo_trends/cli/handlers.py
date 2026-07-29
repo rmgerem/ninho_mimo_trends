@@ -14,6 +14,7 @@ from ninho_mimo_trends.cli.commands.export_products import run_export_products
 from ninho_mimo_trends.cli.commands.list_products import run_list_products
 from ninho_mimo_trends.cli.commands.rank_products import run_rank_products
 from ninho_mimo_trends.cli.commands.reject_product import run_reject_product
+from ninho_mimo_trends.cli.commands.scheduler import run_scheduler_once, run_scheduler_start
 from ninho_mimo_trends.cli.commands.seed import run_seed
 from ninho_mimo_trends.cli.commands.show_product import run_show_product
 from ninho_mimo_trends.exceptions import (
@@ -23,6 +24,7 @@ from ninho_mimo_trends.exceptions import (
     ExportError,
     ProductValidationError,
 )
+from ninho_mimo_trends.configuration.settings import Settings
 from ninho_mimo_trends.logging_config.logger import configure_logging
 from ninho_mimo_trends.models.product import Product
 
@@ -36,7 +38,8 @@ def dispatch(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
         logging.getLogger().setLevel(args.log_level)
 
     try:
-        return _route(args)
+        settings = Settings()
+        return _route(args, settings)
     except ConfigurationError as exc:
         print(f"Erro de configuracao: {exc}", file=sys.stderr)
         return exit_codes.CONFIGURATION_ERROR
@@ -58,7 +61,7 @@ def dispatch(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
         return exit_codes.UNEXPECTED_ERROR
 
 
-def _route(args: argparse.Namespace) -> int:
+def _route(args: argparse.Namespace, settings: Settings) -> int:
     if args.command == "database":
         return _handle_database(args)
     if args.command == "seed":
@@ -67,6 +70,8 @@ def _route(args: argparse.Namespace) -> int:
         return _handle_collect(args)
     if args.command == "products":
         return _handle_products(args)
+    if args.command == "scheduler":
+        return _handle_scheduler(args, settings)
     raise ProductValidationError(f"Comando desconhecido: {args.command}")
 
 
@@ -165,6 +170,19 @@ def _handle_products(args: argparse.Namespace) -> int:
         return exit_codes.SUCCESS
 
     raise ProductValidationError(f"Subcomando de products desconhecido: {args.products_command}")
+
+
+def _handle_scheduler(args: argparse.Namespace, settings: Settings) -> int:
+    if args.scheduler_command == "start":
+        print("Iniciando scheduler em modo continuo. Pressione Ctrl+C para encerrar.")
+        run_scheduler_start(settings)
+        return exit_codes.SUCCESS
+    if args.scheduler_command == "run-once":
+        print("Executando todas as fontes/categorias devidas uma unica vez...")
+        run_scheduler_once(settings)
+        print("Execucao concluida.")
+        return exit_codes.SUCCESS
+    raise ProductValidationError(f"Subcomando de scheduler desconhecido: {args.scheduler_command}")
 
 
 def _print_products_table(products: list[Product]) -> None:
