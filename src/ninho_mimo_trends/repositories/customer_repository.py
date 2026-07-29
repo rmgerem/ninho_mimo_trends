@@ -18,3 +18,18 @@ class CustomerRepository:
 
     def get_by_grafana_username(self, username: str) -> Customer | None:
         return self.session.scalar(select(Customer).where(Customer.grafana_username == username))
+
+    def get_or_create_by_grafana_username(
+        self, username: str, *, defaults: dict
+    ) -> tuple[Customer, bool]:
+        customer = self.get_by_grafana_username(username)
+        if customer is not None:
+            for key, value in defaults.items():
+                setattr(customer, key, value)
+            self.session.flush()
+            return customer, False
+
+        customer = Customer(grafana_username=username, **defaults)
+        self.session.add(customer)
+        self.session.flush()
+        return customer, True

@@ -262,7 +262,7 @@
             "matcher": { "id": "byName", "options": "Link Afiliado" },
             "properties": [
               { "id": "custom.cellOptions", "value": { "type": "auto" } },
-              { "id": "links", "value": [ { "title": "Abrir Link Afiliado", "url": "${__data.fields.AffiliateURL}", "targetBlank": true } ] }
+              { "id": "links", "value": [ { "title": "Gerar Link Afiliado", "url": "http://localhost:8000/go?product_id=${__data.fields.ID}&user=${__user.login}", "targetBlank": true } ] }
             ]
           },
           {

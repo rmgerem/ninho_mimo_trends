@@ -77,7 +77,8 @@ um banco de desenvolvimento/producao) e trunca as tabelas entre os testes.
 Documentacao detalhada em [docs/](docs): [arquitetura](docs/architecture.md),
 [banco de dados](docs/database.md), [coletores](docs/collectors.md),
 [CLI](docs/cli.md), [pontuacao](docs/scoring.md), [dashboard Grafana](docs/grafana.md)
-e [roadmap](docs/roadmap.md).
+e [roadmap](docs/roadmap.md). Para operação diária, consulte o
+[guia de Docker, extração e cadastro de usuários](docs/operacao-docker.md).
 
 ## Site institucional (protótipo)
 

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from ninho_mimo_trends.configuration.json_loader import load_json_config
+from ninho_mimo_trends.configuration.settings import get_settings
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
+from ninho_mimo_trends.enums.customer_role import CustomerRole
 from ninho_mimo_trends.enums.source_status import SourceType
 
 
@@ -57,6 +59,17 @@ def run_seed() -> dict[str, int]:
                 },
             )
             created["sources"] += int(source_created)
+
+        settings = get_settings()
+        if settings.shopee_affiliate_app_id and settings.shopee_affiliate_secret:
+            uow.customers.get_or_create_by_grafana_username(
+                settings.gf_admin_user,
+                defaults={
+                    "shopee_app_id": settings.shopee_affiliate_app_id,
+                    "shopee_app_secret": settings.shopee_affiliate_secret,
+                    "role": CustomerRole.ADMIN,
+                },
+            )
 
         uow.commit()
 

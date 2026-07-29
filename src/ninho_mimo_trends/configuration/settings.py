@@ -47,6 +47,8 @@ class Settings(BaseSettings):
     shopee_affiliate_app_id: str | None = None
     shopee_affiliate_secret: str | None = None
 
+    gf_admin_user: str = "admin"
+
     # ---- Observabilidade ----
     prometheus_pushgateway_url: str | None = None
     """URL do Prometheus Pushgateway. Ex.: http://pushgateway:9091
