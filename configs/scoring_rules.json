@@ -110,7 +110,7 @@
     }
   },
   "indication": {
-    "opportunity_threshold": 70,
+    "opportunity_threshold": 40,
     "description": "Um registro de indicacao (tb_product_indications) e criado sempre que o opportunity_score recalculado for maior ou igual a este limiar."
   }
 }

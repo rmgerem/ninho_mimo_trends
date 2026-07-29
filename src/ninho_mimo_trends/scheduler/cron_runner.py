@@ -139,6 +139,7 @@ class CronRunner:
                     source_code=schedule.source_code,
                     settings=self._settings,
                     category_slug=schedule.category,
+                    limit=100,
                     execution_id=execution_id,
                 )
                 uow.commit()
