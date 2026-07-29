@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ninho & Mimo — curadoria de produtos e acessórios para gestantes, bebês e crianças de até 10 anos." />
+  <title>Ninho & Mimo | Carinho em cada fase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo-ninho-mimo.png">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="announcement">
+    <span>✨ Curadoria com carinho, segurança e escolhas inteligentes</span>
+    <a href="#newsletter">Receba os achadinhos da semana</a>
+  </div>
+
+  <header class="site-header" id="inicio">
+    <div class="container nav-wrap">
+      <a class="brand" href="#inicio" aria-label="Ninho & Mimo - início">
+        <img class="brand-logo" src="assets/logo-ninho-mimo.png" alt="Ninho & Mimo">
+        <span class="brand-copy"><strong><span class="brand-ninho">Ninho</span> <em>&</em> <span class="brand-mimo">Mimo</span></strong><small>Carinho em cada fase.</small></span>
+      </a>
+
+      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#categorias">Categorias</a>
+        <a href="#destaques">Destaques</a>
+        <a href="#como-funciona">Como escolhemos</a>
+        <a href="#conteudo">Conteúdos</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-button" id="searchButton" aria-label="Pesquisar">⌕</button>
+        <button class="icon-button" id="favoritesButton" aria-label="Favoritos">♡ <span id="favoriteCount">0</span></button>
+        <a class="button button-small" href="#destaques">Ver achadinhos</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section-space">
+      <div class="hero-blob hero-blob-one"></div>
+      <div class="hero-blob hero-blob-two"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">PARA GESTANTES, BEBÊS E CRIANÇAS</span>
+          <h1>Escolhas que acolhem.<br><span>Descobertas que encantam.</span></h1>
+          <p>A Ninho & Mimo encontra produtos úteis, desejados e bem avaliados para acompanhar sua família em cada fase — da gestação aos 10 anos.</p>
+          <div class="hero-actions">
+            <a class="button" href="#destaques">Explorar achadinhos</a>
+            <a class="text-link" href="#como-funciona">Conheça nossa curadoria <span>→</span></a>
+          </div>
+          <div class="trust-row">
+            <div><strong>+1.200</strong><span>produtos analisados</span></div>
+            <div><strong>4,8/5</strong><span>avaliação média</span></div>
+            <div><strong>100%</strong><span>curadoria humana</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="visual-card main-visual">
+            <div class="sun"></div>
+            <div class="rainbow rainbow-one"></div>
+            <div class="rainbow rainbow-two"></div>
+            <div class="family-illustration">
+              <div class="adult-head"></div>
+              <div class="adult-body"></div>
+              <div class="child-head"></div>
+              <div class="child-body"></div>
+              <div class="heart">♥</div>
+            </div>
+            <div class="floating-card card-top">
+              <span>♡</span>
+              <div><small>Escolha inteligente</small><strong>Produtos bem avaliados</strong></div>
+            </div>
+            <div class="floating-card card-bottom">
+              <span>★</span>
+              <div><small>Em alta agora</small><strong>Achadinhos da semana</strong></div>
+            </div>
+          </div>
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-strip" id="categorias">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <span class="eyebrow">ENCONTRE POR FASE</span>
+          <h2>Um universo de cuidado para toda a infância</h2>
+          <p>Navegue por categorias pensadas para tornar a rotina mais leve, prática e especial.</p>
+        </div>
+        <div class="category-grid">
+          <button class="category-card reveal" data-filter="gestantes"><span class="category-icon peach">◜◝</span><strong>Gestantes</strong><small>Conforto e bem-estar</small></button>
+          <button class="category-card reveal" data-filter="bebes"><span class="category-icon sage">☁</span><strong>Bebês</strong><small>Do nascimento aos primeiros passos</small></button>
+          <button class="category-card reveal" data-filter="alimentacao"><span class="category-icon blue">◡</span><strong>Alimentação</strong><small>Praticidade em cada refeição</small></button>
+          <button class="category-card reveal" data-filter="educativos"><span class="category-icon yellow">✦</span><strong>Educativos</strong><small>Brincar, aprender e descobrir</small></button>
+          <button class="category-card reveal" data-filter="organizacao"><span class="category-icon pink">▦</span><strong>Organização</strong><small>Rotinas mais leves</small></button>
+          <button class="category-card reveal" data-filter="seguranca"><span class="category-icon lavender">♢</span><strong>Segurança</strong><small>Proteção para explorar o mundo</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured section-space" id="destaques">
+      <div class="container">
+        <div class="section-heading split reveal">
+          <div><span class="eyebrow">ACHADINHOS EM DESTAQUE</span><h2>Produtos que estão conquistando famílias</h2></div>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-filter="todos">Todos</button>
+            <button class="tab" data-filter="gestantes">Gestantes</button>
+            <button class="tab" data-filter="bebes">Bebês</button>
+            <button class="tab" data-filter="educativos">Crianças</button>
+          </div>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+          <article class="product-card reveal" data-category="gestantes">
+            <div class="product-media media-peach"><span class="product-badge">Mais desejado</span><button class="favorite" aria-label="Favoritar">♡</button><div class="product-illustration pillow">☾</div></div>
+            <div class="product-info"><span class="product-category">GESTANTES • CONFORTO</span><h3>Almofada ergonômica para gestante</h3><div class="rating">★★★★★ <span>4,9 (2.341)</span></div><div class="price-line"><strong>R$ 129,90</strong><span>até 4x sem juros</span></div><button class="product-button">Ver detalhes <span>→</span></button></div>
+          </article>
+
+          <article class="product-card reveal" data-category="bebes alimentacao">
+            <div class="product-media media-sage"><span class="product-badge">Em alta</span><button class="favorite" aria-label="Favoritar">♡</button><div class="product-illustration bib">◡</div></div>
+            <div class="product-info"><span class="product-category">BEBÊS • ALIMENTAÇÃO</span><h3>Kit alimentação de silicone 6 peças</h3><div class="rating">★★★★★ <span>4,8 (1.876)</span></div><div class="price-line"><strong>R$ 89,90</strong><span>até 3x sem juros</span></div><button class="product-button">Ver detalhes <span>→</span></button></div>
+          </article>
+
+          <article class="product-card reveal" data-category="educativos">
+            <div class="product-media media-blue"><span class="product-badge">Educativo</span><button class="favorite" aria-label="Favoritar">♡</button><div class="product-illustration blocks">▣</div></div>
+            <div class="product-info"><span class="product-category">CRIANÇAS • EDUCATIVOS</span><h3>Painel sensorial Montessori portátil</h3><div class="rating">★★★★★ <span>4,9 (948)</span></div><div class="price-line"><strong>R$ 74,90</strong><span>até 2x sem juros</span></div><button class="product-button">Ver detalhes <span>→</span></button></div>
+          </article>
+
+          <article class="product-card reveal" data-category="organizacao bebes">
+            <div class="product-media media-yellow"><span class="product-badge">Praticidade</span><button class="favorite" aria-label="Favoritar">♡</button><div class="product-illustration organizer">▤</div></div>
+            <div class="product-info"><span class="product-category">BEBÊS • ORGANIZAÇÃO</span><h3>Organizador multifuncional para carrinho</h3><div class="rating">★★★★★ <span>4,7 (1.103)</span></div><div class="price-line"><strong>R$ 59,90</strong><span>até 2x sem juros</span></div><button class="product-button">Ver detalhes <span>→</span></button></div>
+          </article>
+        </div>
+
+        <div class="center-action reveal"><button class="button button-light" id="loadMore">Ver mais achadinhos</button></div>
+      </div>
+    </section>
+
+    <section class="promise section-space" id="como-funciona">
+      <div class="container promise-grid">
+        <div class="promise-visual reveal">
+          <div class="logo-frame"><img src="assets/logo-ninho-mimo.png" alt="Logo Ninho & Mimo" class="promise-logo"></div>
+          <div class="seal"><strong>✓</strong><span>Curadoria<br>responsável</span></div>
+        </div>
+        <div class="promise-copy reveal">
+          <span class="eyebrow">NOSSA PROMESSA</span>
+          <h2>Não mostramos apenas produtos.<br>Mostramos boas escolhas.</h2>
+          <p>Cada item passa por uma análise de utilidade, avaliações, tendência, reputação e adequação à faixa etária. Para produtos sensíveis, destacamos os cuidados que precisam de revisão.</p>
+          <div class="promise-list">
+            <div><span>01</span><div><strong>Dados e tendências</strong><p>Observamos produtos em crescimento em fontes nacionais e internacionais.</p></div></div>
+            <div><span>02</span><div><strong>Segurança em primeiro lugar</strong><p>Itens infantis sensíveis recebem alertas e revisão especial.</p></div></div>
+            <div><span>03</span><div><strong>Curadoria feita para a vida real</strong><p>Priorizamos utilidade, praticidade, qualidade e bom custo-benefício.</p></div></div>
+          </div>
+          <a class="text-link" href="#conteudo">Entenda nossos critérios <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="age-guide section-space">
+      <div class="container">
+        <div class="age-card reveal">
+          <div class="age-intro"><span class="eyebrow">GUIA POR IDADE</span><h2>Cada fase merece um cuidado diferente</h2><p>Encontre sugestões pensadas para as necessidades de cada etapa.</p></div>
+          <div class="age-steps">
+            <button><span>♡</span><strong>Gestação</strong><small>Preparar e acolher</small></button>
+            <button><span>☁</span><strong>0–12 meses</strong><small>Cuidar e descobrir</small></button>
+            <button><span>✦</span><strong>1–3 anos</strong><small>Explorar e aprender</small></button>
+            <button><span>△</span><strong>4–6 anos</strong><small>Criar e imaginar</small></button>
+            <button><span>☆</span><strong>7–10 anos</strong><small>Crescer e conquistar</small></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section section-space" id="conteudo">
+      <div class="container">
+        <div class="section-heading split reveal"><div><span class="eyebrow">CONTEÚDO QUE AJUDA</span><h2>Informação para escolhas mais tranquilas</h2></div><a class="text-link" href="#newsletter">Ver todos os conteúdos <span>→</span></a></div>
+        <div class="article-grid">
+          <article class="article-card reveal"><div class="article-art art-one"><span>☁</span></div><div><small>GUIA DE COMPRA</small><h3>Como montar um enxoval prático sem comprar o que não precisa</h3><p>Uma lista objetiva para priorizar o que realmente facilita os primeiros meses.</p><a href="#">Ler conteúdo →</a></div></article>
+          <article class="article-card reveal"><div class="article-art art-two"><span>✦</span></div><div><small>DESENVOLVIMENTO</small><h3>Brinquedos que estimulam autonomia em cada faixa etária</h3><p>Escolhas simples que transformam brincadeira em aprendizado.</p><a href="#">Ler conteúdo →</a></div></article>
+          <article class="article-card reveal"><div class="article-art art-three"><span>♡</span></div><div><small>ROTINA REAL</small><h3>7 produtos que ajudam a organizar a rotina com crianças</h3><p>Soluções úteis para ganhar tempo sem deixar o carinho de lado.</p><a href="#">Ler conteúdo →</a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter section-space" id="newsletter">
+      <div class="container">
+        <div class="newsletter-card reveal">
+          <div><span class="eyebrow">ENTRE PARA O NOSSO NINHO</span><h2>Achadinhos, novidades e carinho direto no seu e-mail</h2><p>Receba uma seleção semanal com produtos em alta, guias e conteúdos úteis para cada fase.</p></div>
+          <form id="newsletterForm"><label class="sr-only" for="email">Seu melhor e-mail</label><div class="form-row"><input id="email" type="email" placeholder="Digite seu melhor e-mail" required><button class="button" type="submit">Quero receber</button></div><small>Sem spam. Só coisas que valem a pena.</small><p class="form-message" id="formMessage"></p></form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand"><a class="brand" href="#inicio"><img class="brand-logo" src="assets/logo-ninho-mimo.png" alt="Ninho & Mimo"><span class="brand-copy"><strong><span class="brand-ninho">Ninho</span> <em>&</em> <span class="brand-mimo">Mimo</span></strong><small>Carinho em cada fase.</small></span></a><p>Curadoria de produtos e conteúdos para acompanhar gestantes, bebês e crianças com mais leveza.</p><div class="socials"><a href="#">ig</a><a href="#">tk</a><a href="#">yt</a><a href="#">fb</a></div></div>
+      <div><h4>Descobrir</h4><a href="#categorias">Categorias</a><a href="#destaques">Mais desejados</a><a href="#conteudo">Guias</a><a href="#newsletter">Novidades</a></div>
+      <div><h4>Institucional</h4><a href="#como-funciona">Nossa curadoria</a><a href="#">Sobre a marca</a><a href="#">Fale conosco</a><a href="#">Parcerias</a></div>
+      <div><h4>Transparência</h4><a href="#">Política de privacidade</a><a href="#">Termos de uso</a><a href="#">Aviso de afiliados</a><a href="#">Segurança infantil</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© 2026 Ninho & Mimo. Todos os direitos reservados.</span><span>Feito com carinho para cada fase ♡</span></div>
+  </footer>
+
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true">
+    <div class="search-modal"><button class="close-search" id="closeSearch">×</button><span class="eyebrow">BUSCAR NA NINHO & MIMO</span><h2>O que você procura?</h2><input type="search" id="searchInput" placeholder="Ex.: brinquedo Montessori, gestante, alimentação..."><div class="quick-search"><button>Gestantes</button><button>Bebês</button><button>Organização</button><button>Educativos</button></div></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

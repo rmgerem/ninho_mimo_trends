@@ -57,6 +57,13 @@ visualizar o ranking e o histórico de um produto, como alternativa à
 CLI/planilha exportada — mantendo toda a lógica de negócio em
 `business/` reutilizável por ambas as interfaces.
 
+Já existe um protótipo estático institucional em
+[docs/ninho_mimo_site/](ninho_mimo_site/) (HTML/CSS/JS puro, sem
+build/backend) com a identidade visual da marca aplicada. Ele hoje é
+independente da plataforma Python — a integração real (catálogo vindo do
+PostgreSQL via API, links de afiliado reais, etc.) é o objetivo desta
+fase, conforme descrito no [README do site](ninho_mimo_site/README.md).
+
 ## Fase 6 — Múltiplas fontes simultâneas
 
 Expandir `CollectorRegistry` para orquestrar múltiplas fontes reais em

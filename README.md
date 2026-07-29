@@ -77,3 +77,20 @@ um banco de desenvolvimento/producao) e trunca as tabelas entre os testes.
 Documentacao detalhada em [docs/](docs): [arquitetura](docs/architecture.md),
 [banco de dados](docs/database.md), [coletores](docs/collectors.md),
 [CLI](docs/cli.md), [pontuacao](docs/scoring.md) e [roadmap](docs/roadmap.md).
+
+## Site institucional (protótipo)
+
+Em [docs/ninho_mimo_site/](docs/ninho_mimo_site/) há um protótipo estático
+(HTML/CSS/JS puro, sem build e sem backend) do site institucional da marca,
+já com a identidade visual (logo, cores e tipografia) aplicada. Para rodar
+localmente:
+
+```bash
+cd docs/ninho_mimo_site
+python3 -m http.server 8000
+# acesse http://localhost:8000
+```
+
+Hoje o site é independente da plataforma Python (dados de exemplo apenas).
+A integração com o catálogo real (PostgreSQL/API) é tratada na
+[Fase 5 do roadmap](docs/roadmap.md#fase-5--interface-web-read-only).
