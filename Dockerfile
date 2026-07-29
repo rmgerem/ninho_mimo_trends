@@ -46,6 +46,8 @@ RUN pip install --no-cache-dir -e .
 # Usuario nao-root (boas praticas de seguranca)
 # ----------------------------------------------------------
 RUN useradd --create-home --shell /bin/bash appuser
+RUN chown -R appuser:appuser /app
+
 USER appuser
 
 # ----------------------------------------------------------
