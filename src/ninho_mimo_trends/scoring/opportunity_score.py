@@ -15,6 +15,7 @@ Formula (pesos configuraveis, soma dos pesos positivos = 1.0)::
         + w_availability * availability_score
         + w_price_range_fit * price_range_fit_score
         + w_commission * commission_score
+        + w_sales_strength * sales_strength_score
     ) - risk_penalty[risk_level]
 
     opportunity_score = clip(opportunity_score, 0, 100)
@@ -24,6 +25,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
+from math import log1p
 from typing import Any
 
 from ninho_mimo_trends.enums.risk_level import RiskLevel
@@ -50,6 +52,7 @@ class OpportunityInputs:
     min_price: Decimal | None
     max_price: Decimal | None
     average_commission: Decimal | None = None
+    sales_count: int | None = None
 
 
 def _clip(value: float, minimum: float = 0.0, maximum: float = 100.0) -> float:
@@ -107,12 +110,20 @@ def _commission_score(average_commission: Decimal | None, config: dict[str, floa
         return 50.0
     pct = float(average_commission)
     low = config.get("low_threshold", 2.0)
-    high = config.get("high_threshold", 15.0)
+    high = config.get("high_threshold", 50.0)
     if pct >= high:
         return 100.0
     if pct <= low:
         return 0.0
     return _clip((pct - low) / (high - low) * 100.0)
+
+
+def _sales_strength_score(sales_count: int | None, config: dict[str, float]) -> float:
+    """Normaliza vendas acumuladas em escala logaritmica de 0 a 100."""
+    if sales_count is None or sales_count <= 0:
+        return 0.0
+    reference_sales = max(float(config.get("reference_sales", 1000)), 1.0)
+    return _clip(log1p(sales_count) / log1p(reference_sales) * 100.0)
 
 
 def calculate_opportunity_score(
@@ -125,7 +136,8 @@ def calculate_opportunity_score(
     weights = config["weights"]
     risk_penalty_table = config["risk_penalty"]
     price_range_config = config["price_range_fit"]
-    commission_config = config.get("commission", {"low_threshold": 2.0, "high_threshold": 15.0})
+    commission_config = config.get("commission", {"low_threshold": 2.0, "high_threshold": 50.0})
+    sales_strength_config = config.get("sales_strength", {"reference_sales": 1000})
 
     trend_component = (
         float(inputs.trend_score)
@@ -137,6 +149,7 @@ def calculate_opportunity_score(
     availability_score = _availability_score(inputs.has_available_source)
     price_fit_score = _price_range_fit_score(inputs.min_price, inputs.max_price, price_range_config)
     commission_score = _commission_score(inputs.average_commission, commission_config)
+    sales_strength_score = _sales_strength_score(inputs.sales_count, sales_strength_config)
 
     raw_score = (
         weights["trend_score"] * trend_component
@@ -146,6 +159,7 @@ def calculate_opportunity_score(
         + weights["availability"] * availability_score
         + weights["price_range_fit"] * price_fit_score
         + weights.get("commission", 0.0) * commission_score
+        + weights.get("sales_strength", 0.0) * sales_strength_score
     )
 
     risk_penalty = risk_penalty_table[inputs.risk_level.value.lower()]
@@ -173,6 +187,8 @@ def calculate_opportunity_score(
         "availability_score": round(availability_score, 2),
         "price_range_fit_score": round(price_fit_score, 2),
         "commission_score": round(commission_score, 2),
+        "sales_strength_score": round(sales_strength_score, 2),
+        "sales_count": inputs.sales_count,
         "average_commission_pct": round(float(inputs.average_commission), 2)
         if inputs.average_commission
         else None,

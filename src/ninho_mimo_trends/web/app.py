@@ -7,6 +7,7 @@ import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 
+from ninho_mimo_trends.business.affiliate_offer_service import select_best_affiliate_offer
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.models.product_click import ProductClick
 
@@ -81,8 +82,7 @@ def redirect_to_product(product_id: int, user: str):
         if not product:
             raise HTTPException(status_code=404, detail="Produto nao encontrado.")
 
-        # Usa uma oferta real da Shopee de forma deterministica. A mesma regra do
-        # dashboard prioriza maior comissao e, em seguida, a coleta mais recente.
+        # Usa a mesma oferta comercial exibida no dashboard: vendas x preco x comissao.
         shopee_sources = [
             item
             for item in product.sources
@@ -91,10 +91,9 @@ def redirect_to_product(product_id: int, user: str):
         if not shopee_sources:
             raise HTTPException(status_code=404, detail="Produto nao possui fonte cadastrada.")
 
-        product_source = max(
-            shopee_sources,
-            key=lambda item: (item.commission_rate or 0, item.collected_at),
-        )
+        product_source = select_best_affiliate_offer(shopee_sources)
+        if product_source is None:
+            raise HTTPException(status_code=404, detail="Produto nao possui oferta com comissao.")
         original_url = product_source.original_url
         customer_id = customer.id
 

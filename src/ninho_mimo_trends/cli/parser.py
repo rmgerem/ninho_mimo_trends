@@ -68,7 +68,10 @@ def _add_collect_parser(subparsers: argparse._SubParsersAction) -> None:
     )
     collect_parser.add_argument("--category", default=None, help="Filtra por slug de categoria.")
     collect_parser.add_argument(
-        "--limit", type=int, default=None, help="Limite de itens a coletar."
+        "--limit",
+        type=int,
+        default=None,
+        help="Limite de itens por estrategia de descoberta da fonte.",
     )
     collect_parser.add_argument(
         "--dry-run",
@@ -136,6 +139,21 @@ def _add_products_parser(subparsers: argparse._SubParsersAction) -> None:
     )
     export_parser.add_argument("--max-risk", type=float, default=None, dest="max_risk")
     export_parser.add_argument("--limit", type=int, default=100, help="Numero maximo de produtos.")
+
+    rescore_parser = products_subparsers.add_parser(
+        "rescore", help="Recalcula o Gold Score dos produtos ja armazenados."
+    )
+    rescore_parser.add_argument(
+        "--source", default="shopee_affiliate", help="Fonte dos produtos a recalcular."
+    )
+    rescore_parser.add_argument(
+        "--limit", type=int, default=None, help="Limite opcional de produtos."
+    )
+    rescore_parser.add_argument(
+        "--order-by-opportunity",
+        action="store_true",
+        help="Prioriza os produtos com maior Opportunity Score atual.",
+    )
 
 
 def _add_common_filters(parser: argparse.ArgumentParser) -> None:

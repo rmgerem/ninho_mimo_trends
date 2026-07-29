@@ -53,6 +53,34 @@ class ProductRepository:
         stmt = select(Product).where(Product.category_id == category_id)
         return self._session.execute(stmt).scalars().all()
 
+    def list_product_ids(
+        self,
+        *,
+        source_code: str | None = None,
+        limit: int | None = None,
+        order_by_opportunity: bool = False,
+    ) -> list[int]:
+        """Lista ids distintos para processamentos em lote com baixo uso de memoria."""
+        if order_by_opportunity:
+            latest_score = (
+                select(ProductScore.product_id, ProductScore.opportunity_score)
+                .distinct(ProductScore.product_id)
+                .order_by(ProductScore.product_id, ProductScore.calculated_at.desc())
+                .subquery()
+            )
+            stmt = (
+                select(Product.id)
+                .join(latest_score, latest_score.c.product_id == Product.id)
+                .order_by(latest_score.c.opportunity_score.desc().nulls_last())
+            )
+        else:
+            stmt = select(Product.id).order_by(Product.id)
+        if source_code:
+            stmt = stmt.where(Product.sources.any(ProductSource.source.has(code=source_code)))
+        if limit is not None:
+            stmt = stmt.limit(limit)
+        return list(self._session.execute(stmt).scalars().all())
+
     def list_products(
         self,
         *,
@@ -89,8 +117,10 @@ class ProductRepository:
         if moderation_status:
             stmt = stmt.where(Product.moderation_status == moderation_status)
         if source_code:
-            stmt = stmt.join(Product.sources).join(ProductSource.source).where(
-                ProductSource.source.has(code=source_code)
+            stmt = (
+                stmt.join(Product.sources)
+                .join(ProductSource.source)
+                .where(ProductSource.source.has(code=source_code))
             )
 
         products = self._session.execute(stmt).unique().scalars().all()
@@ -137,7 +167,9 @@ class ProductRepository:
         """Busca (ou cria) o registro de ocorrencia do produto em uma fonte."""
         stmt = select(ProductSource).where(
             ProductSource.source_id == source_id,
-            ProductSource.external_id == external_id if external_id else ProductSource.url_hash == url_hash,
+            ProductSource.external_id == external_id
+            if external_id
+            else ProductSource.url_hash == url_hash,
         )
         existing = self._session.execute(stmt).scalar_one_or_none()
         if existing:

@@ -13,6 +13,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
 
+from ninho_mimo_trends.business.affiliate_offer_service import select_best_affiliate_offer
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.exceptions import ExportError
 from ninho_mimo_trends.models.product import Product
@@ -66,6 +67,8 @@ def _build_export_row(
     review_counts = [s.review_count for s in sources if s.review_count is not None]
     sales_counts = [s.sales_count for s in sources if s.sales_count is not None]
     collected_dates = [s.collected_at for s in sources]
+    best_affiliate_offer = select_best_affiliate_offer(sources)
+    primary_source = best_affiliate_offer or (sources[0] if sources else None)
 
     latest_score = product.scores[-1] if product.scores else None
     risk_level = (
@@ -89,7 +92,13 @@ def _build_export_row(
         currency=sources[0].currency if sources else "BRL",
         average_rating=(sum(ratings) / len(ratings)) if ratings else None,
         review_count=sum(review_counts) if review_counts else None,
-        sales_count=sum(sales_counts) if sales_counts else None,
+        sales_count=(
+            best_affiliate_offer.sales_count
+            if best_affiliate_offer is not None
+            else max(sales_counts)
+            if sales_counts
+            else None
+        ),
         sources_count=len(sources),
         trend_score=latest_score.trend_score if latest_score else None,
         social_score=latest_score.social_score if latest_score else None,
@@ -100,8 +109,8 @@ def _build_export_row(
         else "SEM_HISTORICO_SUFICIENTE",
         risk_level=risk_level.value if risk_level else "-",
         moderation_status=product.moderation_status.value,
-        main_url=sources[0].original_url if sources else None,
-        affiliate_url=next((s.affiliate_url for s in sources if s.affiliate_url), None),
+        main_url=primary_source.original_url if primary_source else None,
+        affiliate_url=primary_source.affiliate_url if primary_source else None,
         last_collected_at=max(collected_dates) if collected_dates else None,
         google_trend_status=external_signals.get("google_trend_status"),
         google_trend_score=Decimal(str(external_signals.get("google_trend_score")))

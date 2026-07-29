@@ -613,3 +613,51 @@ coleta. Falhas são armazenadas por uma hora antes de nova tentativa. Resultados
 válidos respeitam o cache configurado. O Google Trends consultado por
 `pytrends` é uma interface não oficial e pode responder `429`; em produção,
 prefira a API oficial quando sua conta tiver acesso.
+
+## 13. Critério comercial do Gold Score
+
+A Shopee Affiliate Open API retorna a comissão como fração decimal. Por
+exemplo, `0.18` na API significa `18%`, e não `0,18%`. O coletor converte essa
+fração para percentual antes de gravar `commission_rate` no banco.
+
+Para evitar que a relevância textual esconda boas ofertas, cada categoria é
+consultada por dois funis oficiais da API:
+
+- `ITEM_SOLD_DESC`: produtos com mais vendas primeiro;
+- `COMMISSION_DESC`: produtos com maior comissão primeiro.
+
+Os resultados são unidos e deduplicados pelo `itemId` da Shopee. No scheduler,
+o limite de 100 é aplicado a cada funil, portanto podem ser encontrados até
+200 itens distintos por categoria antes da deduplicação canônica.
+
+O Gold Score versão 1.2 usa estes pesos:
+
+| Sinal | Peso |
+|---|---:|
+| Crescimento, velocidade e aceleração | 25% |
+| Potencial de conteúdo/divulgação | 20% |
+| Comissão percentual | 15% |
+| Força de vendas acumuladas | 15% |
+| Qualidade das avaliações | 10% |
+| Diversidade de fontes | 5% |
+| Disponibilidade | 5% |
+| Faixa de preço | 5% |
+
+As vendas acumuladas usam escala logarítmica: diferenças entre 10, 100 e 1.000
+vendas são relevantes sem permitir que um produto antigo com milhões de vendas
+domine sozinho o ranking. Comissão abaixo de 2% recebe zero nesse componente;
+50% ou mais recebe a pontuação máxima. Entre esses valores a pontuação
+continua proporcional, de modo que 33% valha mais que 18%. O risco continua aplicando
+uma penalidade depois da soma.
+
+Recalcular os produtos já armazenados depois de mudar pesos ou regras:
+
+```powershell
+docker compose --env-file .env.docker.local exec scheduler ninho-mimo-trends products rescore --source shopee_affiliate
+```
+
+Para recalcular apenas os 500 líderes atuais durante uma manutenção rápida:
+
+```powershell
+docker compose --env-file .env.docker.local exec scheduler ninho-mimo-trends products rescore --source shopee_affiliate --order-by-opportunity --limit 500
+```

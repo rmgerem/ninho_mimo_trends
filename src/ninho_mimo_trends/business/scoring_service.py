@@ -6,6 +6,7 @@ import logging
 from dataclasses import replace
 from decimal import Decimal
 
+from ninho_mimo_trends.business.affiliate_offer_service import select_best_affiliate_offer
 from ninho_mimo_trends.business.trend_service import TrendService
 from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
@@ -21,19 +22,37 @@ logger = logging.getLogger(__name__)
 
 def _aggregate_source_metrics(
     sources: list[ProductSource],
-) -> tuple[Decimal | None, int | None, bool, Decimal | None, Decimal | None, Decimal | None]:
+) -> tuple[
+    Decimal | None,
+    int | None,
+    bool,
+    Decimal | None,
+    Decimal | None,
+    Decimal | None,
+    int | None,
+]:
     """Agrega metricas das varias ocorrencias de um produto em fontes distintas."""
     ratings = [s.rating for s in sources if s.rating is not None]
     review_counts = [s.review_count for s in sources if s.review_count is not None]
     prices = [s.current_price for s in sources if s.current_price is not None]
-    commissions = [s.commission_rate for s in sources if s.commission_rate is not None]
+    sales_counts = [s.sales_count for s in sources if s.sales_count is not None]
 
     average_rating = sum(ratings) / len(ratings) if ratings else None
     total_reviews = sum(review_counts) if review_counts else None
     has_available_source = any(s.availability.value == "AVAILABLE" for s in sources)
     min_price = min(prices) if prices else None
     max_price = max(prices) if prices else None
-    average_commission = sum(commissions) / len(commissions) if commissions else None
+    best_affiliate_offer = select_best_affiliate_offer(sources)
+    selected_commission = (
+        best_affiliate_offer.commission_rate if best_affiliate_offer is not None else None
+    )
+    selected_sales_count = (
+        best_affiliate_offer.sales_count
+        if best_affiliate_offer is not None
+        else max(sales_counts)
+        if sales_counts
+        else None
+    )
 
     return (
         average_rating,
@@ -41,7 +60,8 @@ def _aggregate_source_metrics(
         has_available_source,
         min_price,
         max_price,
-        average_commission,
+        selected_commission,
+        selected_sales_count,
     )
 
 
@@ -64,6 +84,7 @@ class ScoringService:
             min_price,
             max_price,
             average_commission,
+            maximum_sales_count,
         ) = _aggregate_source_metrics(product.sources)
 
         product_text = f"{product.normalized_name} {product.description or ''}"
@@ -95,6 +116,7 @@ class ScoringService:
             min_price=min_price,
             max_price=max_price,
             average_commission=average_commission,
+            sales_count=maximum_sales_count,
             scoring_config=scoring_config,
             external_signals=external_signals,
         )

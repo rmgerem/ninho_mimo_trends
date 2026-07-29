@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "trend_score": {
     "minimum_history_points": 3,
     "acceleration_bonus_max": 10,
@@ -86,18 +86,23 @@
   },
   "opportunity_score": {
     "weights": {
-      "trend_score": 0.35,
-      "social_score": 0.25,
-      "review_quality": 0.15,
-      "source_diversity": 0.10,
+      "trend_score": 0.25,
+      "social_score": 0.20,
+      "review_quality": 0.10,
+      "source_diversity": 0.05,
       "availability": 0.05,
       "price_range_fit": 0.05,
-      "commission": 0.05
+      "commission": 0.15,
+      "sales_strength": 0.15
     },
     "commission": {
       "low_threshold": 2.0,
-      "high_threshold": 15.0,
+      "high_threshold": 50.0,
       "description": "Comissao abaixo de low_threshold recebe score 0; acima de high_threshold recebe score 100. Fonte sem comissao recebe score neutro de 50."
+    },
+    "sales_strength": {
+      "reference_sales": 1000,
+      "description": "Vendas acumuladas em escala logaritmica. Produtos com 1000 ou mais vendas recebem score maximo."
     },
     "risk_penalty": {
       "low": 0,

@@ -19,6 +19,7 @@ from ninho_mimo_trends.cli.commands.export_products import run_export_products
 from ninho_mimo_trends.cli.commands.list_products import run_list_products
 from ninho_mimo_trends.cli.commands.rank_products import run_rank_products
 from ninho_mimo_trends.cli.commands.reject_product import run_reject_product
+from ninho_mimo_trends.cli.commands.rescore_products import run_rescore_products
 from ninho_mimo_trends.cli.commands.scheduler import run_scheduler_once, run_scheduler_start
 from ninho_mimo_trends.cli.commands.seed import run_seed
 from ninho_mimo_trends.cli.commands.show_product import run_show_product
@@ -174,6 +175,15 @@ def _handle_products(args: argparse.Namespace) -> int:
             limit=args.limit,
         )
         print(f"Ranking exportado para: {output_path}")
+        return exit_codes.SUCCESS
+
+    if args.products_command == "rescore":
+        selected, updated = run_rescore_products(
+            source_code=args.source,
+            limit=args.limit,
+            order_by_opportunity=args.order_by_opportunity,
+        )
+        print(f"Recálculo concluído: selecionados={selected}, atualizados={updated}.")
         return exit_codes.SUCCESS
 
     raise ProductValidationError(f"Subcomando de products desconhecido: {args.products_command}")

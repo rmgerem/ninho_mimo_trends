@@ -33,7 +33,11 @@ from ninho_mimo_trends.collectors.base import BaseCollector, CollectedProduct
 from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.deduplication.normalizer import normalize_product_name
 from ninho_mimo_trends.enums.source_status import Availability
-from ninho_mimo_trends.exceptions import CollectorConfigurationError, CollectorError, SourceUnavailableError
+from ninho_mimo_trends.exceptions import (
+    CollectorConfigurationError,
+    CollectorError,
+    SourceUnavailableError,
+)
 from ninho_mimo_trends.utils.dates import now_utc
 from ninho_mimo_trends.utils.money import to_decimal
 from ninho_mimo_trends.utils.retry import retry_with_backoff
@@ -41,10 +45,11 @@ from ninho_mimo_trends.utils.retry import retry_with_backoff
 logger = logging.getLogger(__name__)
 
 _PAGE_SIZE = 20
+_DISCOVERY_SORT_TYPES = (2, 5)
 
 _PRODUCT_OFFER_QUERY = """
-query($keyword: String, $page: Int, $limit: Int) {
-  productOfferV2(keyword: $keyword, page: $page, limit: $limit) {
+query($keyword: String, $sortType: Int, $page: Int, $limit: Int) {
+  productOfferV2(keyword: $keyword, sortType: $sortType, page: $page, limit: $limit) {
     nodes {
       itemId
       productName
@@ -128,7 +133,9 @@ class ShopeeAffiliateCollector(BaseCollector):
 
         body = _do_request()
         if body.get("errors"):
-            raise CollectorConfigurationError(f"Shopee Affiliate API retornou erro: {body['errors']}")
+            raise CollectorConfigurationError(
+                f"Shopee Affiliate API retornou erro: {body['errors']}"
+            )
         return body.get("data", {})
 
     @staticmethod
@@ -148,6 +155,11 @@ class ShopeeAffiliateCollector(BaseCollector):
         original_name = raw_item["productName"]
         normalized = normalize_product_name(original_name)
         rating = raw_item.get("ratingStar")
+
+        raw_commission_rate = to_decimal(raw_item.get("commissionRate"))
+        commission_percentage = (
+            raw_commission_rate * 100 if raw_commission_rate is not None else None
+        )
 
         return CollectedProduct(
             source_code=self.get_source_code(),
@@ -171,7 +183,7 @@ class ShopeeAffiliateCollector(BaseCollector):
             availability=Availability.AVAILABLE,
             collected_at=now_utc(),
             affiliate_url=raw_item.get("offerLink"),
-            commission_rate=to_decimal(raw_item.get("commissionRate")),
+            commission_rate=commission_percentage,
             raw_payload=raw_item,
         )
 
@@ -186,42 +198,56 @@ class ShopeeAffiliateCollector(BaseCollector):
             )
 
         keyword = self._keyword_for_category(category)
-        collected_count = 0
-        page = 1
+        seen_item_ids: set[str] = set()
 
-        while True:
-            page_limit = _PAGE_SIZE
-            if limit is not None:
-                page_limit = min(_PAGE_SIZE, limit - collected_count)
-                if page_limit <= 0:
-                    return
+        # A API oficial oferece dois sinais complementares. Coletar apenas a
+        # relevancia padrao escondia justamente os produtos que interessam ao
+        # afiliado: os mais vendidos e os de maior comissao.
+        for sort_type in _DISCOVERY_SORT_TYPES:
+            strategy_count = 0
+            page = 1
 
-            data = self._execute_graphql(
-                {
-                    "query": _PRODUCT_OFFER_QUERY,
-                    "variables": {"keyword": keyword, "page": page, "limit": page_limit},
-                }
-            )
-            offer_data = data.get("productOfferV2") or {}
-            nodes = offer_data.get("nodes") or []
+            while True:
+                page_limit = _PAGE_SIZE
+                if limit is not None:
+                    page_limit = min(_PAGE_SIZE, limit - strategy_count)
+                    if page_limit <= 0:
+                        break
 
-            for node in nodes:
-                sales = node.get("sales") or 0
-                if sales == 0:
-                    logger.debug(
-                        "Produto ignorado por 0 vendas: %s (itemId=%s)",
-                        node.get("productName"),
-                        node.get("itemId"),
-                    )
-                    continue
-                node["_category_slug"] = category
-                yield self.normalize_product(node)
-                collected_count += 1
-                if limit is not None and collected_count >= limit:
-                    return
+                data = self._execute_graphql(
+                    {
+                        "query": _PRODUCT_OFFER_QUERY,
+                        "variables": {
+                            "keyword": keyword,
+                            "sortType": sort_type,
+                            "page": page,
+                            "limit": page_limit,
+                        },
+                    }
+                )
+                offer_data = data.get("productOfferV2") or {}
+                nodes = offer_data.get("nodes") or []
 
-            page_info = offer_data.get("pageInfo") or {}
-            if not nodes or not page_info.get("hasNextPage"):
-                return
-            page += 1
-            time.sleep(self.settings.http_retry_backoff_seconds)
+                for node in nodes:
+                    strategy_count += 1
+                    sales = node.get("sales") or 0
+                    if sales == 0:
+                        logger.debug(
+                            "Produto ignorado por 0 vendas: %s (itemId=%s)",
+                            node.get("productName"),
+                            node.get("itemId"),
+                        )
+                        continue
+
+                    item_id = str(node["itemId"])
+                    if item_id in seen_item_ids:
+                        continue
+                    seen_item_ids.add(item_id)
+                    node["_category_slug"] = category
+                    yield self.normalize_product(node)
+
+                page_info = offer_data.get("pageInfo") or {}
+                if not nodes or not page_info.get("hasNextPage"):
+                    break
+                page += 1
+                time.sleep(self.settings.http_retry_backoff_seconds)

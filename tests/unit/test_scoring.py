@@ -245,6 +245,32 @@ class TestOpportunityScore:
         )
         assert high_commission_score > low_commission_score
 
+    def test_more_sales_increase_opportunity_score(self, scoring_config: dict) -> None:
+        base_inputs = {
+            "trend_score": Decimal("60.00"),
+            "social_score": Decimal("60.00"),
+            "risk_level": RiskLevel.LOW,
+            "average_rating": Decimal("4.5"),
+            "review_count": 100,
+            "sources_count": 2,
+            "has_available_source": True,
+            "min_price": Decimal("50.00"),
+            "max_price": Decimal("100.00"),
+            "average_commission": Decimal("18.0"),
+        }
+        low_sales_score, _ = calculate_opportunity_score(
+            OpportunityInputs(sales_count=5, **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+        high_sales_score, details = calculate_opportunity_score(
+            OpportunityInputs(sales_count=1000, **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+
+        assert high_sales_score > low_sales_score
+        assert details["commission_score"] == pytest.approx(33.33, abs=0.01)
+        assert details["sales_strength_score"] == 100.0
+
     def test_missing_commission_uses_neutral_score_matching_midpoint(
         self, scoring_config: dict
     ) -> None:
