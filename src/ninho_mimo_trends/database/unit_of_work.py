@@ -14,6 +14,9 @@ from ninho_mimo_trends.repositories.collection_error_repository import (
 )
 from ninho_mimo_trends.repositories.collection_run_repository import CollectionRunRepository
 from ninho_mimo_trends.repositories.history_repository import HistoryRepository
+from ninho_mimo_trends.repositories.product_indication_repository import (
+    ProductIndicationRepository,
+)
 from ninho_mimo_trends.repositories.product_repository import ProductRepository
 from ninho_mimo_trends.repositories.score_repository import ScoreRepository
 from ninho_mimo_trends.repositories.source_repository import SourceRepository
@@ -35,6 +38,7 @@ class UnitOfWork:
     age_ranges: AgeRangeRepository
     history: HistoryRepository
     scores: ScoreRepository
+    indications: ProductIndicationRepository
     collection_runs: CollectionRunRepository
     collection_errors: CollectionErrorRepository
 
@@ -46,6 +50,7 @@ class UnitOfWork:
         self.age_ranges = AgeRangeRepository(self.session)
         self.history = HistoryRepository(self.session)
         self.scores = ScoreRepository(self.session)
+        self.indications = ProductIndicationRepository(self.session)
         self.collection_runs = CollectionRunRepository(self.session)
         self.collection_errors = CollectionErrorRepository(self.session)
         return self

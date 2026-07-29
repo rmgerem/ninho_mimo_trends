@@ -171,6 +171,21 @@ cálculo (ex.: quais palavras-chave casaram, valor de cada componente
 antes da ponderação) — útil para depurar por que um produto recebeu
 determinada pontuação, sem precisar recalcular manualmente.
 
+## Indicações da automação
+
+Sempre que `ScoringService.calculate_and_persist_score()` recalcula a
+pontuação de um produto, ele verifica se o `opportunity_score` resultante
+atingiu o limiar configurado em `configs/scoring_rules.json`
+(`indication.opportunity_threshold`, padrão **70**). Se sim, um registro é
+criado em `tb_product_indications` — um log somente das indicações
+positivas, vinculado à linha exata de `tb_product_scores` que a gerou.
+
+Essa tabela existe para ser consumida diretamente por ferramentas de BI
+(ex.: Grafana), sem que a ferramenta precise reimplementar a lógica de
+limiar — ver o dashboard de referência em [docs/grafana.md](grafana.md).
+Ajustar o limiar (ex.: para ser mais ou menos seletivo) é apenas uma
+mudança de configuração, sem alterar código.
+
 ## Testes
 
 Todas as fórmulas têm testes unitários determinísticos em

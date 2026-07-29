@@ -9,6 +9,7 @@ from ninho_mimo_trends.business.trend_service import TrendService
 from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.models.product import Product
+from ninho_mimo_trends.models.product_indication import ProductIndication
 from ninho_mimo_trends.models.product_score import ProductScore
 from ninho_mimo_trends.models.product_source import ProductSource
 from ninho_mimo_trends.scoring.score_calculator import calculate_product_score
@@ -84,4 +85,25 @@ class ScoringService:
             result.trend_status.value,
             result.risk_score,
         )
+
+        indication_threshold = scoring_config["indication"]["opportunity_threshold"]
+        if result.opportunity_score is not None and result.opportunity_score >= indication_threshold:
+            uow.indications.add(
+                ProductIndication(
+                    product_id=product.id,
+                    product_score_id=score.id,
+                    category_id=product.category_id,
+                    opportunity_score=result.opportunity_score,
+                    risk_score=result.risk_score,
+                    trend_status=result.trend_status,
+                    indicated_at=result.calculated_at,
+                )
+            )
+            logger.info(
+                "Produto indicado pela automacao: product_id=%s opportunity_score=%s (limiar=%s)",
+                product.id,
+                result.opportunity_score,
+                indication_threshold,
+            )
+
         return score

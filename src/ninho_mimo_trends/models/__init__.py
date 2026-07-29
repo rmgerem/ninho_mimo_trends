@@ -7,6 +7,7 @@ from ninho_mimo_trends.models.collection_error import CollectionError
 from ninho_mimo_trends.models.collection_run import CollectionRun
 from ninho_mimo_trends.models.product import Product
 from ninho_mimo_trends.models.product_history import ProductHistory
+from ninho_mimo_trends.models.product_indication import ProductIndication
 from ninho_mimo_trends.models.product_score import ProductScore
 from ninho_mimo_trends.models.product_source import ProductSource
 from ninho_mimo_trends.models.publication_status import PublicationStatus
@@ -20,6 +21,7 @@ __all__ = [
     "CollectionRun",
     "Product",
     "ProductHistory",
+    "ProductIndication",
     "ProductScore",
     "ProductSource",
     "PublicationStatus",

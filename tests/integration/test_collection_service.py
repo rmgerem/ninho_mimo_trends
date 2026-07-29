@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from ninho_mimo_trends.business.collection_service import CollectionService
+from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.configuration.settings import get_settings
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.enums.collection_status import CollectionStatus
@@ -82,3 +83,41 @@ def test_unknown_source_raises_source_unavailable(uow: UnitOfWork) -> None:
         CollectionService().run_collection(
             uow, source_code="fonte-inexistente", settings=get_settings(), dry_run=True
         )
+
+
+def test_high_opportunity_products_are_indicated(uow: UnitOfWork, mock_source) -> None:
+    _seed_reference_data()
+
+    CollectionService().run_collection(
+        uow, source_code="mock", settings=get_settings(), dry_run=False
+    )
+    uow.commit()
+
+    threshold = load_json_config("scoring_rules.json")["indication"]["opportunity_threshold"]
+
+    with UnitOfWork() as verify_uow:
+        from ninho_mimo_trends.models.product import Product
+        from ninho_mimo_trends.models.product_indication import ProductIndication
+
+        products = verify_uow.session.query(Product).all()
+        assert products, "a colecao mock deveria ter criado produtos"
+
+        indicated_product_ids = {
+            indication.product_id
+            for indication in verify_uow.session.query(ProductIndication).all()
+        }
+        assert indicated_product_ids, "pelo menos um produto do fixture mock deveria atingir o limiar"
+
+        for product in products:
+            latest_score = product.scores[-1] if product.scores else None
+            should_be_indicated = (
+                latest_score is not None
+                and latest_score.opportunity_score is not None
+                and latest_score.opportunity_score >= threshold
+            )
+            assert (product.id in indicated_product_ids) == should_be_indicated
+
+        for indication in verify_uow.session.query(ProductIndication).all():
+            assert indication.opportunity_score >= threshold
+            assert indication.category_id is not None
+            assert indication.product_score_id is not None

@@ -15,6 +15,9 @@ erDiagram
     tb_age_ranges ||--o{ tb_products : "age_range_id"
     tb_products ||--o{ tb_product_sources : "product_id"
     tb_products ||--o{ tb_product_scores : "product_id"
+    tb_products ||--o{ tb_product_indications : "product_id"
+    tb_categories ||--o{ tb_product_indications : "category_id"
+    tb_product_scores ||--o| tb_product_indications : "product_score_id"
     tb_products ||--o| tb_publication_status : "product_id"
     tb_sources ||--o{ tb_product_sources : "source_id"
     tb_sources ||--o{ tb_collection_runs : "source_id"
@@ -145,6 +148,30 @@ Controle manual de aprovação/rejeição de um produto para divulgação
 | status | enum-as-string | `PENDING`, `APPROVED`, `REJECTED`, `ARCHIVED` |
 | notes | text, nullable | observações do moderador |
 | approved_at / rejected_at | timestamptz, nullable | mutuamente exclusivos (ver [architecture.md](architecture.md)) |
+
+### `tb_product_indications`
+Log somente-leitura das **indicações positivas** da automação: uma linha é
+criada sempre que um recálculo de pontuação (`tb_product_scores`) atinge o
+limiar configurado em `configs/scoring_rules.json` (`indication.opportunity_threshold`,
+padrão 70). Diferente de `tb_product_scores` (que registra todo recálculo),
+esta tabela contém apenas os eventos em que o produto foi de fato indicado —
+pensada para ser consumida diretamente por ferramentas de BI/dashboard
+(ex.: Grafana), sem que a ferramenta precise reimplementar a lógica de limiar.
+
+| Coluna | Tipo | Notas |
+|---|---|---|
+| id | PK | |
+| product_id | FK → tb_products.id | `ON DELETE CASCADE` |
+| product_score_id | FK → tb_product_scores.id | único — a linha exata de `tb_product_scores` que gerou a indicação |
+| category_id | FK → tb_categories.id | `ON DELETE RESTRICT`, denormalizado (como em `tb_products`) para agrupar por categoria sem join extra |
+| opportunity_score | numeric(5,2) | sempre ≥ limiar configurado no momento da indicação |
+| risk_score | numeric(5,2), nullable | |
+| trend_status | enum-as-string | ver [docs/scoring.md](scoring.md) |
+| indicated_at | timestamptz, indexado | igual a `tb_product_scores.calculated_at` — usado para filtros de data/dashboards |
+| created_at | timestamptz | |
+
+Ver detalhes do mecanismo de geração em [docs/scoring.md](scoring.md#indicações-da-automação)
+e o dashboard de referência em [docs/grafana.md](grafana.md).
 
 ### `tb_collection_runs`
 Registro de uma execução de coleta para uma fonte específica.

@@ -76,7 +76,8 @@ um banco de desenvolvimento/producao) e trunca as tabelas entre os testes.
 
 Documentacao detalhada em [docs/](docs): [arquitetura](docs/architecture.md),
 [banco de dados](docs/database.md), [coletores](docs/collectors.md),
-[CLI](docs/cli.md), [pontuacao](docs/scoring.md) e [roadmap](docs/roadmap.md).
+[CLI](docs/cli.md), [pontuacao](docs/scoring.md), [dashboard Grafana](docs/grafana.md)
+e [roadmap](docs/roadmap.md).
 
 ## Site institucional (protótipo)
 

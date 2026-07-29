@@ -14,6 +14,7 @@ from ninho_mimo_trends.models.base import Base, TimestampMixin
 if TYPE_CHECKING:
     from ninho_mimo_trends.models.age_range import AgeRange
     from ninho_mimo_trends.models.category import Category
+    from ninho_mimo_trends.models.product_indication import ProductIndication
     from ninho_mimo_trends.models.product_score import ProductScore
     from ninho_mimo_trends.models.product_source import ProductSource
     from ninho_mimo_trends.models.publication_status import PublicationStatus
@@ -58,6 +59,9 @@ class Product(TimestampMixin, Base):
     )
     scores: Mapped[list["ProductScore"]] = relationship(
         back_populates="product", cascade="all, delete-orphan", order_by="ProductScore.calculated_at"
+    )
+    indications: Mapped[list["ProductIndication"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", order_by="ProductIndication.indicated_at"
     )
     publication_status: Mapped["PublicationStatus | None"] = relationship(
         back_populates="product", cascade="all, delete-orphan", uselist=False
