@@ -39,7 +39,9 @@ def _clip(value: float, minimum: float = -100.0, maximum: float = 100.0) -> floa
     return max(minimum, min(maximum, value))
 
 
-def _dampened_growth_score(first: int | None, last: int | None, minimum_absolute_increase: int) -> float:
+def _dampened_growth_score(
+    first: int | None, last: int | None, minimum_absolute_increase: int
+) -> float:
     """Calcula um score de crescimento (-100..100) amortecido para amostras pequenas.
 
     Evita que um crescimento percentual grande baseado em numeros pequenos
@@ -83,6 +85,33 @@ def _persistence_ratio(points: list[HistoryPoint]) -> float:
     overall_direction = 1 if sales_series[-1] >= sales_series[0] else -1
     matching = sum(1 for delta in deltas if (delta >= 0) == (overall_direction >= 0))
     return matching / len(deltas)
+
+
+def _sales_dynamics(points: list[HistoryPoint]) -> tuple[float, float, float]:
+    """Retorna velocidades diaria anterior/atual e aceleracao entre elas."""
+    sales_points = [point for point in points if point.sales_count is not None]
+    if len(sales_points) < 3:
+        return 0.0, 0.0, 0.0
+    previous, current, latest = sales_points[-3:]
+    previous_days = max(
+        (current.collected_at - previous.collected_at).total_seconds() / 86400, 1 / 24
+    )
+    current_days = max((latest.collected_at - current.collected_at).total_seconds() / 86400, 1 / 24)
+    previous_velocity = (current.sales_count - previous.sales_count) / previous_days
+    current_velocity = (latest.sales_count - current.sales_count) / current_days
+    return previous_velocity, current_velocity, current_velocity - previous_velocity
+
+
+def _gold_stage(*, current_velocity: float, acceleration: float, persistence_ratio: float) -> str:
+    if current_velocity < 0:
+        return "CAINDO"
+    if current_velocity > 0 and acceleration > 0 and persistence_ratio >= 0.7:
+        return "VIRAL"
+    if current_velocity > 0 and acceleration > 0:
+        return "ACELERANDO"
+    if current_velocity > 0:
+        return "DESCOBERTA"
+    return "SATURADO"
 
 
 def _recency_score(last_collected_at: datetime, max_age_days: int = 30) -> float:
@@ -141,12 +170,15 @@ def calculate_trend_score(
     first, last = ordered_points[0], ordered_points[-1]
     minimum_absolute_increase = config["small_sample_dampening"]["minimum_absolute_increase"]
 
-    sales_growth = _dampened_growth_score(first.sales_count, last.sales_count, minimum_absolute_increase)
+    sales_growth = _dampened_growth_score(
+        first.sales_count, last.sales_count, minimum_absolute_increase
+    )
     reviews_growth = _dampened_growth_score(
         first.review_count, last.review_count, minimum_absolute_increase
     )
     ranking_score = _ranking_improvement_score(first.ranking_position, last.ranking_position)
     persistence_ratio = _persistence_ratio(ordered_points)
+    previous_velocity, current_velocity, sales_acceleration = _sales_dynamics(ordered_points)
     persistence_score = persistence_ratio * 100.0
     diversity_score = _clip(min(100.0, (sources_count / 5.0) * 100.0), minimum=0.0)
     recency_score = _recency_score(last.collected_at)
@@ -166,8 +198,22 @@ def calculate_trend_score(
         + weights["recency"] * recency_score
     )
     trend_score_value = _clip(trend_score_value, minimum=0.0, maximum=100.0)
+    acceleration_bonus_max = float(config.get("acceleration_bonus_max", 10.0))
+    acceleration_reference = max(float(minimum_absolute_increase), 1.0)
+    acceleration_score = _clip(
+        (sales_acceleration / acceleration_reference) * 100.0,
+        minimum=-100.0,
+        maximum=100.0,
+    )
+    trend_score_value = _clip(
+        trend_score_value + acceleration_bonus_max * (acceleration_score / 100.0),
+        minimum=0.0,
+        maximum=100.0,
+    )
 
-    growth_weight_sum = weights["sales_growth"] + weights["reviews_growth"] + weights["ranking_improvement"]
+    growth_weight_sum = (
+        weights["sales_growth"] + weights["reviews_growth"] + weights["ranking_improvement"]
+    )
     growth_signal = (
         weights["sales_growth"] * sales_growth
         + weights["reviews_growth"] * reviews_growth
@@ -186,6 +232,15 @@ def calculate_trend_score(
         "source_diversity_score": round(diversity_score, 2),
         "recency_score": round(recency_score, 2),
         "growth_signal": round(growth_signal, 2),
+        "previous_sales_velocity_per_day": round(previous_velocity, 2),
+        "current_sales_velocity_per_day": round(current_velocity, 2),
+        "sales_acceleration_per_day": round(sales_acceleration, 2),
+        "acceleration_score": round(acceleration_score, 2),
+        "gold_stage": _gold_stage(
+            current_velocity=current_velocity,
+            acceleration=sales_acceleration,
+            persistence_ratio=persistence_ratio,
+        ),
         "history_points": len(history_points),
     }
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from dataclasses import replace
 from decimal import Decimal
 
 from ninho_mimo_trends.business.trend_service import TrendService
@@ -13,6 +14,7 @@ from ninho_mimo_trends.models.product_indication import ProductIndication
 from ninho_mimo_trends.models.product_score import ProductScore
 from ninho_mimo_trends.models.product_source import ProductSource
 from ninho_mimo_trends.scoring.score_calculator import calculate_product_score
+from ninho_mimo_trends.utils.dates import now_utc
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,14 @@ def _aggregate_source_metrics(
     max_price = max(prices) if prices else None
     average_commission = sum(commissions) / len(commissions) if commissions else None
 
-    return average_rating, total_reviews, has_available_source, min_price, max_price, average_commission
+    return (
+        average_rating,
+        total_reviews,
+        has_available_source,
+        min_price,
+        max_price,
+        average_commission,
+    )
 
 
 class ScoringService:
@@ -48,11 +57,31 @@ class ScoringService:
         history_points = self._trend_service.get_history_points(uow, product.id)
         sources_count = uow.products.count_sources_for_product(product.id)
 
-        average_rating, total_reviews, has_available_source, min_price, max_price, average_commission = (
-            _aggregate_source_metrics(product.sources)
-        )
+        (
+            average_rating,
+            total_reviews,
+            has_available_source,
+            min_price,
+            max_price,
+            average_commission,
+        ) = _aggregate_source_metrics(product.sources)
 
         product_text = f"{product.normalized_name} {product.description or ''}"
+
+        external_signals: dict[str, object] = {}
+        for signal in uow.external_signals.list_fresh(product.id, now=now_utc()):
+            if signal.provider == "google_trends":
+                external_signals.update(
+                    google_trend_status=signal.status,
+                    google_trend_score=float(signal.demand_score or 0),
+                    google_trend_keyword=signal.keyword,
+                )
+            elif signal.provider == "mercado_livre":
+                external_signals.update(
+                    ml_status=signal.status,
+                    ml_score=float(signal.demand_score or 0),
+                    ml_competitors=signal.metrics.get("ml_competitors", 0),
+                )
 
         result = calculate_product_score(
             history_points=history_points,
@@ -67,7 +96,21 @@ class ScoringService:
             max_price=max_price,
             average_commission=average_commission,
             scoring_config=scoring_config,
+            external_signals=external_signals,
         )
+        category_percentile = uow.scores.category_percentile(
+            product.category_id, result.opportunity_score
+        )
+        result_details = dict(result.details)
+        result_details["gold"] = {
+            "gold_score": float(result.opportunity_score),
+            "category_percentile": float(category_percentile),
+            "stage": result.details.get("trend", {}).get("gold_stage", "DESCOBERTA"),
+            "content_score": float(result.social_score),
+            "uses_external_validation": bool(external_signals),
+            "clicks_30d": uow.product_clicks.count_recent(product.id),
+        }
+        result = replace(result, details=result_details)
 
         score = ProductScore(
             product_id=product.id,
@@ -90,7 +133,10 @@ class ScoringService:
         )
 
         indication_threshold = scoring_config["indication"]["opportunity_threshold"]
-        if result.opportunity_score is not None and result.opportunity_score >= indication_threshold:
+        if (
+            result.opportunity_score is not None
+            and result.opportunity_score >= indication_threshold
+        ):
             uow.indications.add(
                 ProductIndication(
                     product_id=product.id,

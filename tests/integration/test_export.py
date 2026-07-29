@@ -6,9 +6,10 @@ from decimal import Decimal
 from pathlib import Path
 
 import openpyxl
+
+from ninho_mimo_trends.business.collection_service import CollectionService
 from ninho_mimo_trends.business.export_service import ExportService
 from ninho_mimo_trends.cli.commands.seed import run_seed
-from ninho_mimo_trends.business.collection_service import CollectionService
 from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.configuration.settings import get_settings
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
@@ -17,7 +18,9 @@ from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 def _collect_sample_data() -> None:
     run_seed()
     with UnitOfWork() as uow:
-        CollectionService().run_collection(uow, source_code="mock", settings=get_settings(), dry_run=False)
+        CollectionService().run_collection(
+            uow, source_code="mock", settings=get_settings(), dry_run=False
+        )
         uow.commit()
 
 
@@ -64,4 +67,6 @@ def test_export_rows_respect_minimum_score_filter(mock_source) -> None:
         )
 
     assert len(filtered_rows) <= len(all_rows)
-    assert all(row.opportunity_score >= 90.0 for row in filtered_rows if row.opportunity_score is not None)
+    assert all(
+        row.opportunity_score >= 90.0 for row in filtered_rows if row.opportunity_score is not None
+    )

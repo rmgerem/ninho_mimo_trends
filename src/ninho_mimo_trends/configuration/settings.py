@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from functools import lru_cache
 from pathlib import Path
 
@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from ninho_mimo_trends.configuration.json_loader import find_project_root, load_json_config
 
 
-class AppEnvironment(str, Enum):
+class AppEnvironment(StrEnum):
     """Ambientes suportados pela aplicacao."""
 
     DEV = "DEV"
@@ -46,6 +46,12 @@ class Settings(BaseSettings):
 
     shopee_affiliate_app_id: str | None = None
     shopee_affiliate_secret: str | None = None
+
+    mercado_livre_access_token: str | None = None
+    external_enrichment_interval_minutes: int = 360
+    external_enrichment_candidate_limit: int = 20
+    google_trends_cache_hours: int = 72
+    mercado_livre_cache_hours: int = 24
 
     gf_admin_user: str = "admin"
 

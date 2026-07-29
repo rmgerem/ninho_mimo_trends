@@ -16,8 +16,8 @@ from openpyxl.worksheet.worksheet import Worksheet
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.exceptions import ExportError
 from ninho_mimo_trends.models.product import Product
-from ninho_mimo_trends.scoring.risk_score import classify_risk_level
 from ninho_mimo_trends.schemas.export import ExportRow
+from ninho_mimo_trends.scoring.risk_score import classify_risk_level
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +41,12 @@ _HEADER = [
     "Tendencia",
     "Risco",
     "Status de moderacao",
+    "Google Trend Status",
+    "Google Trend Score",
+    "Google Trend Keyword",
+    "ML Status",
+    "ML Score",
+    "ML Concorrentes",
     "URL principal",
     "Link de afiliado",
     "Data da ultima coleta",
@@ -51,7 +57,9 @@ _DATE_FORMAT = "dd/mm/yyyy hh:mm"
 _SCORE_FORMAT = "0.00"
 
 
-def _build_export_row(position: int, product: Product, risk_thresholds: dict[str, float]) -> ExportRow:
+def _build_export_row(
+    position: int, product: Product, risk_thresholds: dict[str, float]
+) -> ExportRow:
     sources = product.sources
     prices = [s.current_price for s in sources if s.current_price is not None]
     ratings = [s.rating for s in sources if s.rating is not None]
@@ -65,6 +73,10 @@ def _build_export_row(position: int, product: Product, risk_thresholds: dict[str
         if latest_score and latest_score.risk_score is not None
         else None
     )
+
+    details = latest_score.calculation_details if latest_score else {}
+    opportunity_details = details.get("opportunity", {})
+    external_signals = opportunity_details.get("external_signals", {})
 
     return ExportRow(
         position=position,
@@ -83,12 +95,24 @@ def _build_export_row(position: int, product: Product, risk_thresholds: dict[str
         social_score=latest_score.social_score if latest_score else None,
         risk_score=latest_score.risk_score if latest_score else None,
         opportunity_score=latest_score.opportunity_score if latest_score else None,
-        trend_status=latest_score.trend_status.value if latest_score else "SEM_HISTORICO_SUFICIENTE",
+        trend_status=latest_score.trend_status.value
+        if latest_score
+        else "SEM_HISTORICO_SUFICIENTE",
         risk_level=risk_level.value if risk_level else "-",
         moderation_status=product.moderation_status.value,
         main_url=sources[0].original_url if sources else None,
         affiliate_url=next((s.affiliate_url for s in sources if s.affiliate_url), None),
         last_collected_at=max(collected_dates) if collected_dates else None,
+        google_trend_status=external_signals.get("google_trend_status"),
+        google_trend_score=Decimal(str(external_signals.get("google_trend_score")))
+        if external_signals.get("google_trend_score") is not None
+        else None,
+        google_trend_keyword=external_signals.get("google_trend_keyword"),
+        ml_status=external_signals.get("ml_status"),
+        ml_score=Decimal(str(external_signals.get("ml_score")))
+        if external_signals.get("ml_score") is not None
+        else None,
+        ml_competitors=external_signals.get("ml_competitors"),
     )
 
 
@@ -106,6 +130,7 @@ class ExportService:
         risk_thresholds: dict[str, float] | None = None,
     ) -> list[ExportRow]:
         """Monta as linhas do ranking de oportunidades a partir do banco."""
+
         products = uow.products.list_products(
             category_slug=category_slug,
             minimum_opportunity_score=minimum_score,
@@ -115,6 +140,7 @@ class ExportService:
             limit=limit,
         )
         thresholds = risk_thresholds or {"low": 30, "medium": 55, "high": 75}
+
         return [
             _build_export_row(position, product, thresholds)
             for position, product in enumerate(products, start=1)
@@ -133,7 +159,9 @@ class ExportService:
         except OSError as exc:
             raise ExportError(f"Falha ao exportar CSV para {output_path}: {exc}") from exc
 
-    def export_to_xlsx(self, rows: list[ExportRow], output_path: Path, *, sheet_name: str = "Ranking") -> Path:
+    def export_to_xlsx(
+        self, rows: list[ExportRow], output_path: Path, *, sheet_name: str = "Ranking"
+    ) -> Path:
         """Exporta as linhas do ranking para um arquivo XLSX formatado."""
         try:
             output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -182,6 +210,12 @@ class ExportService:
             row.trend_status,
             row.risk_level,
             row.moderation_status,
+            row.google_trend_status or "-",
+            float(row.google_trend_score) if row.google_trend_score is not None else None,
+            row.google_trend_keyword or "-",
+            row.ml_status or "-",
+            float(row.ml_score) if row.ml_score is not None else None,
+            row.ml_competitors if row.ml_competitors is not None else "-",
             row.main_url or "-",
             row.affiliate_url or "-",
             row.last_collected_at.strftime("%Y-%m-%d %H:%M") if row.last_collected_at else "-",
@@ -199,9 +233,9 @@ class ExportService:
             cell = worksheet.cell(row=row_index, column=column_index, value=value)
             if column_index in (6, 7):  # Menor preco / Maior preco
                 cell.number_format = _CURRENCY_FORMAT
-            elif column_index in (13, 14, 15, 16):  # Scores
+            elif column_index in (13, 14, 15, 16, 21, 23):  # Scores e Google/ML Score
                 cell.number_format = _SCORE_FORMAT
-            elif column_index == 22 and isinstance(value, datetime):  # Data da ultima coleta
+            elif column_index == 28 and isinstance(value, datetime):  # Data da ultima coleta
                 cell.number_format = _DATE_FORMAT
 
     def _adjust_column_widths(self, worksheet: Worksheet) -> None:

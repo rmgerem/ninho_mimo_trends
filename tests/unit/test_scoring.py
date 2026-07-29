@@ -10,7 +10,10 @@ import pytest
 from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.enums.risk_level import RiskLevel
 from ninho_mimo_trends.enums.trend_status import TrendStatus
-from ninho_mimo_trends.scoring.opportunity_score import OpportunityInputs, calculate_opportunity_score
+from ninho_mimo_trends.scoring.opportunity_score import (
+    OpportunityInputs,
+    calculate_opportunity_score,
+)
 from ninho_mimo_trends.scoring.risk_score import calculate_risk_score, classify_risk_level
 from ninho_mimo_trends.scoring.social_score import calculate_social_score
 from ninho_mimo_trends.scoring.trend_score import HistoryPoint, calculate_trend_score
@@ -34,7 +37,9 @@ def _history_point(days_ago: int, sales: int, reviews: int, ranking: int) -> His
 class TestTrendScore:
     def test_returns_none_when_insufficient_history(self, scoring_config: dict) -> None:
         points = [_history_point(10, 5, 1, 50), _history_point(5, 6, 1, 49)]
-        result = calculate_trend_score(points, sources_count=1, config=scoring_config["trend_score"])
+        result = calculate_trend_score(
+            points, sources_count=1, config=scoring_config["trend_score"]
+        )
         assert result.trend_score is None
         assert result.trend_status == TrendStatus.SEM_HISTORICO_SUFICIENTE
 
@@ -45,7 +50,9 @@ class TestTrendScore:
             _history_point(10, 600, 60, 20),
             _history_point(1, 900, 90, 5),
         ]
-        result = calculate_trend_score(points, sources_count=3, config=scoring_config["trend_score"])
+        result = calculate_trend_score(
+            points, sources_count=3, config=scoring_config["trend_score"]
+        )
         assert result.trend_score is not None
         assert result.trend_status == TrendStatus.CRESCIMENTO_FORTE
 
@@ -56,11 +63,15 @@ class TestTrendScore:
             _history_point(10, 300, 30, 50),
             _history_point(1, 100, 10, 80),
         ]
-        result = calculate_trend_score(points, sources_count=1, config=scoring_config["trend_score"])
+        result = calculate_trend_score(
+            points, sources_count=1, config=scoring_config["trend_score"]
+        )
         assert result.trend_score is not None
         assert result.trend_status in (TrendStatus.QUEDA_MODERADA, TrendStatus.QUEDA_FORTE)
 
-    def test_small_sample_growth_is_dampened_below_large_absolute_growth(self, scoring_config: dict) -> None:
+    def test_small_sample_growth_is_dampened_below_large_absolute_growth(
+        self, scoring_config: dict
+    ) -> None:
         """1->3 vendas (200%) NAO deve superar 500->800 vendas (60%) apos amortecimento."""
         small_sample_points = [
             _history_point(20, 1, 1, 90),
@@ -131,7 +142,10 @@ class TestRiskScore:
             config=scoring_config["risk_score"],
         )
         assert score > Decimal("0")
-        assert "peca pequena" in details["matched_keywords"] or "pecas pequenas" in details["matched_keywords"]
+        assert (
+            "peca pequena" in details["matched_keywords"]
+            or "pecas pequenas" in details["matched_keywords"]
+        )
         assert level in (RiskLevel.MEDIUM, RiskLevel.HIGH, RiskLevel.CRITICAL)
 
     def test_missing_age_range_adds_penalty(self, scoring_config: dict) -> None:
@@ -159,16 +173,16 @@ class TestRiskScore:
 
 class TestOpportunityScore:
     def test_high_risk_reduces_opportunity_score(self, scoring_config: dict) -> None:
-        base_inputs = dict(
-            trend_score=Decimal("80.00"),
-            social_score=Decimal("80.00"),
-            average_rating=Decimal("4.5"),
-            review_count=100,
-            sources_count=3,
-            has_available_source=True,
-            min_price=Decimal("50.00"),
-            max_price=Decimal("100.00"),
-        )
+        base_inputs = {
+            "trend_score": Decimal("80.00"),
+            "social_score": Decimal("80.00"),
+            "average_rating": Decimal("4.5"),
+            "review_count": 100,
+            "sources_count": 3,
+            "has_available_source": True,
+            "min_price": Decimal("50.00"),
+            "max_price": Decimal("100.00"),
+        }
         low_risk_score, _ = calculate_opportunity_score(
             OpportunityInputs(risk_level=RiskLevel.LOW, **base_inputs),
             config=scoring_config["opportunity_score"],
@@ -210,17 +224,17 @@ class TestOpportunityScore:
         assert Decimal("0") <= score <= Decimal("100")
 
     def test_higher_commission_increases_opportunity_score(self, scoring_config: dict) -> None:
-        base_inputs = dict(
-            trend_score=Decimal("60.00"),
-            social_score=Decimal("60.00"),
-            risk_level=RiskLevel.LOW,
-            average_rating=Decimal("4.5"),
-            review_count=100,
-            sources_count=2,
-            has_available_source=True,
-            min_price=Decimal("50.00"),
-            max_price=Decimal("100.00"),
-        )
+        base_inputs = {
+            "trend_score": Decimal("60.00"),
+            "social_score": Decimal("60.00"),
+            "risk_level": RiskLevel.LOW,
+            "average_rating": Decimal("4.5"),
+            "review_count": 100,
+            "sources_count": 2,
+            "has_available_source": True,
+            "min_price": Decimal("50.00"),
+            "max_price": Decimal("100.00"),
+        }
         low_commission_score, _ = calculate_opportunity_score(
             OpportunityInputs(average_commission=Decimal("1.0"), **base_inputs),
             config=scoring_config["opportunity_score"],
@@ -231,18 +245,20 @@ class TestOpportunityScore:
         )
         assert high_commission_score > low_commission_score
 
-    def test_missing_commission_uses_neutral_score_matching_midpoint(self, scoring_config: dict) -> None:
-        base_inputs = dict(
-            trend_score=Decimal("60.00"),
-            social_score=Decimal("60.00"),
-            risk_level=RiskLevel.LOW,
-            average_rating=Decimal("4.5"),
-            review_count=100,
-            sources_count=2,
-            has_available_source=True,
-            min_price=Decimal("50.00"),
-            max_price=Decimal("100.00"),
-        )
+    def test_missing_commission_uses_neutral_score_matching_midpoint(
+        self, scoring_config: dict
+    ) -> None:
+        base_inputs = {
+            "trend_score": Decimal("60.00"),
+            "social_score": Decimal("60.00"),
+            "risk_level": RiskLevel.LOW,
+            "average_rating": Decimal("4.5"),
+            "review_count": 100,
+            "sources_count": 2,
+            "has_available_source": True,
+            "min_price": Decimal("50.00"),
+            "max_price": Decimal("100.00"),
+        }
         commission_config = scoring_config["opportunity_score"]["commission"]
         midpoint_commission = Decimal(
             str((commission_config["low_threshold"] + commission_config["high_threshold"]) / 2)

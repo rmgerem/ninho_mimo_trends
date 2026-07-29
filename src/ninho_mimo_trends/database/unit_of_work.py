@@ -14,7 +14,9 @@ from ninho_mimo_trends.repositories.collection_error_repository import (
 )
 from ninho_mimo_trends.repositories.collection_run_repository import CollectionRunRepository
 from ninho_mimo_trends.repositories.customer_repository import CustomerRepository
+from ninho_mimo_trends.repositories.external_signal_repository import ExternalSignalRepository
 from ninho_mimo_trends.repositories.history_repository import HistoryRepository
+from ninho_mimo_trends.repositories.product_click_repository import ProductClickRepository
 from ninho_mimo_trends.repositories.product_indication_repository import (
     ProductIndicationRepository,
 )
@@ -43,8 +45,10 @@ class UnitOfWork:
     indications: ProductIndicationRepository
     collection_runs: CollectionRunRepository
     collection_errors: CollectionErrorRepository
+    external_signals: ExternalSignalRepository
+    product_clicks: ProductClickRepository
 
-    def __enter__(self) -> "UnitOfWork":
+    def __enter__(self) -> UnitOfWork:
         self.session = get_session_factory()()
         self.products = ProductRepository(self.session)
         self.sources = SourceRepository(self.session)
@@ -56,6 +60,8 @@ class UnitOfWork:
         self.indications = ProductIndicationRepository(self.session)
         self.collection_runs = CollectionRunRepository(self.session)
         self.collection_errors = CollectionErrorRepository(self.session)
+        self.external_signals = ExternalSignalRepository(self.session)
+        self.product_clicks = ProductClickRepository(self.session)
         return self
 
     def __exit__(

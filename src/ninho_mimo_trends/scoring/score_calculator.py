@@ -54,6 +54,7 @@ def calculate_product_score(
     max_price: Decimal | None,
     average_commission: Decimal | None,
     scoring_config: dict[str, Any],
+    external_signals: dict[str, Any] | None = None,
 ) -> ProductScoringResult:
     """Calcula Trend/Social/Risk/Opportunity Score para um produto.
 
@@ -64,7 +65,9 @@ def calculate_product_score(
         history_points, sources_count=sources_count, config=scoring_config["trend_score"]
     )
     social_score, social_details = calculate_social_score(
-        category_slug=category_slug, product_text=product_text, config=scoring_config["social_score"]
+        category_slug=category_slug,
+        product_text=product_text,
+        config=scoring_config["social_score"],
     )
     risk_score, risk_level, risk_details = calculate_risk_score(
         category_slug=category_slug,
@@ -85,7 +88,9 @@ def calculate_product_score(
         average_commission=average_commission,
     )
     opportunity_score, opportunity_details = calculate_opportunity_score(
-        opportunity_inputs, config=scoring_config["opportunity_score"]
+        opportunity_inputs,
+        config=scoring_config["opportunity_score"],
+        external_signals=external_signals,
     )
 
     details = {

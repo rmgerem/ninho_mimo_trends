@@ -47,9 +47,18 @@ def calculate_social_score(
     score = max(0.0, min(100.0, score))
 
     details = {
+        "content_score": round(score, 2),
         "base_score": BASE_SCORE,
         "category_bonus": category_bonus,
         "keyword_bonus_total": keyword_bonus_total,
         "matched_keywords": matched_keywords,
+        "content_signals": {
+            "visual_or_demonstrable": any(
+                keyword in normalized_text
+                for keyword in ("sensorial", "organizador", "montessori", "portatil")
+            ),
+            "clear_utility": bool(matched_keywords),
+            "impulse_price_fit": None,
+        },
     }
     return Decimal(str(round(score, 2))), details

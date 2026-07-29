@@ -25,6 +25,7 @@ Docker inicia
 → seed garante os dados de referência
 → scheduler inicia as coletas periódicas
 → produtos, preços, imagens e pontuações são atualizados
+→ enricher valida os melhores candidatos no Google Trends e Mercado Livre
 → Grafana consulta o PostgreSQL e exibe o dashboard
 ```
 
@@ -102,6 +103,7 @@ docker compose --env-file .env.docker.local down
 | `migrations` | Atualiza a estrutura do banco | `Exited (0)` |
 | `seed` | Cadastra referências e o administrador | `Exited (0)` |
 | `scheduler` | Executa extrações periódicas | `Up` |
+| `enricher` | Valida e recalcula os candidatos a “pepita” | `Up` |
 | `web` | Gera links afiliados por usuário | `Up` |
 | `grafana` | Exibe os dashboards | `Up` |
 | `prometheus` | Armazena métricas operacionais | `Up` |
@@ -158,7 +160,8 @@ O Compose executa automaticamente esta sequência:
 2. aplica as migrations;
 3. executa o seed de categorias, fontes e usuário administrativo;
 4. inicia o scheduler de extração;
-5. inicia web, Grafana, Prometheus e Pushgateway.
+5. inicia o worker de enriquecimento externo;
+6. inicia web, Grafana, Prometheus e Pushgateway.
 
 Nas execuções seguintes, quando não houve alteração no código:
 
@@ -502,3 +505,111 @@ docker compose --env-file .env.docker.local ps postgres scheduler
 docker compose --env-file .env.docker.local logs --tail 200 postgres
 docker compose --env-file .env.docker.local restart scheduler
 ```
+
+## 12. Worker de “pepitas” e Gold Score
+
+O `scheduler` continua sendo a fonte principal: ele coleta dados da Shopee,
+mantém o histórico e calcula velocidade e aceleração. O `enricher` é separado
+para que uma indisponibilidade do Google Trends ou do Mercado Livre nunca pare
+a extração principal.
+
+O worker considera os melhores produtos com pontuação mínima de 40, consulta
+somente sinais vencidos e grava o resultado em
+`tb_external_product_signals`. Depois, recalcula o produto. O dashboard mostra:
+
+- estágio da oportunidade: `DESCOBERTA`, `ACELERANDO`, `VIRAL`, `SATURADO` ou
+  `CAINDO`;
+- percentil do produto dentro da categoria;
+- situação no Google Trends e Mercado Livre;
+- cliques reais nos links afiliados nos últimos 30 dias.
+
+### 12.1 Configuração
+
+Acrescente ou ajuste em `.env.docker.local`:
+
+```dotenv
+# Opcional: sem token, o Mercado Livre aparece como CONFIGURACAO_PENDENTE.
+MERCADO_LIVRE_ACCESS_TOKEN=
+
+# Executa uma rodada a cada 6 horas, nos 20 melhores candidatos.
+EXTERNAL_ENRICHMENT_INTERVAL_MINUTES=360
+EXTERNAL_ENRICHMENT_CANDIDATE_LIMIT=20
+
+# Evita consultas repetidas e bloqueios dos provedores.
+GOOGLE_TRENDS_CACHE_HOURS=72
+MERCADO_LIVRE_CACHE_HOURS=24
+```
+
+Não coloque o token do Mercado Livre na documentação ou no Git. Ele deve ser
+obtido pelo fluxo OAuth da sua aplicação no Mercado Livre e salvo somente no
+arquivo local/secret do servidor.
+
+### 12.2 Comandos práticos
+
+Ver o worker em execução:
+
+```powershell
+docker compose --env-file .env.docker.local ps enricher
+```
+
+Acompanhar os logs:
+
+```powershell
+docker compose --env-file .env.docker.local logs -f enricher
+```
+
+Executar uma rodada manual isolada:
+
+```powershell
+docker compose --env-file .env.docker.local run --rm enricher enrichment run-once
+```
+
+Parar e retomar somente a validação externa:
+
+```powershell
+docker compose --env-file .env.docker.local stop enricher
+docker compose --env-file .env.docker.local start enricher
+```
+
+Reconstruir apenas os componentes alterados nesta funcionalidade:
+
+```powershell
+docker compose --env-file .env.docker.local up -d --build --force-recreate migrations scheduler enricher web grafana
+```
+
+### 12.3 Consultas de diagnóstico
+
+Ver os sinais externos mais recentes, sem mostrar credenciais:
+
+```sql
+SELECT
+    product_id,
+    provider,
+    keyword,
+    status,
+    demand_score,
+    error_message,
+    collected_at,
+    expires_at
+FROM public.tb_external_product_signals
+ORDER BY collected_at DESC
+LIMIT 100;
+```
+
+Ver os produtos mais clicados nos últimos 30 dias:
+
+```sql
+SELECT
+    product_id,
+    count(*) AS cliques_30d
+FROM public.tb_product_clicks
+WHERE clicked_at >= now() - interval '30 days'
+GROUP BY product_id
+ORDER BY cliques_30d DESC;
+```
+
+`DESCONHECIDO` ou uma mensagem de erro não elimina um produto nem interrompe a
+coleta. Falhas são armazenadas por uma hora antes de nova tentativa. Resultados
+válidos respeitam o cache configurado. O Google Trends consultado por
+`pytrends` é uma interface não oficial e pode responder `429`; em produção,
+prefira a API oficial quando sua conta tiver acesso.

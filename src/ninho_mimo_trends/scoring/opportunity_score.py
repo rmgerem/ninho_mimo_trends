@@ -1,4 +1,4 @@
-﻿"""Calculo do Opportunity Score e orquestracao geral do sistema de pontuacao.
+"""Calculo do Opportunity Score e orquestracao geral do sistema de pontuacao.
 
 O Opportunity Score combina Trend Score, Social Score, qualidade das
 avaliacoes, diversidade de fontes, disponibilidade, faixa de preco e
@@ -89,7 +89,9 @@ def _price_range_fit_score(
     if ideal_min <= reference_price <= ideal_max:
         return 100.0
 
-    distance = ideal_min - reference_price if reference_price < ideal_min else reference_price - ideal_max
+    distance = (
+        ideal_min - reference_price if reference_price < ideal_min else reference_price - ideal_max
+    )
     reference_span = max(ideal_max - ideal_min, 1.0)
     decay = _clip(100.0 - (distance / reference_span) * 100.0)
     return decay
@@ -114,7 +116,10 @@ def _commission_score(average_commission: Decimal | None, config: dict[str, floa
 
 
 def calculate_opportunity_score(
-    inputs: OpportunityInputs, *, config: dict[str, Any]
+    inputs: OpportunityInputs,
+    *,
+    config: dict[str, Any],
+    external_signals: dict[str, Any] | None = None,
 ) -> tuple[Decimal, dict[str, Any]]:
     """Calcula o Opportunity Score final (0-100) de um produto."""
     weights = config["weights"]
@@ -144,7 +149,21 @@ def calculate_opportunity_score(
     )
 
     risk_penalty = risk_penalty_table[inputs.risk_level.value.lower()]
-    final_score = _clip(raw_score - risk_penalty)
+
+    external_bonus = 0.0
+    external_signals = external_signals or {}
+    if external_signals:
+        if external_signals.get("google_trend_status") == "ALTA":
+            external_bonus += 5.0
+        elif external_signals.get("google_trend_status") == "QUEDA":
+            external_bonus -= 5.0
+
+        if external_signals.get("ml_status") == "ALTO":
+            external_bonus += 10.0
+        elif external_signals.get("ml_status") == "MEDIO":
+            external_bonus += 5.0
+
+    final_score = _clip(raw_score - risk_penalty + external_bonus)
 
     details = {
         "trend_component": round(trend_component, 2),
@@ -154,8 +173,12 @@ def calculate_opportunity_score(
         "availability_score": round(availability_score, 2),
         "price_range_fit_score": round(price_fit_score, 2),
         "commission_score": round(commission_score, 2),
-        "average_commission_pct": round(float(inputs.average_commission), 2) if inputs.average_commission else None,
+        "average_commission_pct": round(float(inputs.average_commission), 2)
+        if inputs.average_commission
+        else None,
         "risk_penalty": risk_penalty,
+        "external_bonus": external_bonus,
+        "external_signals": external_signals,
         "raw_score_before_penalty": round(raw_score, 2),
     }
 

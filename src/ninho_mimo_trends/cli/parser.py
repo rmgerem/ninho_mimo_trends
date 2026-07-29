@@ -29,12 +29,15 @@ def build_parser() -> argparse.ArgumentParser:
     _add_collect_parser(subparsers)
     _add_products_parser(subparsers)
     _add_scheduler_parser(subparsers)
+    _add_enrichment_parser(subparsers)
 
     return parser
 
 
 def _add_database_parser(subparsers: argparse._SubParsersAction) -> None:
-    database_parser = subparsers.add_parser("database", help="Gerenciamento do esquema do banco de dados.")
+    database_parser = subparsers.add_parser(
+        "database", help="Gerenciamento do esquema do banco de dados."
+    )
     database_subparsers = database_parser.add_subparsers(dest="database_command", required=True)
 
     database_subparsers.add_parser("check", help="Verifica a conectividade com o PostgreSQL.")
@@ -44,8 +47,12 @@ def _add_database_parser(subparsers: argparse._SubParsersAction) -> None:
         "--revision", default="head", help="Revisao alvo (padrao: 'head', a mais recente)."
     )
 
-    downgrade_parser = database_subparsers.add_parser("downgrade", help="Reverte migracoes Alembic.")
-    downgrade_parser.add_argument("--revision", required=True, help="Revisao alvo (ex.: '-1' ou um hash).")
+    downgrade_parser = database_subparsers.add_parser(
+        "downgrade", help="Reverte migracoes Alembic."
+    )
+    downgrade_parser.add_argument(
+        "--revision", required=True, help="Revisao alvo (ex.: '-1' ou um hash)."
+    )
 
 
 def _add_seed_parser(subparsers: argparse._SubParsersAction) -> None:
@@ -56,9 +63,13 @@ def _add_seed_parser(subparsers: argparse._SubParsersAction) -> None:
 
 def _add_collect_parser(subparsers: argparse._SubParsersAction) -> None:
     collect_parser = subparsers.add_parser("collect", help="Executa uma coleta de produtos.")
-    collect_parser.add_argument("--source", required=True, help="Codigo da fonte a coletar (ex.: 'mock').")
+    collect_parser.add_argument(
+        "--source", required=True, help="Codigo da fonte a coletar (ex.: 'mock')."
+    )
     collect_parser.add_argument("--category", default=None, help="Filtra por slug de categoria.")
-    collect_parser.add_argument("--limit", type=int, default=None, help="Limite de itens a coletar.")
+    collect_parser.add_argument(
+        "--limit", type=int, default=None, help="Limite de itens a coletar."
+    )
     collect_parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -81,18 +92,26 @@ def _add_products_parser(subparsers: argparse._SubParsersAction) -> None:
         choices=["opportunity_score", "trend_score", "social_score", "risk_score"],
         help="Campo de pontuacao usado para ordenar (padrao: opportunity_score).",
     )
-    list_parser.add_argument("--limit", type=int, default=20, help="Numero maximo de produtos (padrao: 20).")
+    list_parser.add_argument(
+        "--limit", type=int, default=20, help="Numero maximo de produtos (padrao: 20)."
+    )
 
-    show_parser = products_subparsers.add_parser("show", help="Exibe o detalhe completo de um produto.")
+    show_parser = products_subparsers.add_parser(
+        "show", help="Exibe o detalhe completo de um produto."
+    )
     show_parser.add_argument("product_id", type=int, help="Id do produto.")
 
     rank_parser = products_subparsers.add_parser(
         "rank", help="Exibe o ranking de produtos por Opportunity Score."
     )
     rank_parser.add_argument("--category", default=None, help="Filtra por slug de categoria.")
-    rank_parser.add_argument("--limit", type=int, default=20, help="Numero maximo de produtos (padrao: 20).")
+    rank_parser.add_argument(
+        "--limit", type=int, default=100, help="Numero maximo de produtos (padrao: 100)."
+    )
 
-    approve_parser = products_subparsers.add_parser("approve", help="Aprova manualmente um produto.")
+    approve_parser = products_subparsers.add_parser(
+        "approve", help="Aprova manualmente um produto."
+    )
     approve_parser.add_argument("product_id", type=int, help="Id do produto.")
     approve_parser.add_argument("--notes", default=None, help="Observacoes sobre a aprovacao.")
 
@@ -104,18 +123,26 @@ def _add_products_parser(subparsers: argparse._SubParsersAction) -> None:
         "export", help="Exporta o ranking de oportunidades para CSV ou XLSX."
     )
     export_parser.add_argument(
-        "--format", dest="export_format", default="xlsx", choices=["csv", "xlsx"], help="Formato de saida."
+        "--format",
+        dest="export_format",
+        default="xlsx",
+        choices=["csv", "xlsx"],
+        help="Formato de saida.",
     )
     export_parser.add_argument("--output", default=None, help="Caminho do arquivo de saida.")
     export_parser.add_argument("--category", default=None, help="Filtra por slug de categoria.")
-    export_parser.add_argument("--min-opportunity", type=float, default=None, dest="min_opportunity")
+    export_parser.add_argument(
+        "--min-opportunity", type=float, default=None, dest="min_opportunity"
+    )
     export_parser.add_argument("--max-risk", type=float, default=None, dest="max_risk")
     export_parser.add_argument("--limit", type=int, default=100, help="Numero maximo de produtos.")
 
 
 def _add_common_filters(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--category", default=None, help="Filtra por slug de categoria.")
-    parser.add_argument("--age-range", default=None, dest="age_range", help="Filtra por codigo de faixa etaria.")
+    parser.add_argument(
+        "--age-range", default=None, dest="age_range", help="Filtra por codigo de faixa etaria."
+    )
     parser.add_argument(
         "--status",
         default=None,
@@ -144,6 +171,15 @@ def _add_scheduler_parser(subparsers: argparse._SubParsersAction) -> None:
     )
 
 
+def _add_enrichment_parser(subparsers: argparse._SubParsersAction) -> None:
+    parser = subparsers.add_parser(
+        "enrichment", help="Valida os melhores produtos em fontes externas com cache."
+    )
+    commands = parser.add_subparsers(dest="enrichment_command", required=True)
+    commands.add_parser("start", help="Inicia o worker periodico de enriquecimento.")
+    commands.add_parser("run-once", help="Executa uma rodada e encerra.")
+
+
 def main(argv: list[str] | None = None) -> int:
     """Ponto de entrada da CLI: analisa os argumentos e despacha para o handler correto."""
     parser = build_parser()
@@ -153,4 +189,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

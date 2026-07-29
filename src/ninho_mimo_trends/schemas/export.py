@@ -33,3 +33,9 @@ class ExportRow(BaseModel):
     main_url: str | None
     affiliate_url: str | None
     last_collected_at: datetime | None
+    google_trend_status: str | None = None
+    google_trend_score: Decimal | None = None
+    google_trend_keyword: str | None = None
+    ml_status: str | None = None
+    ml_score: Decimal | None = None
+    ml_competitors: int | None = None

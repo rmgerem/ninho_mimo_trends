@@ -12,8 +12,6 @@
 #   docker compose logs -f scheduler   # acompanhe as coletas
 # ============================================================
 
-version: "3.9"
-
 services:
 
   # ----------------------------------------------------------
@@ -110,6 +108,30 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+
+  # ----------------------------------------------------------
+  # Enricher — valida somente os melhores candidatos, com cache
+  # ----------------------------------------------------------
+  enricher:
+    build: .
+    container_name: nmt_enricher
+    restart: unless-stopped
+    command: ["enrichment", "start"]
+    env_file: .env.docker.local
+    environment:
+      DB_HOST: postgres
+      APP_ENV: PROD
+      LOG_LEVEL: INFO
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    networks:
+      - nmt_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ----------------------------------------------------------
   # Pushgateway — recebe metricas push do scheduler

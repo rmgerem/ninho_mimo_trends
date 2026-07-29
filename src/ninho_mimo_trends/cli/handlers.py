@@ -9,7 +9,12 @@ import sys
 from ninho_mimo_trends.cli import exit_codes
 from ninho_mimo_trends.cli.commands.approve_product import run_approve_product
 from ninho_mimo_trends.cli.commands.collect import run_collect
-from ninho_mimo_trends.cli.commands.database import check_database, downgrade_database, upgrade_database
+from ninho_mimo_trends.cli.commands.database import (
+    check_database,
+    downgrade_database,
+    upgrade_database,
+)
+from ninho_mimo_trends.cli.commands.enrichment import run_enrichment_once, run_enrichment_start
 from ninho_mimo_trends.cli.commands.export_products import run_export_products
 from ninho_mimo_trends.cli.commands.list_products import run_list_products
 from ninho_mimo_trends.cli.commands.rank_products import run_rank_products
@@ -17,6 +22,7 @@ from ninho_mimo_trends.cli.commands.reject_product import run_reject_product
 from ninho_mimo_trends.cli.commands.scheduler import run_scheduler_once, run_scheduler_start
 from ninho_mimo_trends.cli.commands.seed import run_seed
 from ninho_mimo_trends.cli.commands.show_product import run_show_product
+from ninho_mimo_trends.configuration.settings import Settings
 from ninho_mimo_trends.exceptions import (
     CollectorError,
     ConfigurationError,
@@ -24,7 +30,6 @@ from ninho_mimo_trends.exceptions import (
     ExportError,
     ProductValidationError,
 )
-from ninho_mimo_trends.configuration.settings import Settings
 from ninho_mimo_trends.logging_config.logger import configure_logging
 from ninho_mimo_trends.models.product import Product
 
@@ -72,6 +77,8 @@ def _route(args: argparse.Namespace, settings: Settings) -> int:
         return _handle_products(args)
     if args.command == "scheduler":
         return _handle_scheduler(args, settings)
+    if args.command == "enrichment":
+        return _handle_enrichment(args, settings)
     raise ProductValidationError(f"Comando desconhecido: {args.command}")
 
 
@@ -185,6 +192,21 @@ def _handle_scheduler(args: argparse.Namespace, settings: Settings) -> int:
     raise ProductValidationError(f"Subcomando de scheduler desconhecido: {args.scheduler_command}")
 
 
+def _handle_enrichment(args: argparse.Namespace, settings: Settings) -> int:
+    if args.enrichment_command == "start":
+        print("Iniciando worker de enriquecimento externo.")
+        run_enrichment_start(settings)
+        return exit_codes.SUCCESS
+    if args.enrichment_command == "run-once":
+        print("Executando uma rodada de enriquecimento externo...")
+        run_enrichment_once(settings)
+        print("Enriquecimento concluido.")
+        return exit_codes.SUCCESS
+    raise ProductValidationError(
+        f"Subcomando de enrichment desconhecido: {args.enrichment_command}"
+    )
+
+
 def _print_products_table(products: list[Product]) -> None:
     if not products:
         print("Nenhum produto encontrado.")
@@ -195,8 +217,16 @@ def _print_products_table(products: list[Product]) -> None:
     print("-" * len(header))
     for product in products:
         latest_score = product.scores[-1] if product.scores else None
-        opportunity = f"{latest_score.opportunity_score:.2f}" if latest_score and latest_score.opportunity_score is not None else "-"
-        risk = f"{latest_score.risk_score:.2f}" if latest_score and latest_score.risk_score is not None else "-"
+        opportunity = (
+            f"{latest_score.opportunity_score:.2f}"
+            if latest_score and latest_score.opportunity_score is not None
+            else "-"
+        )
+        risk = (
+            f"{latest_score.risk_score:.2f}"
+            if latest_score and latest_score.risk_score is not None
+            else "-"
+        )
         print(
             f"{product.id:>5}  {product.normalized_name[:40]:<40}  {product.category.slug:<20}  "
             f"{opportunity:>11}  {risk:>10}  {product.moderation_status.value:<10}"
