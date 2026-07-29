@@ -35,6 +35,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ----------------------------------------------------------
 COPY src/ ./src/
 COPY configs/ ./configs/
+COPY data/fixtures/ ./data/fixtures/
 COPY migrations/ ./migrations/
 COPY alembic.ini ./
 COPY pyproject.toml ./

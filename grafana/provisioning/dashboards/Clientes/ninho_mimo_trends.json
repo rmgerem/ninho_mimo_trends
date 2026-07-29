@@ -5,7 +5,7 @@
       "label": "PostgreSQL - ninho_mimo_trends",
       "description": "Data source PostgreSQL apontando para o banco ninho_mimo_trends.",
       "type": "datasource",
-      "pluginId": "postgres",
+      "pluginId": "grafana-postgresql-datasource",
       "pluginName": "PostgreSQL"
     }
   ],
@@ -18,7 +18,7 @@
     },
     {
       "type": "datasource",
-      "id": "postgres",
+      "id": "grafana-postgresql-datasource",
       "name": "PostgreSQL",
       "version": "1.0.0"
     },
@@ -48,7 +48,7 @@
   "tags": ["cliente", "ninho-mimo", "afiliado"],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 11,
   "editable": false,
   "graphTooltip": 0,
   "refresh": "5m",
@@ -61,19 +61,7 @@
     "refresh_intervals": ["5m", "15m", "30m", "1h"]
   },
   "templating": {
-    "list": [
-      {
-        "name": "categoria",
-        "label": "Filtrar por Categoria",
-        "type": "query",
-        "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
-        "query": "SELECT name FROM tb_categories ORDER BY name",
-        "multi": true,
-        "includeAll": true,
-        "refresh": 1,
-        "sort": 1
-      }
-    ]
+    "list": []
   },
   "panels": [
     {
@@ -102,7 +90,7 @@
       "id": 3,
       "type": "stat",
       "title": "🏆 Top 1 — Melhor Oportunidade do Dia",
-      "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
       "gridPos": { "h": 5, "w": 8, "x": 0, "y": 4 },
       "fieldConfig": {
         "defaults": {
@@ -128,10 +116,10 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.normalized_name AS \"Produto\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.name IN ($categoria) ORDER BY pi.opportunity_score DESC LIMIT 1 OFFSET 0"
+          "rawSql": "WITH latest AS (SELECT DISTINCT ON (product_id) product_id, opportunity_score, indicated_at FROM tb_product_indications WHERE $__timeFilter(indicated_at) ORDER BY product_id, indicated_at DESC) SELECT p.normalized_name AS \"Produto\" FROM latest pi JOIN tb_products p ON p.id = pi.product_id ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 1 OFFSET 0"
         }
       ]
     },
@@ -139,7 +127,7 @@
       "id": 4,
       "type": "stat",
       "title": "🥈 Top 2",
-      "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
       "gridPos": { "h": 5, "w": 8, "x": 8, "y": 4 },
       "fieldConfig": {
         "defaults": {
@@ -165,10 +153,10 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.normalized_name AS \"Produto\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.name IN ($categoria) ORDER BY pi.opportunity_score DESC LIMIT 1 OFFSET 1"
+          "rawSql": "WITH latest AS (SELECT DISTINCT ON (product_id) product_id, opportunity_score, indicated_at FROM tb_product_indications WHERE $__timeFilter(indicated_at) ORDER BY product_id, indicated_at DESC) SELECT p.normalized_name AS \"Produto\" FROM latest pi JOIN tb_products p ON p.id = pi.product_id ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 1 OFFSET 1"
         }
       ]
     },
@@ -176,7 +164,7 @@
       "id": 5,
       "type": "stat",
       "title": "🥉 Top 3",
-      "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
       "gridPos": { "h": 5, "w": 8, "x": 16, "y": 4 },
       "fieldConfig": {
         "defaults": {
@@ -202,10 +190,10 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.normalized_name AS \"Produto\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.name IN ($categoria) ORDER BY pi.opportunity_score DESC LIMIT 1 OFFSET 2"
+          "rawSql": "WITH latest AS (SELECT DISTINCT ON (product_id) product_id, opportunity_score, indicated_at FROM tb_product_indications WHERE $__timeFilter(indicated_at) ORDER BY product_id, indicated_at DESC) SELECT p.normalized_name AS \"Produto\" FROM latest pi JOIN tb_products p ON p.id = pi.product_id ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 1 OFFSET 2"
         }
       ]
     },
@@ -214,7 +202,7 @@
       "type": "table",
       "title": "🛒 Todos os Produtos em Alta",
       "description": "Lista completa das melhores oportunidades. Os mais quentes estão no topo.",
-      "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
       "gridPos": { "h": 15, "w": 24, "x": 0, "y": 9 },
       "fieldConfig": {
         "defaults": {
@@ -274,11 +262,17 @@
             "matcher": { "id": "byName", "options": "Link Afiliado" },
             "properties": [
               { "id": "custom.cellOptions", "value": { "type": "auto" } },
-              { "id": "links", "value": [ { "title": "🔗 Copiar Link", "url": "http://localhost:8000/go?product_id=${__data.fields.ID}&user=${__user.login}", "targetBlank": true } ] }
+              { "id": "links", "value": [ { "title": "Abrir Link Afiliado", "url": "${__data.fields.AffiliateURL}", "targetBlank": true } ] }
             ]
           },
           {
             "matcher": { "id": "byName", "options": "ID" },
+            "properties": [
+              { "id": "custom.hidden", "value": true }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "AffiliateURL" },
             "properties": [
               { "id": "custom.hidden", "value": true }
             ]
@@ -299,10 +293,10 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "ninho-mimo-trends-postgres" },
+          "datasource": { "type": "grafana-postgresql-datasource", "uid": "ninho-mimo-trends-postgres" },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT p.id AS \"ID\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", '🔗 Clique Aqui' AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) AND c.name IN ($categoria) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 100"
+          "rawSql": "WITH latest AS (SELECT DISTINCT ON (product_id) product_id, category_id, opportunity_score, trend_status, indicated_at FROM tb_product_indications WHERE $__timeFilter(indicated_at) ORDER BY product_id, indicated_at DESC) SELECT p.id AS \"ID\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", 'Abrir oferta' AS \"Link Afiliado\", ps.affiliate_url AS \"AffiliateURL\", ps.image_url AS \"Imagem\" FROM latest pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id JOIN LATERAL (SELECT offer.current_price, offer.commission_rate, offer.seller_name, offer.affiliate_url, offer.image_url FROM tb_product_sources offer JOIN tb_sources source ON source.id = offer.source_id WHERE offer.product_id = p.id AND source.code = 'shopee_affiliate' AND offer.affiliate_url IS NOT NULL ORDER BY offer.commission_rate DESC NULLS LAST, offer.collected_at DESC LIMIT 1) ps ON true ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 100"
         }
       ]
     }
