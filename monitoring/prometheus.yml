@@ -1,0 +1,33 @@
+global:
+  scrape_interval: 30s      # Faz scrape a cada 30 segundos
+  evaluation_interval: 30s
+
+# Regras de alerta (opcional — adicione arquivos em monitoring/rules/)
+rule_files: []
+  # - "monitoring/rules/*.yml"
+
+scrape_configs:
+
+  # ----------------------------------------------------------------
+  # Prometheus scraping a si mesmo (para diagnostico)
+  # ----------------------------------------------------------------
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # ----------------------------------------------------------------
+  # Pushgateway — onde o scheduler envia as metricas de coleta
+  # ----------------------------------------------------------------
+  - job_name: "nmt_scheduler"
+    honor_labels: true          # preserva os labels enviados pelo scheduler
+    static_configs:
+      - targets: ["pushgateway:9091"]
+    scrape_interval: 60s        # intervalos maiores por ser batch, nao realtime
+
+  # ----------------------------------------------------------------
+  # Postgres Exporter (opcional — adicione o container se quiser
+  # monitorar latencia de queries, conexoes, etc.)
+  # ----------------------------------------------------------------
+  # - job_name: "postgres"
+  #   static_configs:
+  #     - targets: ["postgres-exporter:9187"]

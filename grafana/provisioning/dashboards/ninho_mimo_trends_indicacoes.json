@@ -95,31 +95,7 @@
     ]
   },
   "templating": {
-    "list": [
-      {
-        "name": "category",
-        "type": "query",
-        "label": "Categoria",
-        "datasource": {
-          "type": "postgres",
-          "uid": "aftkqp1hx3x8ga"
-        },
-        "query": {
-          "rawQuery": true,
-          "format": "table",
-          "rawSql": "SELECT c.slug AS __value, c.name AS __text FROM tb_categories c ORDER BY c.name"
-        },
-        "refresh": 2,
-        "multi": true,
-        "includeAll": true,
-        "sort": 1,
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        }
-      }
-    ]
+    "list": []
   },
   "panels": [
     {
@@ -134,7 +110,7 @@
       },
       "options": {
         "mode": "markdown",
-        "content": "**Ninho & Mimo Trends — Indicações da automação.** Mostra quais produtos o sistema indicou (opportunity_score acima do limiar configurado em `configs/scoring_rules.json → indication.opportunity_threshold`) e quando, para orientar a produção de conteúdo. Use a variável **Categoria** e o seletor de período no topo para filtrar. Fonte dos dados: tabela `tb_product_indications` (ver `docs/database.md` e `docs/grafana.md`)."
+        "content": "**Ninho & Mimo Trends — Indicações da automação.** Mostra quais produtos o sistema indicou (opportunity_score acima do limiar configurado em `configs/scoring_rules.json → indication.opportunity_threshold`) e quando, para orientar a produção de conteúdo. Use o seletor de período no topo (canto superior direito) para filtrar. Fonte dos dados: tabela `tb_product_indications` (ver `docs/database.md` e `docs/grafana.md`)."
       }
     },
     {
@@ -193,7 +169,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring})"
+          "rawSql": "SELECT COUNT(*) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at)"
         }
       ]
     },
@@ -253,7 +229,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(DISTINCT pi.product_id) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring})"
+          "rawSql": "SELECT COUNT(DISTINCT pi.product_id) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at)"
         }
       ]
     },
@@ -317,7 +293,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT AVG(pi.opportunity_score) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring})"
+          "rawSql": "SELECT AVG(pi.opportunity_score) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at)"
         }
       ]
     },
@@ -381,7 +357,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) AND pi.risk_score >= 55"
+          "rawSql": "SELECT COUNT(*) AS \"value\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND pi.risk_score >= 55"
         }
       ]
     },
@@ -438,7 +414,7 @@
           },
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT $__timeGroup(pi.indicated_at, '1d') AS time, COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) GROUP BY 1 ORDER BY 1"
+          "rawSql": "SELECT $__timeGroup(pi.indicated_at, '1d') AS time, COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) GROUP BY 1 ORDER BY 1"
         }
       ]
     },
@@ -483,7 +459,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT c.name AS \"Categoria\", COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) GROUP BY c.name ORDER BY 2 DESC"
+          "rawSql": "SELECT c.name AS \"Categoria\", COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) GROUP BY c.name ORDER BY 2 DESC"
         }
       ]
     },
@@ -595,7 +571,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT CASE WHEN pi.risk_score >= 75 THEN 'CRITICAL' WHEN pi.risk_score >= 55 THEN 'HIGH' WHEN pi.risk_score >= 30 THEN 'MEDIUM' ELSE 'LOW' END AS \"Nível de risco\", COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) GROUP BY 1"
+          "rawSql": "SELECT CASE WHEN pi.risk_score >= 75 THEN 'CRITICAL' WHEN pi.risk_score >= 55 THEN 'HIGH' WHEN pi.risk_score >= 30 THEN 'MEDIUM' ELSE 'LOW' END AS \"Nível de risco\", COUNT(*) AS \"Indicações\" FROM tb_product_indications pi JOIN tb_categories c ON c.id = pi.category_id WHERE $__timeFilter(pi.indicated_at) GROUP BY 1"
         }
       ]
     },
@@ -625,85 +601,165 @@
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Oportunidade" },
+            "matcher": {
+              "id": "byName",
+              "options": "Oportunidade"
+            },
             "properties": [
               {
                 "id": "custom.cellOptions",
-                "value": { "type": "color-background", "mode": "gradient" }
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
               },
               {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
                   "steps": [
-                    { "color": "red", "value": null },
-                    { "color": "orange", "value": 40 },
-                    { "color": "yellow", "value": 55 },
-                    { "color": "green", "value": 70 }
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 40
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 55
+                    },
+                    {
+                      "color": "green",
+                      "value": 70
+                    }
                   ]
                 }
               },
-              { "id": "unit", "value": "short" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Risco" },
+            "matcher": {
+              "id": "byName",
+              "options": "Risco"
+            },
             "properties": [
               {
                 "id": "custom.cellOptions",
-                "value": { "type": "color-background", "mode": "gradient" }
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
               },
               {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
                   "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 30 },
-                    { "color": "orange", "value": 55 },
-                    { "color": "red", "value": 75 }
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "orange",
+                      "value": 55
+                    },
+                    {
+                      "color": "red",
+                      "value": 75
+                    }
                   ]
                 }
               },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Comissão %" },
+            "matcher": {
+              "id": "byName",
+              "options": "Comissão %"
+            },
             "properties": [
               {
                 "id": "custom.cellOptions",
-                "value": { "type": "color-background", "mode": "gradient" }
+                "value": {
+                  "type": "color-background",
+                  "mode": "gradient"
+                }
               },
               {
                 "id": "thresholds",
                 "value": {
                   "mode": "absolute",
                   "steps": [
-                    { "color": "red", "value": null },
-                    { "color": "yellow", "value": 5 },
-                    { "color": "green", "value": 10 }
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 5
+                    },
+                    {
+                      "color": "green",
+                      "value": 10
+                    }
                   ]
                 }
               },
-              { "id": "unit", "value": "percent" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Preço (R$)" },
+            "matcher": {
+              "id": "byName",
+              "options": "Preço (R$)"
+            },
             "properties": [
-              { "id": "unit", "value": "currencyBRL" },
-              { "id": "decimals", "value": 2 }
+              {
+                "id": "unit",
+                "value": "currencyBRL"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Link Afiliado" },
+            "matcher": {
+              "id": "byName",
+              "options": "Link Afiliado"
+            },
             "properties": [
               {
                 "id": "custom.cellOptions",
-                "value": { "type": "auto" }
+                "value": {
+                  "type": "auto"
+                }
               },
               {
                 "id": "links",
@@ -718,7 +774,10 @@
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Imagem" },
+            "matcher": {
+              "id": "byName",
+              "options": "Imagem"
+            },
             "properties": [
               {
                 "id": "links",
@@ -752,7 +811,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT pi.indicated_at AS \"Data\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.risk_score AS \"Risco\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço (R$)\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", ps.affiliate_url AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) AND c.slug IN (${category:sqlstring}) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 200"
+          "rawSql": "SELECT pi.indicated_at AS \"Data\", p.normalized_name AS \"Produto\", c.name AS \"Categoria\", pi.opportunity_score AS \"Oportunidade\", pi.risk_score AS \"Risco\", pi.trend_status AS \"Tendência\", ps.current_price AS \"Preço (R$)\", ps.commission_rate AS \"Comissão %\", ps.seller_name AS \"Loja\", ps.affiliate_url AS \"Link Afiliado\", ps.image_url AS \"Imagem\" FROM tb_product_indications pi JOIN tb_products p ON p.id = pi.product_id JOIN tb_categories c ON c.id = pi.category_id LEFT JOIN tb_product_sources ps ON ps.product_id = p.id WHERE $__timeFilter(pi.indicated_at) ORDER BY pi.opportunity_score DESC, pi.indicated_at DESC LIMIT 200"
         }
       ]
     }

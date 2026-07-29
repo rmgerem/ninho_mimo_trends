@@ -10,3 +10,4 @@ beautifulsoup4>=4.12,<5.0
 pandas>=2.2,<3.0
 openpyxl>=3.1,<4.0
 rapidfuzz>=3.6,<4.0
+prometheus-client>=0.20,<1.0

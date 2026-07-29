@@ -4,6 +4,8 @@ Responsabilidades:
 - Ler ``configs/sources.json`` e ``categories_to_collect`` de cada fonte ativa.
 - Executar ``CollectionService.run_collection()`` para cada (source, category)
   respeitando o ``collection_interval_minutes`` configurado.
+- Apos cada coleta, fazer push das metricas para o Prometheus Pushgateway via
+  ``MetricsPusher`` (desabilitado silenciosamente se a URL nao estiver configurada).
 - Rodar em loop continuo, adequado para ser o entrypoint de um container Docker
   ou processo de background.
 
@@ -12,7 +14,6 @@ e suficiente para o volume atual e evita dependencias desnecessarias.
 
 Uso:
     python -m ninho_mimo_trends scheduler start
-    python -m ninho_mimo_trends scheduler status
     python -m ninho_mimo_trends scheduler run-once  # executa todas as fontes uma vez e sai
 
 Logs estruturados sao emitidos para cada execucao, compativeis com o
@@ -33,6 +34,7 @@ from ninho_mimo_trends.configuration.json_loader import load_json_config
 from ninho_mimo_trends.configuration.settings import Settings
 from ninho_mimo_trends.database.unit_of_work import UnitOfWork
 from ninho_mimo_trends.exceptions import CollectorConfigurationError, SourceUnavailableError
+from ninho_mimo_trends.metrics.pusher import MetricsPusher
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +77,9 @@ class CronRunner:
         self._collection_service = CollectionService()
         self._schedules: list[_SourceSchedule] = []
         self._running = True
+        self._pusher = MetricsPusher(
+            getattr(settings, "prometheus_pushgateway_url", None)
+        )
 
         # Captura SIGTERM/SIGINT para encerramento gracioso (Docker stop)
         signal.signal(signal.SIGTERM, self._handle_stop)
@@ -116,7 +121,7 @@ class CronRunner:
         return schedules
 
     def _run_collection(self, schedule: _SourceSchedule) -> None:
-        """Executa a coleta de uma unica (fonte, categoria) e atualiza o last_run_at."""
+        """Executa a coleta de uma unica (fonte, categoria), atualiza last_run_at e empurra metricas."""
         execution_id = uuid.uuid4()
         logger.info(
             "Iniciando coleta: source=%s category=%s execution_id=%s",
@@ -124,6 +129,9 @@ class CronRunner:
             schedule.category,
             execution_id,
         )
+        started_at = time.monotonic()
+        summary = None
+
         try:
             with UnitOfWork() as uow:
                 summary = self._collection_service.run_collection(
@@ -158,7 +166,17 @@ class CronRunner:
                 schedule.category,
             )
         finally:
+            duration = time.monotonic() - started_at
             schedule.last_run_at = datetime.now(tz=timezone.utc)
+
+            # Push de metricas — sempre tenta, mesmo se houve excecao
+            if summary is not None:
+                self._pusher.push_collection_result(
+                    summary,
+                    source_code=schedule.source_code,
+                    category=schedule.category,
+                    duration_seconds=duration,
+                )
 
     def start(self) -> None:
         """Inicia o loop de agendamento. Bloqueia ate receber SIGTERM/SIGINT."""

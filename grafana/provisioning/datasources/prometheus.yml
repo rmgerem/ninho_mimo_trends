@@ -1,0 +1,16 @@
+apiVersion: 1
+
+# Provisiona o datasource Prometheus automaticamente.
+# Permite criar paineis de observabilidade (metricas do scheduler)
+# diretamente no Grafana sem configuracao manual.
+datasources:
+  - name: Prometheus - nmt
+    type: prometheus
+    uid: nmt-prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: false
+    editable: true
+    jsonData:
+      httpMethod: POST
+      prometheusType: Prometheus

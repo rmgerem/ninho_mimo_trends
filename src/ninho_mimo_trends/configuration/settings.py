@@ -42,10 +42,15 @@ class Settings(BaseSettings):
     http_timeout_seconds: float = 30.0
     http_max_retries: int = 3
     http_retry_backoff_seconds: float = 2.0
-    http_user_agent: str = "NinhoMimoTrends/1.0"
+    http_user_agent: str = "NinhoMimoTrends/1.1"
 
     shopee_affiliate_app_id: str | None = None
     shopee_affiliate_secret: str | None = None
+
+    # ---- Observabilidade ----
+    prometheus_pushgateway_url: str | None = None
+    """URL do Prometheus Pushgateway. Ex.: http://pushgateway:9091
+    Deixe em branco para desabilitar o push de metricas."""
 
     @property
     def database_url(self) -> str:
