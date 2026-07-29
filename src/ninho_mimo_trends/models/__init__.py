@@ -12,6 +12,7 @@ from ninho_mimo_trends.models.product_score import ProductScore
 from ninho_mimo_trends.models.product_source import ProductSource
 from ninho_mimo_trends.models.publication_status import PublicationStatus
 from ninho_mimo_trends.models.source import Source
+from ninho_mimo_trends.models.customer import Customer
 
 __all__ = [
     "Base",
@@ -26,4 +27,5 @@ __all__ = [
     "ProductSource",
     "PublicationStatus",
     "Source",
+    "Customer",
 ]

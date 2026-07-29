@@ -3,12 +3,12 @@
 from ninho_mimo_trends.database.engine import get_engine
 from ninho_mimo_trends.database.healthcheck import check_database_connection
 from ninho_mimo_trends.database.session import get_session_factory, session_scope
-from ninho_mimo_trends.database.unit_of_work import UnitOfWork
+from ninho_mimo_trends.database.session import get_session_factory, session_scope
 
 __all__ = [
     "get_engine",
     "check_database_connection",
     "get_session_factory",
     "session_scope",
-    "UnitOfWork",
+    "session_scope",
 ]
