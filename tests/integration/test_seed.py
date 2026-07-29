@@ -10,7 +10,7 @@ def test_seed_creates_expected_reference_data() -> None:
     created = run_seed()
     assert created["categories"] > 0
     assert created["age_ranges"] == 7
-    assert created["sources"] == 2
+    assert created["sources"] == 3
 
     with UnitOfWork() as uow:
         assert uow.categories.get_by_slug("criancas-brinquedos") is not None

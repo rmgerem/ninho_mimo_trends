@@ -31,4 +31,5 @@ class ExportRow(BaseModel):
     risk_level: str
     moderation_status: str
     main_url: str | None
+    affiliate_url: str | None
     last_collected_at: datetime | None

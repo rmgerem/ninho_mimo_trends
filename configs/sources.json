@@ -21,6 +21,17 @@
       "requires_authentication": false,
       "collection_interval_minutes": 180,
       "terms_url": null
+    },
+    {
+      "code": "shopee_affiliate",
+      "name": "Shopee (Affiliate Open API)",
+      "base_url": "https://open-api.affiliate.shopee.com.br/graphql",
+      "country": "BR",
+      "source_type": "OFFICIAL_API",
+      "is_active": true,
+      "requires_authentication": true,
+      "collection_interval_minutes": 180,
+      "terms_url": "https://affiliate.shopee.com.br/open_api"
     }
   ]
 }

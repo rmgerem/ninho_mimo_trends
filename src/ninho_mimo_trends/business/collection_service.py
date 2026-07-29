@@ -230,6 +230,7 @@ class CollectionService:
             "ranking_position": collected.ranking_position,
             "availability": collected.availability,
             "collected_at": collected.collected_at,
+            "affiliate_url": collected.affiliate_url,
         }
         product_source, _ = uow.products.get_or_create_product_source(
             product_id=product.id,

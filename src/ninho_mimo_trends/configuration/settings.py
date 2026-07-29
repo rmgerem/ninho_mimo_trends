@@ -44,6 +44,9 @@ class Settings(BaseSettings):
     http_retry_backoff_seconds: float = 2.0
     http_user_agent: str = "NinhoMimoTrends/1.0"
 
+    shopee_affiliate_app_id: str | None = None
+    shopee_affiliate_secret: str | None = None
+
     @property
     def database_url(self) -> str:
         """Monta a URL de conexao SQLAlchemy para o PostgreSQL configurado."""

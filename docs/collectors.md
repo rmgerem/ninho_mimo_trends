@@ -31,6 +31,7 @@ class BaseCollector(ABC):
 |---|---|
 | `mock` | `MockCollector` |
 | `public_open_data` | `PublicSourceCollector` |
+| `shopee_affiliate` | `ShopeeAffiliateCollector` |
 
 Registrar um novo coletor é feito chamando
 `CollectorRegistry().register("codigo_da_fonte", MinhaClasseCollector)`.
@@ -84,6 +85,37 @@ Por design, este projeto **não** implementa:
 - Bypass de CAPTCHA, login ou proteções tipo Cloudflare;
 - Uso de APIs pagas sem uma abstração clara, opt-in e desabilitada por padrão;
 - Scraping agressivo que ignore `robots.txt` ou limites de taxa.
+
+## `ShopeeAffiliateCollector` — API oficial de afiliados (habilitado)
+
+Integração com a **Shopee Affiliate Open API** (GraphQL,
+`https://open-api.affiliate.shopee.com.br/graphql`), usando a query
+`productOfferV2`. Diferente do `PublicSourceCollector`, esta é uma API
+oficial que exige credenciais de uma conta de afiliado real — não é
+scraping nem automação de navegador.
+
+- **Credenciais**: `SHOPEE_AFFILIATE_APP_ID` e `SHOPEE_AFFILIATE_SECRET`
+  no `.env` (nunca versionadas). Sem elas, `validate_configuration()`
+  levanta `CollectorConfigurationError`.
+- **Autenticação**: assinatura por requisição, cabeçalho
+  `Authorization: SHA256 Credential={app_id}, Timestamp={ts}, Signature={sig}`,
+  onde `sig = sha256(f"{app_id}{ts}{payload_json}{secret}").hexdigest()`.
+  Verificado empiricamente contra a API real em 2026-07-29.
+- **Categoria obrigatória**: a API da Shopee não usa a taxonomia interna
+  deste projeto (busca é por `keyword` livre). Por isso, `--category`
+  é **obrigatório** para este coletor: o slug é traduzido para um termo
+  de busca a partir do nome legível em `configs/categories.json`, e todo
+  produto retornado é marcado com esse mesmo slug.
+- **Link de afiliado**: o campo `offerLink` retornado pela API (link
+  monetizado, distinto da URL pública do produto) é persistido em
+  `tb_product_sources.affiliate_url` e exibido em `products show` e
+  `products export`.
+- **Paginação**: 20 itens por página, respeitando `pageInfo.hasNextPage`,
+  com um intervalo (`HTTP_RETRY_BACKOFF_SECONDS`) entre páginas.
+
+```bash
+ninho-mimo-trends collect --source shopee_affiliate --category criancas-brinquedos --limit 20
+```
 
 ## Fluxo de erros
 

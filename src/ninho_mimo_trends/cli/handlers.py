@@ -200,6 +200,8 @@ def _print_product_detail(product: Product) -> None:
             f"avaliacao={source.rating}, vendas={source.sales_count}, "
             f"disponibilidade={source.availability.value}"
         )
+        if source.affiliate_url:
+            print(f"    Link de afiliado: {source.affiliate_url}")
     if product.scores:
         latest_score = product.scores[-1]
         print("Pontuacoes mais recentes:")

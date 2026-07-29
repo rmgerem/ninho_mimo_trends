@@ -42,6 +42,7 @@ _HEADER = [
     "Risco",
     "Status de moderacao",
     "URL principal",
+    "Link de afiliado",
     "Data da ultima coleta",
 ]
 
@@ -86,6 +87,7 @@ def _build_export_row(position: int, product: Product, risk_thresholds: dict[str
         risk_level=risk_level.value if risk_level else "-",
         moderation_status=product.moderation_status.value,
         main_url=sources[0].original_url if sources else None,
+        affiliate_url=next((s.affiliate_url for s in sources if s.affiliate_url), None),
         last_collected_at=max(collected_dates) if collected_dates else None,
     )
 
@@ -181,6 +183,7 @@ class ExportService:
             row.risk_level,
             row.moderation_status,
             row.main_url or "-",
+            row.affiliate_url or "-",
             row.last_collected_at.strftime("%Y-%m-%d %H:%M") if row.last_collected_at else "-",
         ]
 
@@ -198,7 +201,7 @@ class ExportService:
                 cell.number_format = _CURRENCY_FORMAT
             elif column_index in (13, 14, 15, 16):  # Scores
                 cell.number_format = _SCORE_FORMAT
-            elif column_index == 21 and isinstance(value, datetime):  # Data da ultima coleta
+            elif column_index == 22 and isinstance(value, datetime):  # Data da ultima coleta
                 cell.number_format = _DATE_FORMAT
 
     def _adjust_column_widths(self, worksheet: Worksheet) -> None:

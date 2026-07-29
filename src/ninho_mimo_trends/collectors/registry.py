@@ -5,6 +5,7 @@ from __future__ import annotations
 from ninho_mimo_trends.collectors.base import BaseCollector
 from ninho_mimo_trends.collectors.mock_collector import MockCollector
 from ninho_mimo_trends.collectors.public_source_collector import PublicSourceCollector
+from ninho_mimo_trends.collectors.shopee_affiliate_collector import ShopeeAffiliateCollector
 from ninho_mimo_trends.configuration.settings import Settings
 from ninho_mimo_trends.exceptions import SourceUnavailableError
 from ninho_mimo_trends.models.source import Source
@@ -12,6 +13,7 @@ from ninho_mimo_trends.models.source import Source
 _COLLECTOR_CLASSES: dict[str, type[BaseCollector]] = {
     "mock": MockCollector,
     "public_open_data": PublicSourceCollector,
+    "shopee_affiliate": ShopeeAffiliateCollector,
 }
 
 
