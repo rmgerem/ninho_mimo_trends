@@ -4,6 +4,113 @@ Este guia descreve a operação cotidiana do Ninho & Mimo Trends no Windows
 com PowerShell. Execute os comandos na raiz do projeto, onde está o arquivo
 `docker-compose.yml`.
 
+## Visão rápida para apresentação
+
+Ao executar o comando abaixo, o Docker inicia toda a solução:
+
+```powershell
+docker compose --env-file .env.docker.local up -d
+```
+
+O serviço `scheduler` permanece ativo e executa as coletas automaticamente
+nos intervalos configurados. A extração não acontece apenas uma vez ao subir
+os containers: ela continua agendada enquanto o scheduler estiver ativo.
+
+Fluxo resumido:
+
+```text
+Docker inicia
+→ PostgreSQL fica disponível
+→ migrations atualizam a estrutura do banco
+→ seed garante os dados de referência
+→ scheduler inicia as coletas periódicas
+→ produtos, preços, imagens e pontuações são atualizados
+→ Grafana consulta o PostgreSQL e exibe o dashboard
+```
+
+> **Alerta — execução local:** atualmente os containers rodam no computador
+> local. Se o computador for desligado, o Docker Desktop for encerrado ou a
+> internet cair, as coletas e o acesso dos clientes param. Os dados permanecem
+> nos volumes e o processamento volta quando o Docker e os containers forem
+> iniciados novamente.
+
+> **Alerta — disponibilidade externa:** endereços `localhost` funcionam apenas
+> no próprio computador. Para clientes acessarem pela internet 24 horas por
+> dia, a solução deverá ser implantada em um servidor sempre ligado, com
+> domínio, HTTPS, backup e configuração de segurança.
+
+> **Alerta — custos:** executar localmente não gera cobrança de hospedagem,
+> mas consome energia, internet e recursos do computador.
+
+### Comandos rápidos para uma demonstração
+
+Subir a solução:
+
+```powershell
+docker compose --env-file .env.docker.local up -d
+```
+
+Mostrar que todos os serviços estão ativos:
+
+```powershell
+docker compose --env-file .env.docker.local ps
+```
+
+Mostrar as coletas acontecendo em tempo real:
+
+```powershell
+docker compose --env-file .env.docker.local logs -f scheduler
+```
+
+Pressione `Ctrl+C` para sair dos logs. O scheduler continua rodando.
+
+Executar uma rodada manual para demonstração:
+
+```powershell
+docker compose --env-file .env.docker.local exec scheduler ninho-mimo-trends scheduler run-once
+```
+
+Abrir o dashboard:
+
+```text
+http://localhost:3000
+```
+
+Parar somente as coletas, mantendo banco e dashboard ativos:
+
+```powershell
+docker compose --env-file .env.docker.local stop scheduler
+```
+
+Retomar as coletas:
+
+```powershell
+docker compose --env-file .env.docker.local start scheduler
+```
+
+Parar toda a solução preservando os dados:
+
+```powershell
+docker compose --env-file .env.docker.local down
+```
+
+### Como explicar o estado dos containers
+
+| Serviço | Função | Estado esperado |
+|---|---|---|
+| `postgres` | Armazena produtos, clientes e históricos | `Up (healthy)` |
+| `migrations` | Atualiza a estrutura do banco | `Exited (0)` |
+| `seed` | Cadastra referências e o administrador | `Exited (0)` |
+| `scheduler` | Executa extrações periódicas | `Up` |
+| `web` | Gera links afiliados por usuário | `Up` |
+| `grafana` | Exibe os dashboards | `Up` |
+| `prometheus` | Armazena métricas operacionais | `Up` |
+| `pushgateway` | Recebe métricas do scheduler | `Up` |
+
+`migrations` e `seed` não estão com erro quando aparecem como `Exited (0)`.
+Esses dois containers executam uma tarefa única e encerram normalmente. Um
+estado `Exited` com código diferente de zero exige consulta aos logs.
+
 ## 1. Pré-requisitos
 
 - Docker Desktop instalado e em execução;
@@ -373,4 +480,25 @@ Se algum serviço estiver reiniciando, consulte primeiro:
 ```powershell
 docker compose --env-file .env.docker.local ps -a
 docker compose --env-file .env.docker.local logs --tail 200 NOME_DO_SERVICO
+```
+
+### Mensagem `database system is starting up`
+
+Essa mensagem pode aparecer por alguns segundos quando o Docker Desktop ou o
+PostgreSQL acaba de iniciar. O scheduler está configurado para aguardar o
+banco ficar disponível antes de começar as coletas. A sequência normal no log
+é:
+
+```text
+PostgreSQL ainda indisponivel; nova tentativa em 5 segundos...
+Conexao com o PostgreSQL estabelecida com sucesso.
+Scheduler iniciado.
+```
+
+Se a mensagem continuar por vários minutos, verifique:
+
+```powershell
+docker compose --env-file .env.docker.local ps postgres scheduler
+docker compose --env-file .env.docker.local logs --tail 200 postgres
+docker compose --env-file .env.docker.local restart scheduler
 ```

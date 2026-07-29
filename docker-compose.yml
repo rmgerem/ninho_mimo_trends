@@ -84,7 +84,14 @@ services:
     build: .
     container_name: nmt_scheduler
     restart: unless-stopped
-    command: ["scheduler", "start"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until ninho-mimo-trends database check; do
+          echo "PostgreSQL ainda indisponivel; nova tentativa em 5 segundos..."
+          sleep 5
+        done
+        exec ninho-mimo-trends scheduler start
     env_file: .env.docker.local
     environment:
       DB_HOST: postgres
