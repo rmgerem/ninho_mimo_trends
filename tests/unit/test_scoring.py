@@ -208,3 +208,53 @@ class TestOpportunityScore:
         )
         score, _ = calculate_opportunity_score(inputs, config=scoring_config["opportunity_score"])
         assert Decimal("0") <= score <= Decimal("100")
+
+    def test_higher_commission_increases_opportunity_score(self, scoring_config: dict) -> None:
+        base_inputs = dict(
+            trend_score=Decimal("60.00"),
+            social_score=Decimal("60.00"),
+            risk_level=RiskLevel.LOW,
+            average_rating=Decimal("4.5"),
+            review_count=100,
+            sources_count=2,
+            has_available_source=True,
+            min_price=Decimal("50.00"),
+            max_price=Decimal("100.00"),
+        )
+        low_commission_score, _ = calculate_opportunity_score(
+            OpportunityInputs(average_commission=Decimal("1.0"), **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+        high_commission_score, _ = calculate_opportunity_score(
+            OpportunityInputs(average_commission=Decimal("20.0"), **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+        assert high_commission_score > low_commission_score
+
+    def test_missing_commission_uses_neutral_score_matching_midpoint(self, scoring_config: dict) -> None:
+        base_inputs = dict(
+            trend_score=Decimal("60.00"),
+            social_score=Decimal("60.00"),
+            risk_level=RiskLevel.LOW,
+            average_rating=Decimal("4.5"),
+            review_count=100,
+            sources_count=2,
+            has_available_source=True,
+            min_price=Decimal("50.00"),
+            max_price=Decimal("100.00"),
+        )
+        commission_config = scoring_config["opportunity_score"]["commission"]
+        midpoint_commission = Decimal(
+            str((commission_config["low_threshold"] + commission_config["high_threshold"]) / 2)
+        )
+
+        missing_score, missing_details = calculate_opportunity_score(
+            OpportunityInputs(average_commission=None, **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+        midpoint_score, _ = calculate_opportunity_score(
+            OpportunityInputs(average_commission=midpoint_commission, **base_inputs),
+            config=scoring_config["opportunity_score"],
+        )
+        assert missing_score == midpoint_score
+        assert missing_details["average_commission_pct"] is None
