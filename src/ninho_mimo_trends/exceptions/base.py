@@ -13,3 +13,7 @@ class ConfigurationError(NinhoMimoTrendsError):
 
 class ExportError(NinhoMimoTrendsError):
     """Erro ocorrido durante a exportacao de dados (CSV/XLSX)."""
+
+
+class ViralPostError(NinhoMimoTrendsError):
+    """Erro ocorrido durante a geracao de posts virais."""

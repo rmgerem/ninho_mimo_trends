@@ -1,0 +1,210 @@
+{
+  "generated_at": "2026-07-30T08:50:13.375758",
+  "top_n": 3,
+  "category_filter": null,
+  "products_count": 3,
+  "images_generated": false,
+  "cache_days": 7,
+  "api_calls": 0,
+  "cache_hits": 3,
+  "bundles": [
+    {
+      "product": {
+        "id": 8,
+        "name": "Brinquedo Montessori de encaixe sensorial em madeira",
+        "brand": "Ninho Kids",
+        "category": "Brinquedos",
+        "age_range": "1 a 2 anos",
+        "min_price": "94.90",
+        "max_price": "94.90",
+        "currency": "BRL",
+        "average_rating": "4.90",
+        "review_count": 160,
+        "sales_count": 180,
+        "trend_status": "CRESCIMENTO_FORTE",
+        "opportunity_score": "86.41",
+        "affiliate_url": null,
+        "main_url": "https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe"
+      },
+      "posts": {
+        "instagram": {
+          "platform": "instagram",
+          "hook": "Transforme a brincadeira em aprendizado com diversão!",
+          "caption": "Mães, sabe aquele momento em que você vê seu bebê descobrindo o mundo ao redor? 😍 Com o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids, cada encaixe é uma nova descoberta! Feito em madeira e com um design amoroso, ele não só diverte, mas também estimula a coordenação motora e o reconhecimento das cores. 🌈 Aprovado por mais de 180 mamães, ele tem 4.9/5.0 de avaliação e está conquistando corações por todo o Brasil! 💕 Não perca a oportunidade de investir no desenvolvimento do seu pequeno por apenas R$ 94,90! 🌟 As vendas estão crescendo rapidamente e o estoque é limitado! Corra e garanta o seu!",
+          "hashtags": [
+            "#maedemenino",
+            "#maedemenina",
+            "#montessori",
+            "#brinquedoeducativo",
+            "#coordenacaomotora",
+            "#desenvolvimentoinfantil",
+            "#brinquedos",
+            "#educacaoinfantil",
+            "#crescimento",
+            "#diversao",
+            "#amordemae",
+            "#comprasabia",
+            "#presenteperfeito",
+            "#ninhokids",
+            "#aprendizado"
+          ],
+          "call_to_action": "Clique no link e compre antes que acabe!"
+        },
+        "tiktok": {
+          "platform": "tiktok",
+          "hook": "O segredo das mamães espertas!",
+          "caption": "O que é mais fofo do que ver seu bebê aprendendo enquanto brinca? 🤩 Com o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids, cada momento é uma conquista! 💪 Com 4.9 de avaliação e amado por 180+ famílias, é perfeito para pequenos gênios! 🌟 Garanta já o seu, antes que acabe! Por apenas R$ 94,90! 🏃‍♀️",
+          "hashtags": [
+            "#maesdeprimeiraviagem",
+            "#aprendacomamor",
+            "#educacaoinfantil",
+            "#brinquedosespeciais",
+            "#maternidadereal"
+          ],
+          "call_to_action": "Link na bio, corre!"
+        },
+        "whatsapp": {
+          "platform": "whatsapp",
+          "hook": "Mães, descubram esse tesouro educativo!",
+          "caption": "Ei, mamães! 💕 Vocês já conhecem o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids? É perfeito para os pequenos de 1 a 2 anos, feito em madeira segura e ajuda no desenvolvimento da coordenação motora e aprendizado das cores! 🌈 Com mais de 180 peças vendidas e uma avaliação incrível de 4.9/5.0, ele está fazendo sucesso entre as mamães! E o melhor, só R$ 94,90! 😱 Aproveitem enquanto ainda está disponível! 🏃‍♀️ Acesse o link e garanta o seu: https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe",
+          "hashtags": [],
+          "call_to_action": "Garanta já o seu: https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe"
+        }
+      },
+      "image_path": null,
+      "generated_at": "2026-07-30T11:49:10.341779"
+    },
+    {
+      "product": {
+        "id": 7,
+        "name": "Tapete de atividades sensorial para bebes",
+        "brand": "Ninho Kids",
+        "category": "Desenvolvimento",
+        "age_range": "0 a 6 meses",
+        "min_price": "149.90",
+        "max_price": "149.90",
+        "currency": "BRL",
+        "average_rating": "4.90",
+        "review_count": 100,
+        "sales_count": 105,
+        "trend_status": "CRESCIMENTO_FORTE",
+        "opportunity_score": "80.88",
+        "affiliate_url": null,
+        "main_url": "https://loja-exemplo.test/produtos/tapete-atividades"
+      },
+      "posts": {
+        "instagram": {
+          "platform": "instagram",
+          "hook": "O momento de brincar e aprender começou! 🌟",
+          "caption": "Mamães, vejam só essa maravilha! 🌈 O tapete de atividades sensorial da Ninho Kids está transformando a hora de brincar dos nossos pequenos em momentos de puro desenvolvimento e diversão! Com um design encantador, ele possui arcos sensoriais e brinquedos removíveis que estimulam o desenvolvimento motor e sensorial dos bebês de 0 a 6 meses. E sabe o que é melhor? Mais de 100 mamães já aprovaram essa belezura, garantindo uma nota 4.9/5.0! ✨\n\nCom o precinho de R$ 149,90, é a sua chance de proporcionar o melhor para seu bebê sem estourar o orçamento. A procura está crescendo cada vez mais rápido, então garanta já o seu antes que acabe! 🌟\n\nA hora de brincar nunca foi tão importante e divertida! 🧸💖",
+          "hashtags": [
+            "#maternidade",
+            "#bebe",
+            "#desenvolvimentoinfantil",
+            "#atividadeinfantil",
+            "#maternidadefeliz",
+            "#bebefeliz",
+            "#ninhokids",
+            "#tapetedeatividades",
+            "#maesdeprimeiraviagem",
+            "#maesdobrasil",
+            "#crescerfeliz",
+            "#sensoryplay",
+            "#maesqueamam",
+            "#maeebebe",
+            "#diversao"
+          ],
+          "call_to_action": "Garanta o seu agora mesmo! 🌟 Clique no link e confira!"
+        },
+        "tiktok": {
+          "platform": "tiktok",
+          "hook": "Descubra o segredo das mamães! 👀",
+          "caption": "Mamães, sabem aquela sensação de ver o pequeno aprendendo e se divertindo ao mesmo tempo? Com o tapete sensorial Ninho Kids, isso acontece! 🌟 Ele é repleto de estímulos para os bebês e já conquistou mais de 100 corações! 🍼💓 Quer saber mais? Confira no link e não perca a chance de ter o seu! 🚀",
+          "hashtags": [
+            "#babyfun",
+            "#sensoryplay",
+            "#momlife",
+            "#viralbaby",
+            "#babytrends"
+          ],
+          "call_to_action": "Descubra mais e compre já!"
+        },
+        "whatsapp": {
+          "platform": "whatsapp",
+          "hook": "Você precisa ver esse tapete! 😍",
+          "caption": "Amigas, preciso compartilhar essa dica incrível com vocês! O tapete de atividades sensorial da Ninho Kids virou o queridinho das mamães e não é por menos! 😊 Com sua avaliação de 4.9/5.0 e mais de 105 unidades vendidas, ele vem com arcos sensoriais e brinquedinhos removíveis que ajudam nossos pequenos a desenvolverem suas habilidades desde cedo. Por apenas R$ 149,90, é a combinação perfeita de aprendizado e diversão! Mas corram, porque está vendendo como água! 🌟\n\nConfiram no link e garantam o de vocês antes que acabe! 🏃‍♀️💨",
+          "hashtags": [],
+          "call_to_action": "Compre agora: https://loja-exemplo.test/produtos/tapete-atividades"
+        }
+      },
+      "image_path": null,
+      "generated_at": "2026-07-30T11:49:25.581615"
+    },
+    {
+      "product": {
+        "id": 14,
+        "name": "Quadro de rotina infantil ilustrado",
+        "brand": "Ninho Kids",
+        "category": "Quarto",
+        "age_range": "3 a 5 anos",
+        "min_price": "74.90",
+        "max_price": "74.90",
+        "currency": "BRL",
+        "average_rating": "4.90",
+        "review_count": 70,
+        "sales_count": 72,
+        "trend_status": "CRESCIMENTO_FORTE",
+        "opportunity_score": "75.67",
+        "affiliate_url": null,
+        "main_url": "https://loja-exemplo.test/produtos/quadro-rotina-infantil"
+      },
+      "posts": {
+        "instagram": {
+          "platform": "instagram",
+          "hook": "Transforme o caos em diversão organizada!",
+          "caption": "Você já se pegou pensando como seria um sonho ter a rotina dos pequenos organizada e divertida? 🌈 O Quadro de Rotina Infantil da Ninho Kids vai trazer essa mágica para o dia a dia da sua família! Por apenas R$ 74,90, você garante um quadro incrível, repleto de ícones coloridos e peças imantadas que tornam cada tarefa uma aventura! 🌟 Com uma nota impressionante de 4.9/5.0 e mais de 72 mamães satisfeitas, esse queridinho está em forte crescimento e é a chave para trazer mais tranquilidade e autonomia para os pequenos de 3 a 5 anos. Não perca a chance de mudar a rotina com um toque de amor e organização! ❤️",
+          "hashtags": [
+            "#RotinaDivertida",
+            "#Maternidade",
+            "#DicasDeMae",
+            "#QuartoInfantil",
+            "#Organizacao",
+            "#KidsFriendly",
+            "#CriancasFelizes",
+            "#EducacaoComAmor",
+            "#RotinaSaudavel",
+            "#MaeDeMenina",
+            "#MaeDeMenino",
+            "#DicasInfantis",
+            "#BrincarAprender",
+            "#PrimeiraInfancia",
+            "#DesenvolvimentoInfantil"
+          ],
+          "call_to_action": "Garanta o seu quadro agora e revolucione a rotina!"
+        },
+        "tiktok": {
+          "platform": "tiktok",
+          "hook": "Rotina infantil sem caos?",
+          "caption": "A mamãe pira com esse quadro de rotina da Ninho Kids! 🎨 Feito para transformar o dia a dia dos pequenos em pura diversão e organização! Notado com 4.9/5.0 e já conquistou mais de 72 famílias! E aí, vai deixar essa oportunidade passar? 😍",
+          "hashtags": [
+            "#MaeDobem",
+            "#RotinaInfantil",
+            "#VidaDeMae",
+            "#DicasDeMaternidade",
+            "#OrganizacaoInfantil"
+          ],
+          "call_to_action": "Clique e veja mais!"
+        },
+        "whatsapp": {
+          "platform": "whatsapp",
+          "hook": "A revolução da rotina chegou!",
+          "caption": "Mães, sabe aquela ajuda que você sempre quis para organizar o dia dos pequenos? O Quadro de Rotina Infantil da Ninho Kids é a resposta! Com ícones ilustrados e peças imantadas, ele transforma o caos em uma aventura super divertida! 🌟 Com mais de 72 unidades vendidas e avaliado em 4.9/5.0, ele está conquistando o coração das mães. Não fique de fora desta comunidade de mães organizadas e felizes. Confie, você também vai amar! ❤️",
+          "hashtags": [],
+          "call_to_action": "Adquira já: https://loja-exemplo.test/produtos/quadro-rotina-infantil"
+        }
+      },
+      "image_path": null,
+      "generated_at": "2026-07-30T11:49:35.271335"
+    }
+  ]
+}

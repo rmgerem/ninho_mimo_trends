@@ -4,6 +4,7 @@ from ninho_mimo_trends.exceptions.base import (
     ConfigurationError,
     ExportError,
     NinhoMimoTrendsError,
+    ViralPostError,
 )
 from ninho_mimo_trends.exceptions.collector import (
     CollectorConfigurationError,
@@ -17,6 +18,7 @@ __all__ = [
     "NinhoMimoTrendsError",
     "ConfigurationError",
     "ExportError",
+    "ViralPostError",
     "CollectorError",
     "CollectorConfigurationError",
     "SourceUnavailableError",

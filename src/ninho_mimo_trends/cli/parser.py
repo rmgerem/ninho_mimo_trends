@@ -30,6 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_products_parser(subparsers)
     _add_scheduler_parser(subparsers)
     _add_enrichment_parser(subparsers)
+    _add_posts_parser(subparsers)
 
     return parser
 
@@ -196,6 +197,63 @@ def _add_enrichment_parser(subparsers: argparse._SubParsersAction) -> None:
     commands = parser.add_subparsers(dest="enrichment_command", required=True)
     commands.add_parser("start", help="Inicia o worker periodico de enriquecimento.")
     commands.add_parser("run-once", help="Executa uma rodada e encerra.")
+
+
+def _add_posts_parser(subparsers: argparse._SubParsersAction) -> None:
+    posts_parser = subparsers.add_parser(
+        "posts",
+        help="Geracao automatica de posts virais para redes sociais.",
+    )
+    posts_subparsers = posts_parser.add_subparsers(dest="posts_command", required=True)
+
+    generate_parser = posts_subparsers.add_parser(
+        "generate",
+        help="Gera posts virais (Instagram, TikTok, WhatsApp) para os top N produtos.",
+    )
+    generate_parser.add_argument(
+        "--top",
+        type=int,
+        default=3,
+        dest="top_n",
+        help="Numero de produtos a incluir (padrao: 3).",
+    )
+    generate_parser.add_argument(
+        "--category",
+        default=None,
+        help="Filtra por slug de categoria (ex.: 'brinquedos').",
+    )
+    generate_parser.add_argument(
+        "--min-opportunity",
+        type=float,
+        default=None,
+        dest="min_opportunity",
+        help="Opportunity Score minimo para incluir o produto.",
+    )
+    generate_parser.add_argument(
+        "--generate-images",
+        action="store_true",
+        dest="generate_images",
+        help="Gera imagem de produto via DALL-E 3 (consome creditos extras da OpenAI).",
+    )
+    generate_parser.add_argument(
+        "--output-dir",
+        default=None,
+        dest="output_dir",
+        help="Diretorio de saida customizado (padrao: data/viral_posts/<timestamp>/).",
+    )
+    generate_parser.add_argument(
+        "--cache-days",
+        type=int,
+        default=7,
+        dest="cache_days",
+        help="Dias de validade do cache por produto (padrao: 7). Use 0 para desabilitar.",
+    )
+    generate_parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        dest="no_cache",
+        help="Ignora o cache e sempre chama a API OpenAI (gera custo a cada execucao).",
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -16,6 +16,7 @@ from ninho_mimo_trends.cli.commands.database import (
 )
 from ninho_mimo_trends.cli.commands.enrichment import run_enrichment_once, run_enrichment_start
 from ninho_mimo_trends.cli.commands.export_products import run_export_products
+from ninho_mimo_trends.cli.commands.generate_viral_posts import run_generate_viral_posts
 from ninho_mimo_trends.cli.commands.list_products import run_list_products
 from ninho_mimo_trends.cli.commands.rank_products import run_rank_products
 from ninho_mimo_trends.cli.commands.reject_product import run_reject_product
@@ -30,6 +31,7 @@ from ninho_mimo_trends.exceptions import (
     DatabaseConnectionError,
     ExportError,
     ProductValidationError,
+    ViralPostError,
 )
 from ninho_mimo_trends.logging_config.logger import configure_logging
 from ninho_mimo_trends.models.product import Product
@@ -58,6 +60,9 @@ def dispatch(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
     except ExportError as exc:
         print(f"Erro de exportacao: {exc}", file=sys.stderr)
         return exit_codes.EXPORT_ERROR
+    except ViralPostError as exc:
+        print(f"Erro na geracao de posts virais: {exc}", file=sys.stderr)
+        return exit_codes.UNEXPECTED_ERROR
     except ProductValidationError as exc:
         print(f"Erro: {exc}", file=sys.stderr)
         return exit_codes.ARGUMENT_ERROR
@@ -80,6 +85,8 @@ def _route(args: argparse.Namespace, settings: Settings) -> int:
         return _handle_scheduler(args, settings)
     if args.command == "enrichment":
         return _handle_enrichment(args, settings)
+    if args.command == "posts":
+        return _handle_posts(args, settings)
     raise ProductValidationError(f"Comando desconhecido: {args.command}")
 
 
@@ -215,6 +222,66 @@ def _handle_enrichment(args: argparse.Namespace, settings: Settings) -> int:
     raise ProductValidationError(
         f"Subcomando de enrichment desconhecido: {args.enrichment_command}"
     )
+
+
+def _handle_posts(args: argparse.Namespace, settings: Settings) -> int:
+    if args.posts_command == "generate":
+        no_cache = getattr(args, "no_cache", False)
+        cache_days = getattr(args, "cache_days", 7)
+        cache_label = "desabilitado (--no-cache)" if no_cache else f"{cache_days} dias"
+        print(
+            f"\n[*] Gerando posts virais para os top {args.top_n} produtos...\n"
+            f"    Plataformas: Instagram | TikTok | WhatsApp\n"
+            f"    Imagens DALL-E: {'sim' if args.generate_images else 'nao'}\n"
+            f"    Cache: {cache_label}\n"
+        )
+        result = run_generate_viral_posts(
+            settings=settings,
+            top_n=args.top_n,
+            category=args.category,
+            min_opportunity=args.min_opportunity,
+            generate_images=args.generate_images,
+            output_dir=args.output_dir,
+            cache_days=cache_days,
+            no_cache=no_cache,
+        )
+        if not result.bundles:
+            print("[!] Nenhum produto encontrado com os filtros informados.")
+            return exit_codes.SUCCESS
+
+        print(f"\n[OK] Posts prontos! ({len(result.bundles)} produto(s))\n")
+
+        # Exibe resumo de cache/API
+        total = result.api_calls + result.cache_hits
+        if result.cache_hits > 0:
+            print(
+                f"    [CACHE] {result.cache_hits}/{total} produto(s) reutilizados do cache"
+                f" — zero custo de API.\n"
+                f"    [API]   {result.api_calls}/{total} produto(s) gerados via GPT-4o.\n"
+            )
+        else:
+            print(f"    [API] {result.api_calls} produto(s) gerados via GPT-4o.\n")
+
+        for i, bundle in enumerate(result.bundles, start=1):
+            ctx = bundle.product
+            score_str = f"{float(ctx.opportunity_score):.1f}" if ctx.opportunity_score else "?"
+            price_str = f"R$ {ctx.min_price:.2f}" if ctx.min_price else "-"
+            from_cache = i > result.api_calls
+            cache_tag = " [cache]" if from_cache else ""
+            print(f"  #{i} {ctx.name}{cache_tag}")
+            print(f"      Categoria: {ctx.category} | Preco: {price_str} | Score: {score_str}")
+            if ctx.affiliate_url:
+                print(f"      Link: {ctx.affiliate_url}")
+
+        print(f"\n[DIR] Arquivos salvos em:\n      {result.output_dir}")
+        if result.preview_html_path:
+            print(f"\n[HTML] Preview:\n       {result.preview_html_path}")
+            print(
+                "\n   Dica: Abra o arquivo acima no browser para revisar todos os posts\n"
+                "   antes de publicar.\n"
+            )
+        return exit_codes.SUCCESS
+    raise ProductValidationError(f"Subcomando de posts desconhecido: {args.posts_command}")
 
 
 def _print_products_table(products: list[Product]) -> None:

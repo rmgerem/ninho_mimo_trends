@@ -55,6 +55,10 @@ class Settings(BaseSettings):
 
     gf_admin_user: str = "admin"
 
+    openai_api_key: str | None = None
+    """Chave de API da OpenAI para geracao de posts virais via GPT-4o / DALL-E 3.
+    Obtenha em: https://platform.openai.com/api-keys"""
+
     # ---- Observabilidade ----
     prometheus_pushgateway_url: str | None = None
     """URL do Prometheus Pushgateway. Ex.: http://pushgateway:9091

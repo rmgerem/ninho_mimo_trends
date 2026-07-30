@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview — Posts Virais | Ninho &amp; Mimo Trends</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #0f0f13;
+      --surface: #1a1a24;
+      --surface2: #22222f;
+      --border: #2e2e40;
+      --text: #e8e8f0;
+      --text-muted: #888899;
+      --accent: #7c3aed;
+      --accent2: #a78bfa;
+      --green: #10b981;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #0ea5e9 100%);
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 30px rgba(124,58,237,0.4);
+    }
+
+    .topbar h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .topbar .subtitle {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .topbar .badge {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+    .notice {
+      background: linear-gradient(135deg, #1e1b4b, #1e3a5f);
+      border: 1px solid #4f46e5;
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      margin-bottom: 40px;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #a5b4fc;
+    }
+
+    .notice strong { color: #c7d2fe; }
+
+    .product-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+
+    .product-header {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+
+    .rank-badge {
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 800;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.5);
+    }
+
+    .product-info { flex: 1; }
+
+    .product-info h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .meta span {
+      font-size: 0.78rem;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-weight: 500;
+    }
+
+    .brand { background: #1e3a5f; color: #60a5fa; border: 1px solid #1e40af; }
+    .category { background: #1e1b4b; color: #a78bfa; border: 1px solid #4f46e5; }
+    .age { background: #1a2e1a; color: #6ee7b7; border: 1px solid #065f46; }
+    .price { background: #1a2a10; color: #a3e635; border: 1px solid #3f6212; font-weight: 700; }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .score-bar-bg {
+      flex: 1;
+      max-width: 200px;
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .score-row strong { color: var(--accent2); font-size: 0.95rem; }
+
+    .product-img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .platform-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .platform-header {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .hook {
+      font-size: 0.9rem;
+      color: #c4b5fd;
+      font-style: italic;
+      background: rgba(124,58,237,0.1);
+      border-left: 3px solid #7c3aed;
+      padding: 8px 12px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .caption {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .cta {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(16,185,129,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    .hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .hashtag {
+      font-size: 0.72rem;
+      background: rgba(124,58,237,0.15);
+      color: var(--accent2);
+      border-radius: 20px;
+      padding: 3px 10px;
+      border: 1px solid rgba(124,58,237,0.3);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .topbar { flex-direction: column; gap: 12px; text-align: center; }
+      .product-header { flex-direction: column; }
+      .product-img { width: 100%; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1>🚀 Posts Virais — Ninho &amp; Mimo Trends</h1>
+      <div class="subtitle">Gerado em 30/07/2026 08:49 · Revise antes de publicar</div>
+    </div>
+    <div class="badge">✨ 3 produtos · 3 plataformas</div>
+  </div>
+
+  <div class="container">
+    <div class="notice">
+      <span>⚠️</span>
+      <span>
+        <strong>Revisão obrigatória:</strong> Confira cada post antes de publicar.
+        Ajuste preços, links de afiliado e informações conforme necessário.
+        Estes textos foram gerados por IA e podem conter imprecisões.
+      </span>
+    </div>
+
+    
+        <section class="product-section">
+          <div class="product-header">
+            <div class="rank-badge">#1</div>
+            <div class="product-info">
+              <h2>Brinquedo Montessori de encaixe sensorial em madeira</h2>
+              <p class="meta">
+                <span class="brand">Ninho Kids</span>
+                <span class="category">Brinquedos</span>
+                <span class="age">1 a 2 anos</span>
+                <span class="price">R$ 94.90</span>
+              </p>
+              
+        <div class="score-row">
+          <span>Opportunity Score</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill" style="width:86%"></div>
+          </div>
+          <strong>86.4</strong>
+        </div>
+            </div>
+            
+          </div>
+          <div class="platforms-grid">
+            <div class="platform-card" style="border-top: 4px solid #E1306C">
+              <div class="platform-header" style="color:#E1306C">
+                📸 Instagram
+              </div>
+              <div class="hook">🎯 <em>Transforme a brincadeira em aprendizado com diversão!</em></div>
+              <div class="caption">Mães, sabe aquele momento em que você vê seu bebê descobrindo o mundo ao redor? 😍 Com o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids, cada encaixe é uma nova descoberta! Feito em madeira e com um design amoroso, ele não só diverte, mas também estimula a coordenação motora e o reconhecimento das cores. 🌈 Aprovado por mais de 180 mamães, ele tem 4.9/5.0 de avaliação e está conquistando corações por todo o Brasil! 💕 Não perca a oportunidade de investir no desenvolvimento do seu pequeno por apenas R$ 94,90! 🌟 As vendas estão crescendo rapidamente e o estoque é limitado! Corra e garanta o seu!</div>
+              <div class="cta">👉 Clique no link e compre antes que acabe!</div>
+              <div class="hashtags"><span class="hashtag">#maedemenino</span> <span class="hashtag">#maedemenina</span> <span class="hashtag">#montessori</span> <span class="hashtag">#brinquedoeducativo</span> <span class="hashtag">#coordenacaomotora</span> <span class="hashtag">#desenvolvimentoinfantil</span> <span class="hashtag">#brinquedos</span> <span class="hashtag">#educacaoinfantil</span> <span class="hashtag">#crescimento</span> <span class="hashtag">#diversao</span> <span class="hashtag">#amordemae</span> <span class="hashtag">#comprasabia</span> <span class="hashtag">#presenteperfeito</span> <span class="hashtag">#ninhokids</span> <span class="hashtag">#aprendizado</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #010101">
+              <div class="platform-header" style="color:#010101">
+                🎵 Tiktok
+              </div>
+              <div class="hook">🎯 <em>O segredo das mamães espertas!</em></div>
+              <div class="caption">O que é mais fofo do que ver seu bebê aprendendo enquanto brinca? 🤩 Com o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids, cada momento é uma conquista! 💪 Com 4.9 de avaliação e amado por 180+ famílias, é perfeito para pequenos gênios! 🌟 Garanta já o seu, antes que acabe! Por apenas R$ 94,90! 🏃‍♀️</div>
+              <div class="cta">👉 Link na bio, corre!</div>
+              <div class="hashtags"><span class="hashtag">#maesdeprimeiraviagem</span> <span class="hashtag">#aprendacomamor</span> <span class="hashtag">#educacaoinfantil</span> <span class="hashtag">#brinquedosespeciais</span> <span class="hashtag">#maternidadereal</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #25D366">
+              <div class="platform-header" style="color:#25D366">
+                💬 Whatsapp
+              </div>
+              <div class="hook">🎯 <em>Mães, descubram esse tesouro educativo!</em></div>
+              <div class="caption">Ei, mamães! 💕 Vocês já conhecem o Brinquedo Montessori de Encaixe Sensorial da Ninho Kids? É perfeito para os pequenos de 1 a 2 anos, feito em madeira segura e ajuda no desenvolvimento da coordenação motora e aprendizado das cores! 🌈 Com mais de 180 peças vendidas e uma avaliação incrível de 4.9/5.0, ele está fazendo sucesso entre as mamães! E o melhor, só R$ 94,90! 😱 Aproveitem enquanto ainda está disponível! 🏃‍♀️ Acesse o link e garanta o seu: https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe</div>
+              <div class="cta">👉 Garanta já o seu: https://loja-exemplo.test/produtos/brinquedo-montessori-encaixe</div>
+              <div class="hashtags"></div>
+            </div></div>
+        </section>
+        <section class="product-section">
+          <div class="product-header">
+            <div class="rank-badge">#2</div>
+            <div class="product-info">
+              <h2>Tapete de atividades sensorial para bebes</h2>
+              <p class="meta">
+                <span class="brand">Ninho Kids</span>
+                <span class="category">Desenvolvimento</span>
+                <span class="age">0 a 6 meses</span>
+                <span class="price">R$ 149.90</span>
+              </p>
+              
+        <div class="score-row">
+          <span>Opportunity Score</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill" style="width:81%"></div>
+          </div>
+          <strong>80.9</strong>
+        </div>
+            </div>
+            
+          </div>
+          <div class="platforms-grid">
+            <div class="platform-card" style="border-top: 4px solid #E1306C">
+              <div class="platform-header" style="color:#E1306C">
+                📸 Instagram
+              </div>
+              <div class="hook">🎯 <em>O momento de brincar e aprender começou! 🌟</em></div>
+              <div class="caption">Mamães, vejam só essa maravilha! 🌈 O tapete de atividades sensorial da Ninho Kids está transformando a hora de brincar dos nossos pequenos em momentos de puro desenvolvimento e diversão! Com um design encantador, ele possui arcos sensoriais e brinquedos removíveis que estimulam o desenvolvimento motor e sensorial dos bebês de 0 a 6 meses. E sabe o que é melhor? Mais de 100 mamães já aprovaram essa belezura, garantindo uma nota 4.9/5.0! ✨<br><br>Com o precinho de R$ 149,90, é a sua chance de proporcionar o melhor para seu bebê sem estourar o orçamento. A procura está crescendo cada vez mais rápido, então garanta já o seu antes que acabe! 🌟<br><br>A hora de brincar nunca foi tão importante e divertida! 🧸💖</div>
+              <div class="cta">👉 Garanta o seu agora mesmo! 🌟 Clique no link e confira!</div>
+              <div class="hashtags"><span class="hashtag">#maternidade</span> <span class="hashtag">#bebe</span> <span class="hashtag">#desenvolvimentoinfantil</span> <span class="hashtag">#atividadeinfantil</span> <span class="hashtag">#maternidadefeliz</span> <span class="hashtag">#bebefeliz</span> <span class="hashtag">#ninhokids</span> <span class="hashtag">#tapetedeatividades</span> <span class="hashtag">#maesdeprimeiraviagem</span> <span class="hashtag">#maesdobrasil</span> <span class="hashtag">#crescerfeliz</span> <span class="hashtag">#sensoryplay</span> <span class="hashtag">#maesqueamam</span> <span class="hashtag">#maeebebe</span> <span class="hashtag">#diversao</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #010101">
+              <div class="platform-header" style="color:#010101">
+                🎵 Tiktok
+              </div>
+              <div class="hook">🎯 <em>Descubra o segredo das mamães! 👀</em></div>
+              <div class="caption">Mamães, sabem aquela sensação de ver o pequeno aprendendo e se divertindo ao mesmo tempo? Com o tapete sensorial Ninho Kids, isso acontece! 🌟 Ele é repleto de estímulos para os bebês e já conquistou mais de 100 corações! 🍼💓 Quer saber mais? Confira no link e não perca a chance de ter o seu! 🚀</div>
+              <div class="cta">👉 Descubra mais e compre já!</div>
+              <div class="hashtags"><span class="hashtag">#babyfun</span> <span class="hashtag">#sensoryplay</span> <span class="hashtag">#momlife</span> <span class="hashtag">#viralbaby</span> <span class="hashtag">#babytrends</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #25D366">
+              <div class="platform-header" style="color:#25D366">
+                💬 Whatsapp
+              </div>
+              <div class="hook">🎯 <em>Você precisa ver esse tapete! 😍</em></div>
+              <div class="caption">Amigas, preciso compartilhar essa dica incrível com vocês! O tapete de atividades sensorial da Ninho Kids virou o queridinho das mamães e não é por menos! 😊 Com sua avaliação de 4.9/5.0 e mais de 105 unidades vendidas, ele vem com arcos sensoriais e brinquedinhos removíveis que ajudam nossos pequenos a desenvolverem suas habilidades desde cedo. Por apenas R$ 149,90, é a combinação perfeita de aprendizado e diversão! Mas corram, porque está vendendo como água! 🌟<br><br>Confiram no link e garantam o de vocês antes que acabe! 🏃‍♀️💨</div>
+              <div class="cta">👉 Compre agora: https://loja-exemplo.test/produtos/tapete-atividades</div>
+              <div class="hashtags"></div>
+            </div></div>
+        </section>
+        <section class="product-section">
+          <div class="product-header">
+            <div class="rank-badge">#3</div>
+            <div class="product-info">
+              <h2>Quadro de rotina infantil ilustrado</h2>
+              <p class="meta">
+                <span class="brand">Ninho Kids</span>
+                <span class="category">Quarto</span>
+                <span class="age">3 a 5 anos</span>
+                <span class="price">R$ 74.90</span>
+              </p>
+              
+        <div class="score-row">
+          <span>Opportunity Score</span>
+          <div class="score-bar-bg">
+            <div class="score-bar-fill" style="width:76%"></div>
+          </div>
+          <strong>75.7</strong>
+        </div>
+            </div>
+            
+          </div>
+          <div class="platforms-grid">
+            <div class="platform-card" style="border-top: 4px solid #E1306C">
+              <div class="platform-header" style="color:#E1306C">
+                📸 Instagram
+              </div>
+              <div class="hook">🎯 <em>Transforme o caos em diversão organizada!</em></div>
+              <div class="caption">Você já se pegou pensando como seria um sonho ter a rotina dos pequenos organizada e divertida? 🌈 O Quadro de Rotina Infantil da Ninho Kids vai trazer essa mágica para o dia a dia da sua família! Por apenas R$ 74,90, você garante um quadro incrível, repleto de ícones coloridos e peças imantadas que tornam cada tarefa uma aventura! 🌟 Com uma nota impressionante de 4.9/5.0 e mais de 72 mamães satisfeitas, esse queridinho está em forte crescimento e é a chave para trazer mais tranquilidade e autonomia para os pequenos de 3 a 5 anos. Não perca a chance de mudar a rotina com um toque de amor e organização! ❤️</div>
+              <div class="cta">👉 Garanta o seu quadro agora e revolucione a rotina!</div>
+              <div class="hashtags"><span class="hashtag">#RotinaDivertida</span> <span class="hashtag">#Maternidade</span> <span class="hashtag">#DicasDeMae</span> <span class="hashtag">#QuartoInfantil</span> <span class="hashtag">#Organizacao</span> <span class="hashtag">#KidsFriendly</span> <span class="hashtag">#CriancasFelizes</span> <span class="hashtag">#EducacaoComAmor</span> <span class="hashtag">#RotinaSaudavel</span> <span class="hashtag">#MaeDeMenina</span> <span class="hashtag">#MaeDeMenino</span> <span class="hashtag">#DicasInfantis</span> <span class="hashtag">#BrincarAprender</span> <span class="hashtag">#PrimeiraInfancia</span> <span class="hashtag">#DesenvolvimentoInfantil</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #010101">
+              <div class="platform-header" style="color:#010101">
+                🎵 Tiktok
+              </div>
+              <div class="hook">🎯 <em>Rotina infantil sem caos?</em></div>
+              <div class="caption">A mamãe pira com esse quadro de rotina da Ninho Kids! 🎨 Feito para transformar o dia a dia dos pequenos em pura diversão e organização! Notado com 4.9/5.0 e já conquistou mais de 72 famílias! E aí, vai deixar essa oportunidade passar? 😍</div>
+              <div class="cta">👉 Clique e veja mais!</div>
+              <div class="hashtags"><span class="hashtag">#MaeDobem</span> <span class="hashtag">#RotinaInfantil</span> <span class="hashtag">#VidaDeMae</span> <span class="hashtag">#DicasDeMaternidade</span> <span class="hashtag">#OrganizacaoInfantil</span></div>
+            </div>
+            <div class="platform-card" style="border-top: 4px solid #25D366">
+              <div class="platform-header" style="color:#25D366">
+                💬 Whatsapp
+              </div>
+              <div class="hook">🎯 <em>A revolução da rotina chegou!</em></div>
+              <div class="caption">Mães, sabe aquela ajuda que você sempre quis para organizar o dia dos pequenos? O Quadro de Rotina Infantil da Ninho Kids é a resposta! Com ícones ilustrados e peças imantadas, ele transforma o caos em uma aventura super divertida! 🌟 Com mais de 72 unidades vendidas e avaliado em 4.9/5.0, ele está conquistando o coração das mães. Não fique de fora desta comunidade de mães organizadas e felizes. Confie, você também vai amar! ❤️</div>
+              <div class="cta">👉 Adquira já: https://loja-exemplo.test/produtos/quadro-rotina-infantil</div>
+              <div class="hashtags"></div>
+            </div></div>
+        </section>
+
+    <div class="footer">
+      Gerado automaticamente pelo Ninho &amp; Mimo Trends · 30/07/2026 08:49
+    </div>
+  </div>
+</body>
+</html>
