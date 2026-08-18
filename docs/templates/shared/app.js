@@ -1,6 +1,7 @@
 // Catálogo de perfumes inspirados (masculinos, femininos, árabes e edições especiais).
 // Compartilhado por todos os templates de cor em docs/perfumar_templates/.
 const WHATSAPP_NUMBER = '5519981449696';
+const PRODUCT_IMAGE_VERSION = '20260818-editorial-refresh';
 
 const REGULAR_SIZES = { sizes: '28ml e 100ml', price: 'A partir de R$ 70,00' };
 const NOBLESSE_SIZES = { sizes: '10ml e 50ml', price: 'A partir de R$ 40,00' };
@@ -106,7 +107,7 @@ function productCardHtml(product) {
       <div class="product-media g-${product.gender}">
         ${badge}
         <button class="favorite" aria-label="Favoritar ${product.name}">♡</button>
-        <img class="product-photo" data-id="${product.id}" data-step="jpg" src="${PHOTO_BASE_PATH}${product.id}.jpg" alt="${product.name}" loading="lazy">
+        <img class="product-photo" data-id="${product.id}" data-step="jpg" src="${PHOTO_BASE_PATH}${product.id}.jpg?v=${PRODUCT_IMAGE_VERSION}" alt="${product.name}" loading="lazy">
         <div class="mini-bottle"></div>
       </div>
       <div class="product-info">
@@ -161,10 +162,10 @@ function bindPhotoFallbacks() {
     img.addEventListener('error', () => {
       if (img.dataset.step === 'jpg') {
         img.dataset.step = 'png';
-        img.src = `${PHOTO_BASE_PATH}${img.dataset.id}.png`;
+        img.src = `${PHOTO_BASE_PATH}${img.dataset.id}.png?v=${PRODUCT_IMAGE_VERSION}`;
       } else if (img.dataset.step === 'png') {
         img.dataset.step = 'svg';
-        img.src = `${PHOTO_BASE_PATH}${img.dataset.id}.svg`;
+        img.src = `${PHOTO_BASE_PATH}${img.dataset.id}.svg?v=${PRODUCT_IMAGE_VERSION}`;
       } else {
         img.style.display = 'none';
       }
@@ -260,3 +261,10 @@ menuToggle.addEventListener('click', () => {
   menuToggle.setAttribute('aria-expanded', String(open));
 });
 mainNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => mainNav.classList.remove('open')));
+
+if (window.location.hash) {
+  window.addEventListener('load', () => {
+    const target = document.querySelector(window.location.hash);
+    if (target) setTimeout(() => target.scrollIntoView({ block: 'start' }), 80);
+  });
+}

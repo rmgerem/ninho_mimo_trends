@@ -22,6 +22,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+html { scroll-padding-top: 86px; }
 body { margin: 0; font-family: "DM Sans", sans-serif; color: var(--ink); background: #fffdf9; line-height: 1.6; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
@@ -124,7 +125,7 @@ img { max-width: 100%; display: block; }
 .product-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
 .product-card { overflow: hidden; border-radius: 24px; background: #fff; box-shadow: 0 10px 26px rgba(27,21,18,.08); transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column; }
 .product-card:hover { transform: translateY(-7px); box-shadow: var(--shadow); }
-.product-media { position: relative; height: 190px; display: grid; place-items: center; overflow: hidden; }
+.product-media { position: relative; aspect-ratio: 1.5 / 1; min-height: 190px; display: grid; place-items: center; overflow: hidden; }
 .product-media.g-masculino { background: linear-gradient(160deg,#e2e6e2,#c7d2cb); }
 .product-media.g-feminino { background: linear-gradient(160deg,#f6e2df,#eec9c3); }
 .product-media.g-arabe { background: linear-gradient(160deg,#f4e6c4,#e6c887); }
@@ -250,21 +251,61 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 720px) {
-  .announcement { flex-direction: column; gap: 2px; text-align: center; }
-  .nav-wrap { height: 74px; }
+  .container { width: min(100% - 28px, 1180px); }
+  .announcement { display: none; }
+  .site-header { position: sticky; }
+  .nav-wrap { height: 66px; gap: 10px; }
+  .brand { min-width: 0; gap: 8px; }
+  .brand-mark svg { width: 38px; height: 38px; }
+  .brand-copy strong { font-size: 1rem; }
   .brand-copy small, .nav-actions .icon-button:first-child { display: none; }
-  .section-space { padding: 78px 0; }
-  .hero { min-height: auto; padding-top: 30px; }
-  .hero-grid { gap: 20px; }
-  .hero h1 { font-size: 2.7rem; }
-  .hero-visual { min-height: 430px; }
-  .main-visual { width: 90%; }
-  .floating-card { transform: scale(.85); }.card-top { right: -30px; }.card-bottom { left: -38px; }
-  .trust-row { gap: 14px; }.trust-row div { padding-right: 14px; }
-  .category-grid { grid-template-columns: repeat(2,1fr); }
+  .nav-actions { gap: 6px; }
+  .icon-button { min-width: 38px; width: 38px; height: 38px; }
+  .menu-toggle { font-size: 1.35rem; padding: 6px; }
+  .main-nav { top: 64px; left: 14px; right: 14px; padding: 18px; border-radius: 16px; gap: 16px; }
+  .main-nav a { width: 100%; padding: 7px 0; }
+  .section-space { padding: 56px 0; }
+  .hero { min-height: auto; padding-top: 22px; }
+  .hero-grid { gap: 22px; }
+  .hero h1 { font-size: 2.35rem; line-height: 1.02; }
+  .hero-copy > p { margin: 18px 0 24px; font-size: .98rem; }
+  .hero-actions { align-items: stretch; gap: 14px; }
+  .hero-actions .button, .hero-actions .text-link { width: 100%; }
+  .hero-actions .text-link { display: inline-flex; justify-content: center; min-height: 48px; align-items: center; }
+  .hero-visual { min-height: 320px; }
+  .main-visual { width: min(310px, 86vw); border-radius: 34px; }
+  .orbit { display: none; }
+  .floating-card { max-width: 210px; transform: scale(.82); }
+  .card-top { right: -12px; top: 38px; }
+  .card-bottom { left: -16px; bottom: 42px; }
+  .trust-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 30px; }
+  .trust-row div { border: 0; padding: 12px 8px; border-radius: 14px; background: rgba(255,255,255,.62); }
+  .trust-row strong { font-size: 1rem; }
+  .trust-row span { font-size: .65rem; }
+  .category-strip { padding: 58px 0 62px; }
+  .section-heading.centered { margin-bottom: 28px; }
+  .section-heading h2, .promise-copy h2, .age-card h2, .precos h2 { font-size: 2rem; }
+  .category-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .category-card { min-height: 138px; padding: 18px 10px; border-radius: 18px; }
+  .category-icon { width: 54px; height: 54px; margin-bottom: 10px; border-radius: 17px; }
+  .catalog { padding-top: 54px; }
   .section-heading.split { align-items: flex-start; flex-direction: column; }
-  .tabs { overflow-x: auto; max-width: 100%; }
+  .section-heading.split h2 { font-size: 2.18rem; }
+  .tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs::after { content: ""; flex: 0 0 12px; }
+  .tab { flex: 0 0 auto; padding: 10px 15px; scroll-snap-align: start; }
+  .catalog-toolbar { gap: 10px; margin-bottom: 22px; }
+  .catalog-toolbar input { min-width: 100%; border-radius: 18px; padding: 14px 16px; }
+  .catalog-count { width: 100%; white-space: normal; }
   .product-grid, .article-grid { grid-template-columns: 1fr; }
+  .product-grid { gap: 16px; }
+  .product-card { border-radius: 18px; }
+  .product-media { min-height: auto; aspect-ratio: 1.62 / 1; }
+  .product-info { padding: 16px; }
+  .product-info h3 { min-height: 0; font-size: 1.18rem; }
+  .product-inspiration { font-size: .82rem; }
+  .price-line strong { font-size: 1.15rem; }
   .price-grid { grid-template-columns: 1fr; }
   .age-card { padding: 35px 22px; }
   .age-steps { grid-template-columns: 1fr; }
@@ -276,4 +317,19 @@ img { max-width: 100%; display: block; }
   .footer-bottom { flex-direction: column; }
   .search-modal { padding: 34px 24px; }
   .contact-card { padding: 28px; }
+}
+
+@media (max-width: 420px) {
+  .container { width: min(100% - 22px, 1180px); }
+  html { scroll-padding-top: 66px; }
+  .hero h1 { font-size: 2.05rem; }
+  .section-heading.split h2 { font-size: 1.95rem; }
+  .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 20px; overflow: visible; }
+  .tabs::after { display: none; }
+  .tab { width: 100%; padding: 10px 8px; text-align: center; }
+  .tab:first-child { grid-column: 1 / -1; }
+  .catalog-toolbar input { font-size: .92rem; }
+  .category-grid { grid-template-columns: 1fr; }
+  .product-media { aspect-ratio: 1.45 / 1; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
