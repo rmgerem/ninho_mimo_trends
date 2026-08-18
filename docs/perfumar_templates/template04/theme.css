@@ -1,0 +1,22 @@
+/* Template04 · Vinho Bordô (escuro, masculino) */
+:root {
+  --noir: #1f0f12;
+  --noir-soft: #301820;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #b5495a;
+  --gold-light: #e3aab3;
+  --gold-dark: #7a2634;
+  --rose: #caa456;
+  --rose-light: #e8d3a0;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(31,15,18,.2);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

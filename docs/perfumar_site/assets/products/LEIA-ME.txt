@@ -1,0 +1,95 @@
+COMO ADICIONAR AS FOTOS DOS PERFUMES
+=====================================
+
+1. Salve cada foto (fundo neutro, formato quadrado se possível) dentro desta pasta:
+   docs/perfumar_site/assets/products/
+
+2. O nome do arquivo tem que ser EXATAMENTE o nome da lista abaixo, em .jpg
+   (se preferir .png também funciona, o site tenta o .jpg primeiro e cai pro .png
+   automaticamente).
+
+3. Não precisa mexer em nenhum código: o site detecta a foto sozinho. Se um
+   perfume não tiver foto ainda, ele continua mostrando o ícone decorativo no
+   lugar, sem quebrar o layout.
+
+MASCULINOS
+----------
+brz-urban.jpg          BRZ Urban
+bravus.jpg             Bravus
+charmy.jpg             Charmy
+brz-intense-men.jpg    BRZ Intense Men
+conquest.jpg           Conquest
+champion.jpg           Champion
+brz-men.jpg            BRZ Men
+elegante-sport.jpg     Elegante Sport
+personalz.jpg          Personalz
+noble.jpg              Noble
+blue.jpg               Blue
+selvagem.jpg           Selvagem
+sweet-class.jpg        Sweet Class
+silver-z.jpg           Silver Z
+code-man.jpg           Code Man
+ahazzo.jpg             Ahazzo
+boss-man.jpg           Boss Man
+mb-endless.jpg         MB. Endless
+jump.jpg               Jump!
+lord.jpg               Lord
+strong.jpg             Strong
+black-horse.jpg        Black Horse
+lord-green.jpg         Lord Green
+animalz.jpg            Animalz
+loyal.jpg              Loyal
+brz-dark.jpg           BRZ Dark
+tauren.jpg             Tauren
+valien.jpg             Valien
+
+FEMININOS
+---------
+brz-blossom.jpg        BRZ Blossom
+brz-intense-woman.jpg  BRZ Intense Woman
+luminous-flowers.jpg   Luminous Flowers
+creta.jpg              Creta
+luminous-girl.jpg      Luminous Girl
+gold-woman.jpg         Gold Woman
+brz-woman.jpg          BRZ Woman
+lys.jpg                Lys
+miss.jpg               Miss
+love-it.jpg            Love It
+la-vie-est-amour.jpg   La Vie Est Amour
+2-love.jpg             2 Love
+beauty.jpg             Beauty
+tuberose-shine.jpg     Tuberose Shine
+autentica.jpg          Autêntica
+glow.jpg               Glow
+cintilante.jpg         Cintilante
+magic.jpg              Magic
+gs.jpg                 GS
+revolution.jpg         Revolution
+tresor.jpg             Trésor
+sweet-blue.jpg         Sweet Blue
+sweet.jpg              Sweet
+unique.jpg             Unique
+five-z.jpg             Five Z
+honey.jpg              Honey
+aura-rose.jpg          Aura Rose
+isis.jpg               Isis
+
+ÁRABES
+------
+golden-arabian.jpg     Golden Arabian
+rubi.jpg               Rubi
+dunes.jpg              Dunes
+sunshine.jpg           Sunshine
+malirah.jpg            Malirah
+najad.jpg              Najad
+sharif.jpg             Sharif
+zayan.jpg              Zayan
+
+EDIÇÕES ESPECIAIS (4 Estações + Noblesse)
+------------------------------------------
+primavera.jpg          Primavera
+verao.jpg              Verão
+outono.jpg             Outono
+inverno.jpg            Inverno
+yria.jpg               Yria
+darion.jpg             Darion

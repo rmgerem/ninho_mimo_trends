@@ -1,0 +1,22 @@
+/* Template03 · Verde Esmeralda (escuro, masculino) */
+:root {
+  --noir: #0e1f18;
+  --noir-soft: #173327;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #4fae8a;
+  --gold-light: #a8d9c2;
+  --gold-dark: #2f7a5c;
+  --rose: #c9a24a;
+  --rose-light: #e8cf8f;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(14,31,24,.2);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

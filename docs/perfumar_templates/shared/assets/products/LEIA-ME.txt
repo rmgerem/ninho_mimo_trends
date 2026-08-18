@@ -1,0 +1,40 @@
+COMO ADICIONAR AS FOTOS DOS PERFUMES (vale para os 10 templates)
+==================================================================
+
+1. Salve cada foto (fundo neutro, formato quadrado se possível) dentro desta
+   pasta: docs/perfumar_templates/shared/assets/products/
+
+2. O nome do arquivo tem que ser EXATAMENTE o da lista abaixo, em .jpg
+   (.png também funciona, o site tenta .jpg primeiro e cai pro .png sozinho).
+
+3. Como a pasta é compartilhada, você só precisa adicionar cada foto UMA VEZ
+   aqui e ela aparece automaticamente nos 10 templates de cor (Template01 a
+   Template10). Perfume sem foto continua mostrando o ícone decorativo, sem
+   quebrar o layout.
+
+MASCULINOS
+----------
+brz-urban.jpg  bravus.jpg  charmy.jpg  brz-intense-men.jpg  conquest.jpg
+champion.jpg  brz-men.jpg  elegante-sport.jpg  personalz.jpg  noble.jpg
+blue.jpg  selvagem.jpg  sweet-class.jpg  silver-z.jpg  code-man.jpg
+ahazzo.jpg  boss-man.jpg  mb-endless.jpg  jump.jpg  lord.jpg  strong.jpg
+black-horse.jpg  lord-green.jpg  animalz.jpg  loyal.jpg  brz-dark.jpg
+tauren.jpg  valien.jpg
+
+FEMININOS
+---------
+brz-blossom.jpg  brz-intense-woman.jpg  luminous-flowers.jpg  creta.jpg
+luminous-girl.jpg  gold-woman.jpg  brz-woman.jpg  lys.jpg  miss.jpg
+love-it.jpg  la-vie-est-amour.jpg  2-love.jpg  beauty.jpg
+tuberose-shine.jpg  autentica.jpg  glow.jpg  cintilante.jpg  magic.jpg
+gs.jpg  revolution.jpg  tresor.jpg  sweet-blue.jpg  sweet.jpg  unique.jpg
+five-z.jpg  honey.jpg  aura-rose.jpg  isis.jpg
+
+ÁRABES
+------
+golden-arabian.jpg  rubi.jpg  dunes.jpg  sunshine.jpg  malirah.jpg
+najad.jpg  sharif.jpg  zayan.jpg
+
+EDIÇÕES ESPECIAIS (4 Estações + Noblesse)
+------------------------------------------
+primavera.jpg  verao.jpg  outono.jpg  inverno.jpg  yria.jpg  darion.jpg

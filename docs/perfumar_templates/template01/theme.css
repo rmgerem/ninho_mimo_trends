@@ -1,0 +1,22 @@
+/* Template01 · Noir & Gold (escuro, masculino) */
+:root {
+  --noir: #1b1512;
+  --noir-soft: #2c231e;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #c9a24a;
+  --gold-light: #e8cf8f;
+  --gold-dark: #9c7a2e;
+  --rose: #c76a63;
+  --rose-light: #eec2bc;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(27,21,18,.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

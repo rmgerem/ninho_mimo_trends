@@ -1,0 +1,22 @@
+/* Template02 · Azul Meia-Noite (escuro, masculino) */
+:root {
+  --noir: #0f1b2b;
+  --noir-soft: #16283d;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #8fb8d8;
+  --gold-light: #cfe4f0;
+  --gold-dark: #4d7ea3;
+  --rose: #d98a5f;
+  --rose-light: #f0c9a0;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(15,27,43,.2);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

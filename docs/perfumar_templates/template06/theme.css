@@ -1,0 +1,22 @@
+/* Template06 · Rosé Suave (claro) */
+:root {
+  --noir: #5c3a3f;
+  --noir-soft: #79535a;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #d98a8a;
+  --gold-light: #f3d3d3;
+  --gold-dark: #b96565;
+  --rose: #c9a24a;
+  --rose-light: #e8cf8f;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(92,58,63,.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

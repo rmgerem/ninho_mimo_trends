@@ -1,0 +1,22 @@
+/* Template10 · Azul Céu (claro) */
+:root {
+  --noir: #3a5a6b;
+  --noir-soft: #4e7688;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #8ba6b6;
+  --gold-light: #d3e2e8;
+  --gold-dark: #5c7f91;
+  --rose: #e2896f;
+  --rose-light: #f0c1af;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(58,90,107,.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

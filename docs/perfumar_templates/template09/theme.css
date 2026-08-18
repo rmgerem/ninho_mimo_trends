@@ -1,0 +1,22 @@
+/* Template09 · Champanhe & Pêssego (claro) */
+:root {
+  --noir: #6b4a35;
+  --noir-soft: #8a6448;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #e9b877;
+  --gold-light: #f6ddb0;
+  --gold-dark: #b5813f;
+  --rose: #d97a7a;
+  --rose-light: #f0b8b8;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(107,74,53,.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}

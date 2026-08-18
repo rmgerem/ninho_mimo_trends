@@ -1,0 +1,22 @@
+/* Template08 · Verde Sálvia (claro) */
+:root {
+  --noir: #3f5c47;
+  --noir-soft: #547a5e;
+  --ink: #241d19;
+  --ink-soft: #7a6a5c;
+  --cream: #f8f1e4;
+  --white: #fffdf8;
+  --gold: #8fae8b;
+  --gold-light: #d3e3d0;
+  --gold-dark: #5c8360;
+  --rose: #e2a679;
+  --rose-light: #f2cfab;
+  --sage: #8fae8b;
+  --blue: #8ba6b6;
+  --lavender: #b6a3d1;
+  --line: rgba(36,29,25,.12);
+  --shadow: 0 24px 60px rgba(63,92,71,.16);
+  --radius-lg: 34px;
+  --radius-md: 22px;
+  --radius-sm: 14px;
+}
