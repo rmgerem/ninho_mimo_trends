@@ -149,7 +149,7 @@ function bindFavoriteButtons() {
   });
 }
 
-// Falls back .jpg -> .png -> decorative icon, so cards work before real photos are added.
+// Falls back .jpg -> .png -> generated .svg illustration -> decorative icon.
 function bindPhotoFallbacks() {
   productGrid.querySelectorAll('img.product-photo').forEach((img) => {
     if (img.dataset.bound) return;
@@ -158,6 +158,9 @@ function bindPhotoFallbacks() {
       if (img.dataset.step === 'jpg') {
         img.dataset.step = 'png';
         img.src = `assets/products/${img.dataset.id}.png`;
+      } else if (img.dataset.step === 'png') {
+        img.dataset.step = 'svg';
+        img.src = `assets/products/${img.dataset.id}.svg`;
       } else {
         img.style.display = 'none';
       }

@@ -1,16 +1,21 @@
 COMO ADICIONAR AS FOTOS DOS PERFUMES (vale para os 10 templates)
 ==================================================================
 
-1. Salve cada foto (fundo neutro, formato quadrado se possível) dentro desta
-   pasta: docs/perfumar_templates/shared/assets/products/
+Essa pasta já tem uma ilustração elegante (.svg) gerada para cada perfume
+(veja generate_photos.py, uma pasta acima), então os 10 templates já ficam
+bonitos mesmo sem fotos reais.
+
+1. Quando tiver a foto real, salve-a (fundo neutro, formato quadrado se
+   possível) dentro desta pasta: docs/perfumar_templates/shared/assets/products/
 
 2. O nome do arquivo tem que ser EXATAMENTE o da lista abaixo, em .jpg
-   (.png também funciona, o site tenta .jpg primeiro e cai pro .png sozinho).
+   (.png também funciona). O site tenta .jpg, depois .png e só usa a
+   ilustração .svg se nenhuma foto real existir — a foto real sempre tem
+   prioridade.
 
 3. Como a pasta é compartilhada, você só precisa adicionar cada foto UMA VEZ
    aqui e ela aparece automaticamente nos 10 templates de cor (Template01 a
-   Template10). Perfume sem foto continua mostrando o ícone decorativo, sem
-   quebrar o layout.
+   Template10).
 
 MASCULINOS
 ----------

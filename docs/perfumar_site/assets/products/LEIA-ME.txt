@@ -1,16 +1,18 @@
 COMO ADICIONAR AS FOTOS DOS PERFUMES
 =====================================
 
-1. Salve cada foto (fundo neutro, formato quadrado se possível) dentro desta pasta:
-   docs/perfumar_site/assets/products/
+Essa pasta já tem uma ilustração elegante (.svg) gerada para cada perfume,
+então o catálogo funciona bonito mesmo sem fotos reais ainda.
+
+1. Quando tiver a foto real, salve-a (fundo neutro, formato quadrado se
+   possível) dentro desta pasta: docs/perfumar_site/assets/products/
 
 2. O nome do arquivo tem que ser EXATAMENTE o nome da lista abaixo, em .jpg
-   (se preferir .png também funciona, o site tenta o .jpg primeiro e cai pro .png
-   automaticamente).
+   (se preferir .png também funciona). O site tenta .jpg, depois .png e só
+   usa a ilustração .svg se nenhuma foto real existir — ou seja, a foto real
+   sempre tem prioridade.
 
-3. Não precisa mexer em nenhum código: o site detecta a foto sozinho. Se um
-   perfume não tiver foto ainda, ele continua mostrando o ícone decorativo no
-   lugar, sem quebrar o layout.
+3. Não precisa mexer em nenhum código: o site detecta a foto sozinho.
 
 MASCULINOS
 ----------

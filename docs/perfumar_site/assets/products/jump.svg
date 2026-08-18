@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 650">
+  <defs>
+    <radialGradient id="bg-jump" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#e7e5e1"/>
+      <stop offset="100%" stop-color="#12161c" stop-opacity="0.35"/>
+    </radialGradient>
+    <linearGradient id="bottle-jump" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#333d4a"/>
+      <stop offset="100%" stop-color="#12161c"/>
+    </linearGradient>
+    <linearGradient id="cap-jump" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8cf8f"/>
+      <stop offset="100%" stop-color="#a5793a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="500" height="650" fill="url(#bg-jump)"/>
+
+  <ellipse cx="250" cy="560" rx="130" ry="22" fill="#000000" opacity="0.18"/>
+
+  <rect x="185" y="118" width="42" height="34" rx="6" fill="url(#cap-jump)"/>
+  <rect x="198" y="150" width="16" height="18" fill="#cbb37a"/>
+
+  <rect x="140" y="168" width="220" height="392" rx="26" fill="url(#bottle-jump)"/>
+  <rect x="158" y="188" width="26" height="330" rx="13" fill="#ffffff" opacity="0.16"/>
+
+  <rect x="150" y="328" width="200" height="92" rx="10" fill="#fdf8ee" stroke="#d9b872" stroke-width="2"/>
+  <line x1="180" y1="352" x2="320" y2="352" stroke="#c9a24a" stroke-width="1.4"/>
+  <text x="250" y="376" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="600" fill="#241d19" letter-spacing="0.3">Jump!</text>
+  <line x1="180" y1="396" x2="320" y2="396" stroke="#c9a24a" stroke-width="1.4"/>
+
+  <circle cx="90" cy="120" r="4" fill="#d9b872" opacity="0.55"/>
+  <circle cx="420" cy="150" r="3" fill="#d9b872" opacity="0.45"/>
+  <circle cx="410" cy="520" r="3.4" fill="#d9b872" opacity="0.4"/>
+</svg>
